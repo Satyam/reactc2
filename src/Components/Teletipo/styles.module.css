@@ -1,0 +1,9 @@
+.normal {
+  background-color: inherit;
+}
+.warning {
+  background-color: yellow;
+}
+.danger {
+  background-color: orange;
+}
