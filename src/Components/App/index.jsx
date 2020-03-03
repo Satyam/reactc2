@@ -22,7 +22,7 @@ export default function App({ username = '', sector, photoURL }) {
   return (
     <div>
       <Helmet titleTemplate="CTC - %s" />
-      <Mimico idSector="constiticion" />
+      <Mimico idSector="constitucion" />
       <Teletipo />
     </div>
   );
