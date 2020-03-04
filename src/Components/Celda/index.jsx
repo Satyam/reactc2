@@ -26,7 +26,7 @@ export default function Celda({ idCelda }) {
   const dispatch = useDispatch();
 
   if (!celda) return null;
-  const onClick = tipo => ev => isPlainClick(ev) && dispatch(clickCelda({ idCelda, tipo }));
+  const onClick = tipo => ev => isPlainClick(ev) && dispatch(clickCelda(idCelda, tipo));
 
   const [x, y] = splitCoords(celda.coords);
   const label = celda.descr || `[${x},${y}]`;

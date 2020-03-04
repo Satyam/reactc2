@@ -14,7 +14,7 @@ export default function Senal({ idSenal }) {
   const senal = useSelector(state => state.senales[idSenal]);
   const dispatch = useDispatch();
 
-  const onClick = ev => isPlainClick(ev) && dispatch(clickSenal({ idSenal }));
+  const onClick = ev => isPlainClick(ev) && dispatch(clickSenal(idSenal));
 
   if (!senal) return null;
   const { dir, primaria, izq, der } = senal;

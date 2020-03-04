@@ -5,7 +5,8 @@ import isPlainClick from 'Utils/isPlainClick';
 
 import { setCambio, setCambioManual } from 'Store/actions';
 
-import { Container, Row, Col, Button, ToggleButton } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import { FaLock, FaLockOpen } from 'react-icons/fa';
 
 import { TripleIzq, TripleNormal, TripleDer } from 'Components/Icons';
 
@@ -22,45 +23,40 @@ export default function EstadoTriple({ idCelda }) {
     manual,
   } = useSelector(state => state.celdas[idCelda]);
   const dispatch = useDispatch();
-  const onSetNormal = ev => isPlainClick(ev) && dispatch(setCambio({ idCelda, posicion: CENTRO }));
-  const onSetIzq = ev => isPlainClick(ev) && dispatch(setCambio({ idCelda, posicion: IZQ }));
-  const onSetDer = ev => isPlainClick(ev) && dispatch(setCambio({ idCelda, posicion: DER }));
-  const onSetManual = manual => dispatch(setCambioManual(idCelda, manual));
+  const onSetNormal = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, CENTRO));
+  const onSetIzq = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, IZQ));
+  const onSetDer = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, DER));
+  const onSetManual = ev => isPlainClick(ev) && dispatch(setCambioManual(idCelda, !manual));
+
   return (
-    <Container>
-      <Row className={styles.rowSpacing}>
-        <Col md={6} className={styles.label}>Triple</Col>
-        <Col md={6} className={styles.label}>{coords}</Col>
-      </Row>
-      <Row className={styles.rowSpacing}>
-        <Col md={4}>
-          <Button
-            size="sm"
-            onClick={onSetIzq}
-            disabled={posicion === IZQ}
-          ><TripleIzq /></Button>
-        </Col>
-        <Col md={4}>
-          <Button
-            size="sm"
-            onClick={onSetNormal}
-            disabled={posicion === CENTRO}
-          ><TripleNormal /></Button>
-        </Col>
-        <Col md={4}>
-          <Button
-            size="sm"
-            onClick={onSetDer}
-            disabled={posicion === DER}
-          ><TripleDer /></Button>
-        </Col>
-      </Row>
-      <Row className={styles.rowSpacing}>
-        <Col md={12}>
-          <ToggleButton label="Manual" checked={manual} onChange={onSetManual} >Manual</ToggleButton>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <div className={styles.label}>{`Triple ${coords}`}</div>
+      <ButtonGroup>
+        <Button
+          size="sm"
+          onClick={onSetIzq}
+          variant={posicion === IZQ ? 'primary' : 'outline-secondary'}
+        ><TripleIzq /></Button>
+        <Button
+          size="sm"
+          onClick={onSetNormal}
+          variant={posicion === CENTRO ? 'primary' : 'outline-secondary'}
+        ><TripleNormal /></Button>
+        <Button
+          size="sm"
+          onClick={onSetDer}
+          variant={posicion === DER ? 'primary' : 'outline-secondary'}
+        ><TripleDer /></Button>
+      </ButtonGroup>
+      <Button
+        className={styles.manual}
+        size="sm"
+        variant={manual ? 'danger' : 'outline-info'}
+        onClick={onSetManual}
+      >
+        {manual ? <FaLockOpen /> : <FaLock />}
+      </Button>
+    </>
   );
 }
 

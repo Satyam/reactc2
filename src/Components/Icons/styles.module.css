@@ -16,3 +16,7 @@
   width: 1em;
   height: 1em;
 }
+
+.filled {
+  fill: inherit;
+}
