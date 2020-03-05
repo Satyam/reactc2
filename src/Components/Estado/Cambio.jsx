@@ -1,11 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaLock, FaLockOpen } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 import { ButtonGroup, Button } from 'react-bootstrap';
 
-import { CambioNormal, CambioDesviado } from 'Components/Icons';
+import { CambioNormal, CambioDesviado, Locked, Unlocked } from 'Components/Icons';
 import isPlainClick from 'Utils/isPlainClick';
 import { setCambio, setCambioManual } from 'Store/actions';
 
@@ -44,7 +43,7 @@ export default function EstadoCambio({ idCelda }) {
         variant={manual ? 'danger' : 'outline-info'}
         onClick={onSetManual}
       >
-        {manual ? <FaLockOpen /> : <FaLock />}
+        {manual ? <Unlocked /> : <Locked />}
       </Button>
     </>
   );

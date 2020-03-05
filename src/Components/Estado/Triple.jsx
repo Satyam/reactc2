@@ -6,9 +6,8 @@ import isPlainClick from 'Utils/isPlainClick';
 import { setCambio, setCambioManual } from 'Store/actions';
 
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { FaLock, FaLockOpen } from 'react-icons/fa';
 
-import { TripleIzq, TripleNormal, TripleDer } from 'Components/Icons';
+import { TripleIzq, TripleNormal, TripleDer, Locked, Unlocked } from 'Components/Icons';
 
 import styles from './styles.module.css';
 
@@ -54,7 +53,7 @@ export default function EstadoTriple({ idCelda }) {
         variant={manual ? 'danger' : 'outline-info'}
         onClick={onSetManual}
       >
-        {manual ? <FaLockOpen /> : <FaLock />}
+        {manual ? <Unlocked /> : <Locked />}
       </Button>
     </>
   );

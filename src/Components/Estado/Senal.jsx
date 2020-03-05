@@ -2,8 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaLock, FaLockOpen } from 'react-icons/fa';
-import { GiPlainCircle } from 'react-icons/gi';
+import { Locked, Unlocked, Circle } from 'Components/Icons';
 
 import isPlainClick from 'Utils/isPlainClick';
 import { setLuzEstado, setLuzManual } from 'Store/actions';
@@ -31,17 +30,17 @@ export function EstadoLuz({
           size="sm"
           variant={estado === 'alto' ? 'danger' : 'outline-danger'}
           onClick={onSetAlto}
-        ><GiPlainCircle /></Button>
+        ><Circle /></Button>
         <Button
           size="sm"
           variant={estado === 'precaucion' ? 'warning' : 'outline-warning'}
           onClick={onSetPrecaucion}
-        ><GiPlainCircle /></Button>
+        ><Circle /></Button>
         <Button
           size="sm"
           variant={estado === 'libre' ? 'success' : 'outline-success'}
           onClick={onSetLibre}
-        ><GiPlainCircle /></Button>
+        ><Circle /></Button>
       </ButtonGroup>
       <Button
         className={styles.manual}
@@ -49,7 +48,7 @@ export function EstadoLuz({
         variant={manual ? 'danger' : 'outline-info'}
         onClick={onSetLuzManual}
       >
-        {manual ? <FaLockOpen /> : <FaLock />}
+        {manual ? <Unlocked /> : <Locked />}
       </Button>
     </>
   );
