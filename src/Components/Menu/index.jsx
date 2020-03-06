@@ -1,57 +1,83 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useRouteMatch, Link } from 'react-router-dom';
+import styles from './styles.module.css';
 
 import {
-  List,
-  ListItem,
-  ListSubHeader,
-  ListDivider /* , ListCheckbox */,
-} from 'react-bootstrap/list';
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText,
+} from 'reactstrap';
 
-export default function MenuComponent({
-  sectores,
-  location,
-  username,
-  onClick,
-  onLogin,
-  onLogout,
-  onAdminSectores,
-}) {
-  const loggedIn = username && username !== 'guest';
+import { GitHub } from 'Components/Icons';
+
+export default function MenuComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+  const sectores = useSelector(state => Object.values(state.sectores));
+  const match = useRouteMatch('/sector/:idSector');
+  const sector = useSelector(
+    state => match && state.sectores[match.params.idSector]
+  );
+  const toggle = () => setIsOpen(!isOpen);
+
   return (
-    <List selectable>
-      <ListSubHeader caption="Recientes" />
-      {(sectores || null) &&
-        sectores.map(sector =>
-          (<ListItem
-            key={sector.idSector}
-            onClick={onClick(sector.idSector)}
-            caption={sector.descrCorta}
-            disabled={`/sector/${sector.idSector}` === location.pathname}
-          />)
-        )}
-      <ListDivider />
-      <ListSubHeader caption="Whatever else" />
-      <ListItem caption="Admin Sectores" onClick={onAdminSectores} />
-      <ListDivider />
-      <ListItem caption={loggedIn ? 'Logout' : 'Login'} onClick={loggedIn ? onLogout : onLogin} />
-    </List>
+    <div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand color="default" href="/">
+          CTC
+        </NavbarBrand>
+        {sector && <NavbarText>[{sector.descrCorta}]</NavbarText>}
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Sectores
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem tag={Link} to="/adminSectores/">
+                  Admin. Sectores
+                </DropdownItem>
+                <DropdownItem divider />
+                {sectores.map(sector => (
+                  <DropdownItem
+                    tag={Link}
+                    to={`/sector/${sector.idSector}`}
+                    key={sector.idSector}
+                    title={sector.descr}
+                    active={match && match.params.idSector === sector.idSector}
+                  >
+                    {sector.descrCorta}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Opciones
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>Teletipo</DropdownItem>
+                <DropdownItem>Mensajes</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <NavItem>
+              <NavLink href="https://github.com/Satyam/reactc2">
+                <GitHub /> Github
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
   );
 }
-
-MenuComponent.propTypes = {
-  sectores: PropTypes.arrayOf(
-    PropTypes.shape({
-      idSector: PropTypes.string,
-      descrCorta: PropTypes.string,
-    })
-  ),
-  username: PropTypes.string,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
-  onClick: PropTypes.func,
-  onLogin: PropTypes.func,
-  onLogout: PropTypes.func,
-  onAdminSectores: PropTypes.func,
-};

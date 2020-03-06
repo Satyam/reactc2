@@ -50,3 +50,4 @@ export function TripleDer() {
 
 export { FaLock as Locked, FaLockOpen as Unlocked } from 'react-icons/fa';
 export { GiPlainCircle as Circle } from 'react-icons/gi';
+export { GoMarkGithub as GitHub } from 'react-icons/go';

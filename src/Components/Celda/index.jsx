@@ -57,7 +57,12 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
       }}
       onClick={onClick(celda.tipo)}
     >
-      <svg viewBox={`0 0 ${ANCHO_CELDA} ${ANCHO_CELDA}`} className={styles.svg}>
+      <svg
+        viewBox={`0 0 ${ANCHO_CELDA} ${ANCHO_CELDA}`}
+        width={cellWidth}
+        height={cellWidth}
+        className={styles.svg}
+      >
         <text x="0" y="95" className={styles.text}>
           {label}
         </text>

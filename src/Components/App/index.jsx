@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Teletipo from 'Components/Teletipo';
 import Mimico from 'Components/Mimico';
-// import Menu from 'Components/Menu';
+import Menu from 'Components/Menu';
 // import Errors from 'Components/Errors';
 
 import styles from './styles.module.css';
@@ -20,11 +19,14 @@ export default function App({ username = '', sector, photoURL }) {
   // const descr = sector && sector.descr;
   // const title = descr ? `CTC - ${descr}` : 'CTC';
   return (
-    <div>
+    <Router>
       <Helmet titleTemplate="CTC - %s" />
-      <Mimico idSector="constitucion" />
+      <Menu />
+      <Route path="/sector/:idSector">
+        <Mimico idSector="constitucion" />
+      </Route>
       <Teletipo />
-    </div>
+    </Router>
   );
 }
 
@@ -35,4 +37,3 @@ App.propTypes = {
   username: PropTypes.string,
   photoURL: PropTypes.string,
 };
-
