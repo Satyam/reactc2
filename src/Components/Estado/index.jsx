@@ -2,7 +2,7 @@ import React, {
   useState,
   useContext,
   createContext,
-  // useCallback,
+  useCallback,
   // useMemo,
 } from 'react';
 
@@ -31,30 +31,42 @@ function Content({ tipo, ...props }) {
 }
 
 export function EstadoProvider({ children }) {
-  const [props, setProps] = useState({ show: false });
+  const [{ show, idCelda, placement, tipo, idSenal }, setProps] = useState({
+    show: false,
+  });
   const onClose = ev => isPlainClick(ev) && setProps({ show: false });
 
-  const ctx = props => {
-    setProps({
-      ...props,
-      show: true,
-      onClose,
-    });
-  };
+  // See:  https://github.com/reactstrap/reactstrap/issues/1404#issuecomment-538537763
+  const ctx = useCallback(
+    props => {
+      const setThem = () =>
+        setProps({
+          ...props,
+          show: true,
+        });
+
+      if (show) {
+        setProps({});
+        setTimeout(() => setThem(), 1);
+      } else {
+        setThem();
+      }
+    },
+    [setProps, show]
+  );
+
   return (
     <EstadoContext.Provider value={ctx}>
       {children}
-      {props.show && (
-        <Popover
-          isOpen={props.show}
-          target={sanitize(props.idCelda)}
-          placement={props.placement}
-        >
+      {show && (
+        <Popover isOpen={show} target={sanitize(idCelda)} placement={placement}>
           <Content
-            tipo={props.tipo}
-            idCelda={props.idCelda}
-            idSenal={props.idSenal}
-            onClose={onClose}
+            {...{
+              tipo,
+              idCelda,
+              idSenal,
+              onClose,
+            }}
           />
         </Popover>
       )}

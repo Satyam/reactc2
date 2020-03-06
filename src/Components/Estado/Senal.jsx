@@ -62,7 +62,7 @@ EstadoLuz.propTypes = {
   onSetEstado: PropTypes.func,
 };
 
-export default function EstadoSenal({ idSenal }) {
+export default function EstadoSenal({ idSenal, onClose }) {
   const { dir, izq, primaria, der } = useSelector(
     state => state.senales[idSenal]
   );
@@ -77,6 +77,7 @@ export default function EstadoSenal({ idSenal }) {
     <>
       <PopoverHeader>
         Señal {idSenal.split(':')[1]} - {dir}
+        <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>
         <div

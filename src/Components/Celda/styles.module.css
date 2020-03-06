@@ -1,20 +1,23 @@
 .rect {
   background-color: #eeeeee;
-  border: white medium none;
+  border: white thin solid;
   position: absolute;
   margin: 0;
 }
 
 .manual {
-  border: lightpink medium solid;
+  background-color: lightpink;
 }
 
 .text {
-  color: blue;
-  vertical-align: bottom;
-  text-align: left;
+  stroke: blue;
+  font-size: small;
 }
-
+.svg {
+  position: relative;
+  left: 0;
+  top: 0;
+}
 .tramo-normal {
   stroke: black;
   stroke-width: 4;
@@ -22,7 +25,4 @@
 .tramo-muerto {
   stroke: silver;
   stroke-width: 3;
-}
-.seleccionada {
-  background-color: lightblue;
 }

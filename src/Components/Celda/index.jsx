@@ -48,7 +48,6 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
       id={sanitize(idCelda)}
       className={classNames(styles.rect, {
         [styles.manual]: celda.manual,
-        // [styles.seleccionada]: estado.tipo && idCelda === estado.idCelda,
       })}
       style={{
         left: x * cellWidth,
@@ -58,9 +57,11 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
       }}
       onClick={onClick(celda.tipo)}
     >
-      <svg viewBox={`0 0 ${ANCHO_CELDA} ${ANCHO_CELDA}`}>
+      <svg viewBox={`0 0 ${ANCHO_CELDA} ${ANCHO_CELDA}`} className={styles.svg}>
+        <text x="0" y="95" className={styles.text}>
+          {label}
+        </text>
         <Renderer celda={celda} />
-        <p className={styles.text}>{label}</p>
         {celda.senales
           ? celda.senales.map(idSenal => (
               <Senal
