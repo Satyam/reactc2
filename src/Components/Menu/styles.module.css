@@ -1,9 +1,0 @@
-.bold {
-  font-weight: bold;
-}
-.bold::before {
-  content: '✅';
-}
-.normal::before {
-  content: ' ';
-}

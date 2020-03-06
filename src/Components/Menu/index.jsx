@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
-import styles from './styles.module.css';
 
 import {
   Collapse,
