@@ -36,3 +36,6 @@ export const setLuzManual = createAction(
     },
   })
 );
+
+export const showTeletipo = createAction('showTeletipo');
+export const showMensajes = createAction('showMensajes');

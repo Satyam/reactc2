@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -7,17 +8,10 @@ import Mimico from 'Components/Mimico';
 import Menu from 'Components/Menu';
 // import Errors from 'Components/Errors';
 
-import styles from './styles.module.css';
+// import styles from './styles.module.css';
 
 export default function App({ username = '', sector, photoURL }) {
-  // const [teletipoOpen, setTeletipoOpen] = useState(false);
-  // const [menuOpen, setMenuOpen] = useState(false);
-
-  // const onToggleTeletipoHandler = () => setTeletipoOpen(open => !open);
-  // const onToggleMenuHandler = () => setMenuOpen(open => !open);
-
-  // const descr = sector && sector.descr;
-  // const title = descr ? `CTC - ${descr}` : 'CTC';
+  const { showTeletipo } = useSelector(state => state.options);
   return (
     <Router>
       <Helmet titleTemplate="CTC - %s" />
@@ -25,7 +19,7 @@ export default function App({ username = '', sector, photoURL }) {
       <Route path="/sector/:idSector">
         <Mimico idSector="constitucion" />
       </Route>
-      <Teletipo />
+      {showTeletipo && <Teletipo />}
     </Router>
   );
 }

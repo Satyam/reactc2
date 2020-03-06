@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
+
+import { showTeletipo as showTeletipoAction } from 'Store/actions';
 
 import {
   Collapse,
@@ -26,7 +28,12 @@ export default function MenuComponent() {
   const sector = useSelector(
     state => match && state.sectores[match.params.idSector]
   );
-  const toggle = () => setIsOpen(!isOpen);
+  const { showTeletipo } = useSelector(state => state.options);
+  const dispatch = useDispatch();
+
+  const toggleOpen = () => setIsOpen(!isOpen);
+  // const toggleMensajes = () => dispatch(showMensajesAction(!showMensajes));
+  const toggleTeletipo = () => dispatch(showTeletipoAction(!showTeletipo));
 
   return (
     <div>
@@ -35,7 +42,7 @@ export default function MenuComponent() {
           CTC
         </NavbarBrand>
         {sector && <NavbarText>[{sector.descrCorta}]</NavbarText>}
-        <NavbarToggler onClick={toggle} />
+        <NavbarToggler onClick={toggleOpen} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
@@ -65,8 +72,9 @@ export default function MenuComponent() {
                 Opciones
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem>Teletipo</DropdownItem>
-                <DropdownItem>Mensajes</DropdownItem>
+                <DropdownItem onClick={toggleTeletipo} active={showTeletipo}>
+                  Teletipo
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <NavItem>
