@@ -2,9 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { ButtonGroup, Button } from 'react-bootstrap';
+import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 
-import { CambioNormal, CambioDesviado, Locked, Unlocked } from 'Components/Icons';
+import {
+  CambioNormal,
+  CambioDesviado,
+  Locked,
+  Unlocked,
+} from 'Components/Icons';
 import isPlainClick from 'Utils/isPlainClick';
 import { setCambio, setCambioManual } from 'Store/actions';
 
@@ -13,38 +18,50 @@ import styles from './styles.module.css';
 const DESVIADO = 'desviado';
 const NORMAL = 'normal';
 
-export default function EstadoCambio({ idCelda }) {
-
-  const { coords, posicion, manual } = useSelector(state => state.celdas[idCelda]);
+export default function EstadoCambio({ idCelda, onClose }) {
+  const { coords, posicion, manual } = useSelector(
+    state => state.celdas[idCelda]
+  );
   const dispatch = useDispatch();
 
-  const onSetCambioNormal = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, NORMAL));
-  const onSetCambioDesviado = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, DESVIADO));
-  const onSetManual = ev => isPlainClick(ev) && dispatch(setCambioManual(idCelda, !manual));
-
+  const onSetCambioNormal = ev =>
+    isPlainClick(ev) && dispatch(setCambio(idCelda, NORMAL));
+  const onSetCambioDesviado = ev =>
+    isPlainClick(ev) && dispatch(setCambio(idCelda, DESVIADO));
+  const onSetManual = ev =>
+    isPlainClick(ev) && dispatch(setCambioManual(idCelda, !manual));
   return (
     <>
-      <div className={styles.label}>{`Cambio ${coords}`}</div>
-      <ButtonGroup>
+      <PopoverHeader>
+        Cambio {coords}
+        <Button close className={styles.close} onClick={onClose} />
+      </PopoverHeader>
+      <PopoverBody>
+        <ButtonGroup>
+          <Button
+            size="sm"
+            onClick={onSetCambioNormal}
+            color={posicion === NORMAL ? 'primary' : 'outline-secondary'}
+          >
+            <CambioNormal />
+          </Button>
+          <Button
+            size="sm"
+            onClick={onSetCambioDesviado}
+            color={posicion === DESVIADO ? 'primary' : 'outline-secondary'}
+          >
+            <CambioDesviado />
+          </Button>
+        </ButtonGroup>
         <Button
+          className={styles.manual}
           size="sm"
-          onClick={onSetCambioNormal}
-          variant={posicion === NORMAL ? 'primary' : 'outline-secondary'}
-        ><CambioNormal /></Button>
-        <Button
-          size="sm"
-          onClick={onSetCambioDesviado}
-          variant={posicion === DESVIADO ? 'primary' : 'outline-secondary'}
-        ><CambioDesviado /></Button>
-      </ButtonGroup>
-      <Button
-        className={styles.manual}
-        size="sm"
-        variant={manual ? 'danger' : 'outline-info'}
-        onClick={onSetManual}
-      >
-        {manual ? <Unlocked /> : <Locked />}
-      </Button>
+          color={manual ? 'danger' : 'outline-info'}
+          onClick={onSetManual}
+        >
+          {manual ? <Unlocked /> : <Locked />}
+        </Button>
+      </PopoverBody>
     </>
   );
 }

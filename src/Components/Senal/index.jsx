@@ -1,22 +1,29 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useEstado } from 'Components/Estado';
 
 import isPlainClick from 'Utils/isPlainClick';
-import { clickSenal } from 'Store/actions';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 
 import styles from './styles.module.css';
 
-export default function Senal({ idSenal }) {
-
+export default function Senal({ idSenal, idCelda, placement }) {
   const senal = useSelector(state => state.senales[idSenal]);
-  const dispatch = useDispatch();
-
-  const onClick = ev => isPlainClick(ev) && dispatch(clickSenal(idSenal));
+  const showEstado = useEstado();
 
   if (!senal) return null;
+
+  const onClick = ev =>
+    isPlainClick(ev) &&
+    showEstado({
+      tipo: 'senal',
+      idCelda,
+      idSenal,
+      placement,
+    });
+
   const { dir, primaria, izq, der } = senal;
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
@@ -47,20 +54,26 @@ export default function Senal({ idSenal }) {
         cy={y}
         r={r}
       />
-      {izq &&
+      {izq && (
         <circle
-          className={classNames(styles.izq, styles[izq.estado], { [styles.luzManual]: izq.manual })}
+          className={classNames(styles.izq, styles[izq.estado], {
+            [styles.luzManual]: izq.manual,
+          })}
           cx={x1}
           cy={y + r}
           r={r}
-        />}
-      {der &&
+        />
+      )}
+      {der && (
         <circle
-          className={classNames(styles.der, styles[der.estado], { [styles.luzManual]: der.manual })}
+          className={classNames(styles.der, styles[der.estado], {
+            [styles.luzManual]: der.manual,
+          })}
           cx={x1}
           cy={y - r}
           r={r}
-        />}
+        />
+      )}
     </g>
   );
 }
@@ -68,5 +81,3 @@ export default function Senal({ idSenal }) {
 Senal.propTypes = {
   idSenal: PropTypes.string.isRequired,
 };
-
-

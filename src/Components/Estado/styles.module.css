@@ -23,6 +23,10 @@
   margin-top: 3px;
 }
 
-.hidden Button{
+.hidden button {
   visibility: hidden;
+}
+
+.close {
+  margin-left: 0.5em;
 }

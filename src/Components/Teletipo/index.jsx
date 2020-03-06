@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Table } from 'react-bootstrap';
+import { Table } from 'reactstrap';
 
 import styles from './styles.module.css';
 
 const colores = ['normal', 'warning', 'danger'];
 
 export default function Teletipo({ mensajes }) {
-  return (mensajes ? (
+  return mensajes ? (
     <Table selectable={false}>
       <thead>
         <th>Fecha</th>
@@ -17,16 +17,18 @@ export default function Teletipo({ mensajes }) {
         <th>Mensaje</th>
       </thead>
       <tbody>
-        {mensajes.map(row =>
-          (<tr className={styles[colores[row.nivel]]} key={row.fecha.getTime()}>
+        {mensajes.map(row => (
+          <tr className={styles[colores[row.nivel]]} key={row.fecha.getTime()}>
             <td>{row.fecha.toLocaleString()}</td>
             <td>{row.sector}</td>
             <td>{row.coords}</td>
             <td>{row.msg}</td>
-          </tr>)
-        )}
+          </tr>
+        ))}
       </tbody>
-    </Table>) : (<p>No hay mensajes</p>)
+    </Table>
+  ) : (
+    <p>No hay mensajes</p>
   );
 }
 

@@ -1,51 +1,51 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
 
 import isPlainClick from 'Utils/isPlainClick';
 import { setLuzEstado, setLuzManual } from 'Store/actions';
-import { ButtonGroup, Button } from 'react-bootstrap';
+import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import styles from './styles.module.css';
 
-export function EstadoLuz({
-  luz,
-  manual,
-  estado,
-  onSetManual,
-  onSetEstado,
-}) {
-
+export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
   const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, 'alto');
-  const onSetPrecaucion = ev => isPlainClick(ev) && onSetEstado(luz, 'precaucion');
+  const onSetPrecaucion = ev =>
+    isPlainClick(ev) && onSetEstado(luz, 'precaucion');
   const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, 'libre');
-  const onSetLuzManual = ev => isPlainClick(ev) && onSetManual(luz, !manual)
+  const onSetLuzManual = ev => isPlainClick(ev) && onSetManual(luz, !manual);
 
   return (
     <>
       <ButtonGroup vertical>
         <Button
           size="sm"
-          variant={estado === 'alto' ? 'danger' : 'outline-danger'}
+          color={estado === 'alto' ? 'danger' : 'outline-danger'}
           onClick={onSetAlto}
-        ><Circle /></Button>
+        >
+          <Circle />
+        </Button>
         <Button
           size="sm"
-          variant={estado === 'precaucion' ? 'warning' : 'outline-warning'}
+          color={estado === 'precaucion' ? 'warning' : 'outline-warning'}
           onClick={onSetPrecaucion}
-        ><Circle /></Button>
+        >
+          <Circle />
+        </Button>
         <Button
           size="sm"
-          variant={estado === 'libre' ? 'success' : 'outline-success'}
+          color={estado === 'libre' ? 'success' : 'outline-success'}
           onClick={onSetLibre}
-        ><Circle /></Button>
+        >
+          <Circle />
+        </Button>
       </ButtonGroup>
       <Button
         className={styles.manual}
         size="sm"
-        variant={manual ? 'danger' : 'outline-info'}
+        color={manual ? 'danger' : 'outline-info'}
         onClick={onSetLuzManual}
       >
         {manual ? <Unlocked /> : <Locked />}
@@ -63,22 +63,27 @@ EstadoLuz.propTypes = {
 };
 
 export default function EstadoSenal({ idSenal }) {
-  const {
-    dir,
-    izq,
-    primaria,
-    der,
-  } = useSelector(state => state.senales[idSenal]);
+  const { dir, izq, primaria, der } = useSelector(
+    state => state.senales[idSenal]
+  );
 
   const dispatch = useDispatch();
-  const onSetEstado = (luz, estado) => dispatch(setLuzEstado(idSenal, luz, estado));
-  const onSetManual = (luz, manual) => dispatch(setLuzManual(idSenal, luz, manual));
+  const onSetEstado = (luz, estado) =>
+    dispatch(setLuzEstado(idSenal, luz, estado));
+  const onSetManual = (luz, manual) =>
+    dispatch(setLuzManual(idSenal, luz, manual));
 
   return (
     <>
-      <div className={styles.label}>{`Señal ${idSenal.split(':')[1]} - ${dir}`}</div>
-      <div className={styles.senales}>
-        <div className={classNames(styles.senal, styles.pushDown, { [styles.hidden]: !izq })}>
+      <PopoverHeader>
+        Señal {idSenal.split(':')[1]} - {dir}
+      </PopoverHeader>
+      <PopoverBody>
+        <div
+          className={classNames(styles.senal, styles.pushDown, {
+            [styles.hidden]: !izq,
+          })}
+        >
           <EstadoLuz
             luz="izq"
             manual={izq && izq.manual}
@@ -87,7 +92,9 @@ export default function EstadoSenal({ idSenal }) {
             onSetEstado={onSetEstado}
           />
         </div>
-        <div className={classNames(styles.senal, { [styles.hidden]: !primaria })}>
+        <div
+          className={classNames(styles.senal, { [styles.hidden]: !primaria })}
+        >
           <EstadoLuz
             luz="primaria"
             manual={primaria && primaria.manual}
@@ -96,7 +103,11 @@ export default function EstadoSenal({ idSenal }) {
             onSetEstado={onSetEstado}
           />
         </div>
-        <div className={classNames(styles.senal, styles.pushDown, { [styles.hidden]: !der })}>
+        <div
+          className={classNames(styles.senal, styles.pushDown, {
+            [styles.hidden]: !der,
+          })}
+        >
           <EstadoLuz
             luz="der"
             manual={der && der.manual}
@@ -105,7 +116,7 @@ export default function EstadoSenal({ idSenal }) {
             onSetEstado={onSetEstado}
           />
         </div>
-      </div>
+      </PopoverBody>
     </>
   );
 }
@@ -113,4 +124,3 @@ export default function EstadoSenal({ idSenal }) {
 EstadoSenal.propTypes = {
   idSenal: PropTypes.string,
 };
-
