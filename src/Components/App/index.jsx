@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Teletipo from 'Components/Teletipo';
@@ -23,11 +22,3 @@ export default function App({ username = '', sector, photoURL }) {
     </Router>
   );
 }
-
-App.propTypes = {
-  sector: PropTypes.shape({
-    descr: PropTypes.string,
-  }),
-  username: PropTypes.string,
-  photoURL: PropTypes.string,
-};

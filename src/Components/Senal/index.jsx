@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useEstado } from 'Components/Estado';
 
@@ -77,7 +76,3 @@ export default function Senal({ idSenal, idCelda, placement }) {
     </g>
   );
 }
-
-Senal.propTypes = {
-  idSenal: PropTypes.string.isRequired,
-};

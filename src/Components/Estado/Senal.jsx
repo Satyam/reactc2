@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
 
@@ -53,14 +52,6 @@ export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
     </>
   );
 }
-
-EstadoLuz.propTypes = {
-  luz: PropTypes.string,
-  manual: PropTypes.bool,
-  estado: PropTypes.string,
-  onSetManual: PropTypes.func,
-  onSetEstado: PropTypes.func,
-};
 
 export default function EstadoSenal({ idSenal, onClose }) {
   const { dir, izq, primaria, der } = useSelector(
@@ -121,7 +112,3 @@ export default function EstadoSenal({ idSenal, onClose }) {
     </>
   );
 }
-
-EstadoSenal.propTypes = {
-  idSenal: PropTypes.string,
-};

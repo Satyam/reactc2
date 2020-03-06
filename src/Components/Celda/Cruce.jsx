@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { cruceShape } from 'Components/shapes';
 
 import Tramo from './Tramo';
 
@@ -14,7 +12,3 @@ export default function Cruce({ celda }) {
     </g>
   );
 }
-
-Cruce.propTypes = {
-  celda: cruceShape,
-};

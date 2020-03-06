@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import { Input } from 'react-bootstrap/input';
@@ -23,12 +22,12 @@ export default class LoginComponent extends Component {
   onChangeHandler = (value, ev) => {
     this.setState({ [ev.target.name]: value, fail: false });
   };
-  onToggleSignupHandler = (ev) => {
+  onToggleSignupHandler = ev => {
     if (isPlainClick(ev)) {
       this.setState({ signup: !this.state.signup });
     }
   };
-  onSubmitHandler = (ev) => {
+  onSubmitHandler = ev => {
     if (isPlainClick(ev)) {
       const { username, password, confirmation, signup } = this.state;
       if (signup && password !== confirmation) {
@@ -61,8 +60,8 @@ export default class LoginComponent extends Component {
           value={password}
           onChange={this.onChangeHandler}
         />
-        {signup
-          ? <Input
+        {signup ? (
+          <Input
             type="password"
             label="Confirm Password"
             name="confirmation"
@@ -70,20 +69,18 @@ export default class LoginComponent extends Component {
             onChange={this.onChangeHandler}
             error={fail ? 'passwords do not match' : null}
           />
-          : null}
+        ) : null}
         <Button raised primary onClick={this.onSubmitHandler}>
           {signup ? 'Sign Up' : 'Login'}
         </Button>
-        <Button className={styles.right} raised onClick={this.onToggleSignupHandler}>
+        <Button
+          className={styles.right}
+          raised
+          onClick={this.onToggleSignupHandler}
+        >
           Switch to {signup ? 'login' : 'sign Up'}
         </Button>
       </div>
     );
   }
 }
-
-LoginComponent.propTypes = {
-  username: PropTypes.string,
-  onLogin: PropTypes.func,
-  location: PropTypes.shape({ search: PropTypes.string }),
-};

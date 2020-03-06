@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Table } from 'reactstrap';
 
@@ -31,15 +30,3 @@ export default function Teletipo({ mensajes }) {
     <p>No hay mensajes</p>
   );
 }
-
-Teletipo.propTypes = {
-  mensajes: PropTypes.arrayOf(
-    PropTypes.shape({
-      fecha: PropTypes.instanceOf(Date),
-      sector: PropTypes.string,
-      coords: PropTypes.string,
-      msg: PropTypes.string,
-      nivel: PropTypes.number,
-    })
-  ),
-};

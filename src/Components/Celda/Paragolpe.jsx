@@ -1,5 +1,4 @@
 import React from 'react';
-import { paragolpeShape } from 'Components/shapes';
 
 import Tramo from './Tramo';
 import { CENTRO_CELDA, ANCHO_CELDA } from 'Components/common';
@@ -12,7 +11,3 @@ export default function Paragolpe({ celda }) {
     </g>
   );
 }
-
-Paragolpe.propTypes = {
-  celda: paragolpeShape,
-};

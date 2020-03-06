@@ -1,5 +1,4 @@
 import React from 'react';
-import { cambioShape } from 'Components/shapes';
 
 import map from 'lodash/map';
 
@@ -19,7 +18,3 @@ export default function Cambio({ celda }) {
     </g>
   );
 }
-
-Cambio.propTypes = {
-  celda: cambioShape,
-};

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import ReactResizeDetector from 'react-resize-detector';
 
@@ -35,7 +34,3 @@ export default function Sector({ idSector }) {
     </div>
   );
 }
-
-Sector.propTypes = {
-  idSector: PropTypes.string.isRequired,
-};
