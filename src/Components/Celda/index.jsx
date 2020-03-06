@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import splitCoords from 'Utils/splitCoords';
 import isPlainClick from 'Utils/isPlainClick';
+import sanitize from 'Utils/sanitize';
 
 import Senal from 'Components/Senal';
 import { useEstado } from 'Components/Estado';
@@ -33,8 +34,6 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
       idCelda,
       placement,
     });
-
-  const sanitize = id => id.replace(/\W/g, '_');
 
   const label = celda.descr || `[${x},${y}]`;
   const Renderer = {

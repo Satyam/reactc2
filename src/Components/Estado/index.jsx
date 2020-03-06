@@ -8,6 +8,7 @@ import React, {
 
 import { Popover } from 'reactstrap';
 import isPlainClick from 'Utils/isPlainClick';
+import sanitize from 'Utils/sanitize';
 
 import Cambio from './Cambio';
 import Triple from './Triple';
@@ -40,7 +41,6 @@ export function EstadoProvider({ children }) {
       onClose,
     });
   };
-  const sanitize = id => id.replace(/\W/g, '_');
   return (
     <EstadoContext.Provider value={ctx}>
       {children}
