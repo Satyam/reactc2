@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import isPlainClick from 'Utils/isPlainClick';
 
 import { setCambio, setCambioManual } from 'Store/actions';
+import { selCelda } from 'Store/celdas/selectors';
 
 import { Button, ButtonGroup, PopoverHeader, PopoverBody } from 'reactstrap';
 
@@ -21,8 +22,8 @@ export const CENTRO = 'centro';
 export const DER = 'der';
 
 export default function EstadoTriple({ idCelda, onClose }) {
-  const { coords, posicion, manual } = useSelector(
-    state => state.celdas[idCelda]
+  const { coords, posicion, manual } = useSelector(state =>
+    selCelda(state, idCelda)
   );
   const dispatch = useDispatch();
   const onSetNormal = ev =>

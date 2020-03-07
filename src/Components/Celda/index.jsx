@@ -7,6 +7,8 @@ import splitCoords from 'Utils/splitCoords';
 import isPlainClick from 'Utils/isPlainClick';
 import sanitize from 'Utils/sanitize';
 
+import { selCelda } from 'Store/selectors';
+
 import Senal from 'Components/Senal';
 import { useEstado } from 'Components/Estado';
 
@@ -20,7 +22,7 @@ import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 
 export default function Celda({ idCelda, cellsAcross, cellWidth }) {
-  const celda = useSelector(state => state.celdas[idCelda]);
+  const celda = useSelector(state => selCelda(state, idCelda));
   const showEstado = useEstado();
 
   if (!cellWidth || !celda) return null;

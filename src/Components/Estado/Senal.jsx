@@ -4,7 +4,10 @@ import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
 
 import isPlainClick from 'Utils/isPlainClick';
+
 import { setLuzEstado, setLuzManual } from 'Store/actions';
+import { selSenal } from 'Store/senales/selectors';
+
 import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import styles from './styles.module.css';
@@ -54,8 +57,8 @@ export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
 }
 
 export default function EstadoSenal({ idSenal, onClose }) {
-  const { dir, izq, primaria, der } = useSelector(
-    state => state.senales[idSenal]
+  const { dir, izq, primaria, der } = useSelector(state =>
+    selSenal(state, idSenal)
   );
 
   const dispatch = useDispatch();

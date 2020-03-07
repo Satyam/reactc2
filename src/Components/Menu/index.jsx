@@ -2,8 +2,16 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 
-import { showTeletipo as showTeletipoAction } from 'Store/actions';
-
+import {
+  showTeletipo as showTeletipoAction,
+  enclavamientosActive,
+} from 'Store/actions';
+import {
+  selSectores,
+  selSector,
+  selShowTeletipo,
+  selEnclavamientosActive,
+} from 'Store/selectors';
 import {
   Collapse,
   Navbar,
@@ -23,17 +31,21 @@ import { GitHub } from 'Components/Icons';
 
 export default function MenuComponent() {
   const [isOpen, setIsOpen] = useState(false);
-  const sectores = useSelector(state => Object.values(state.sectores));
   const match = useRouteMatch('/sector/:idSector');
+
+  const sectores = useSelector(selSectores);
   const sector = useSelector(
-    state => match && state.sectores[match.params.idSector]
+    state => match && selSector(state, match.params.idSector)
   );
-  const { showTeletipo } = useSelector(state => state.options);
+  const isEnclavamientoActive = useSelector(selEnclavamientosActive);
+  const showTeletipo = useSelector(selShowTeletipo);
+
   const dispatch = useDispatch();
 
   const toggleOpen = () => setIsOpen(!isOpen);
-  // const toggleMensajes = () => dispatch(showMensajesAction(!showMensajes));
   const toggleTeletipo = () => dispatch(showTeletipoAction(!showTeletipo));
+  const toggleEnclavamientos = () =>
+    dispatch(enclavamientosActive(!isEnclavamientoActive));
 
   return (
     <div>
@@ -74,6 +86,12 @@ export default function MenuComponent() {
               <DropdownMenu>
                 <DropdownItem onClick={toggleTeletipo} active={showTeletipo}>
                   Teletipo
+                </DropdownItem>
+                <DropdownItem
+                  onClick={toggleEnclavamientos}
+                  active={isEnclavamientoActive}
+                >
+                  Enclavamientos
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

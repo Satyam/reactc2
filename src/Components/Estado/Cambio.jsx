@@ -11,15 +11,15 @@ import {
 } from 'Components/Icons';
 import isPlainClick from 'Utils/isPlainClick';
 import { setCambio, setCambioManual } from 'Store/actions';
-
+import { selCelda } from 'Store/selectors';
 import styles from './styles.module.css';
 
 const DESVIADO = 'desviado';
 const NORMAL = 'normal';
 
 export default function EstadoCambio({ idCelda, onClose }) {
-  const { coords, posicion, manual } = useSelector(
-    state => state.celdas[idCelda]
+  const { coords, posicion, manual } = useSelector(state =>
+    selCelda(state, idCelda)
   );
   const dispatch = useDispatch();
 

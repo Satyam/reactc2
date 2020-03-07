@@ -6,10 +6,11 @@ import { useEstado } from 'Components/Estado';
 import isPlainClick from 'Utils/isPlainClick';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 
+import { selSenal } from 'Store/selectors';
 import styles from './styles.module.css';
 
 export default function Senal({ idSenal, idCelda, placement }) {
-  const senal = useSelector(state => state.senales[idSenal]);
+  const senal = useSelector(state => selSenal(state, idSenal));
   const showEstado = useEstado();
 
   if (!senal) return null;

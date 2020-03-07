@@ -1,17 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import sectoresReducer from './reducers/sectores';
-import celdasReducer from './reducers/celdas';
-import senalesReducer from './reducers/senales';
-import enclavamientosReducer from './reducers/enclavamientos';
-import optionsReducer from './reducers/options';
+import celdas from './celdas/reducer';
+import enclavamientos from './enclavamientos/reducer';
+import options from './options/reducer';
+import sectores from './sectores/reducer';
+import senales from './senales/reducer';
 
 export default configureStore({
   reducer: {
-    sectores: sectoresReducer,
-    celdas: celdasReducer,
-    senales: senalesReducer,
-    enclavamientos: enclavamientosReducer,
-    options: optionsReducer,
+    celdas,
+    enclavamientos,
+    options,
+    sectores,
+    senales,
   },
 });
