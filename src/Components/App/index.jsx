@@ -15,7 +15,9 @@ import { selShowTeletipo } from 'Store/selectors';
 export default function App({ username = '', sector, photoURL }) {
   const showTeletipo = useSelector(selShowTeletipo);
   return (
-    <Router>
+    <Router
+      basename={process.env.NODE_ENV === 'production' ? '/CTC' : undefined}
+    >
       <Helmet titleTemplate="CTC - %s" />
       <Menu />
       <Route path="/sector/:idSector">

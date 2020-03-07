@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CTC",
+  "name": "Control de Tráfico Centralizado",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,9 +8,9 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "logo150.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "150x120"
     },
     {
       "src": "logo512.png",

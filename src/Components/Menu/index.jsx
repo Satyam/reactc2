@@ -50,7 +50,10 @@ export default function MenuComponent() {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand color="default" href="/">
+        <NavbarBrand
+          color="default"
+          href={process.env.NODE_ENV === 'production' ? '/CTC' : '/'}
+        >
           CTC
         </NavbarBrand>
         {sector && <NavbarText>[{sector.descrCorta}]</NavbarText>}
