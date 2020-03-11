@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
+import './styles.module.css';
 
 import {
   showTeletipo as showTeletipoAction,
@@ -24,7 +25,6 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText,
 } from 'reactstrap';
 
 import { GitHub } from 'Components/Icons';
@@ -56,13 +56,13 @@ export default function MenuComponent() {
         >
           CTC
         </NavbarBrand>
-        {sector && <NavbarText>[{sector.descrCorta}]</NavbarText>}
+
         <NavbarToggler onClick={toggleOpen} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                Sectores
+                {sector ? sector.descrCorta : 'Sectores'}
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem tag={Link} to="/adminSectores/">

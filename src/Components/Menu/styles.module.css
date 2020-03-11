@@ -1,0 +1,3 @@
+:global(.dropdown-item.active::after) {
+  content: ' √';
+}
