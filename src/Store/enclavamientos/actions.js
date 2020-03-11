@@ -13,7 +13,22 @@ import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
 export const setPendiente = createAction('setPendiente');
 export const clearPendientes = createAction('clearPendientes');
-export const guardarPrevio = createAction('guardarPrevio');
+export const guardarPrevio = createAction(
+  'guardarPrevio',
+  (idEnclavamiento, senal) => ({
+    payload: {
+      idEnclavamiento,
+      _prev: Object.keys(senal).reduce((_p, luz) => {
+        if (luz === 'dir') return _p;
+        return {
+          ..._p,
+          [luz]: senal[luz].estado,
+        };
+      }, {}),
+    },
+  })
+);
+export const clearPrevio = createAction('clearPrevio');
 
 export function setEnclavamientos(idCelda) {
   return async (dispatch, getState) => {
@@ -34,19 +49,7 @@ export function setEnclavamientos(idCelda) {
             const idSenal = enclavamiento.senal;
             if (caso.guardar) {
               const senal = selSenal(getState(), idSenal);
-              const _prev = Object.keys(senal).reduce((_p, luz) => {
-                if (luz === 'dir') return _p;
-                return {
-                  ..._p,
-                  [luz]: senal[luz].estado,
-                };
-              }, {});
-              dispatch(
-                guardarPrevio({
-                  _prev,
-                  idEnclavamiento,
-                })
-              );
+              dispatch(guardarPrevio(idEnclavamiento, senal));
             }
             if (caso.previo) {
               if (!enclavamiento._prev) {
@@ -57,7 +60,7 @@ export function setEnclavamientos(idCelda) {
                     await dispatch(doSetLuzEstado(idSenal, luz, estado));
                   })
                 );
-                dispatch(guardarPrevio({ _prev: false, idEnclavamiento }));
+                dispatch(clearPrevio(idEnclavamiento));
               }
             } else {
               await Promise.all(
