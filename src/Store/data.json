@@ -240,7 +240,10 @@
         }
       },
       "coords": "5,4",
-      "enclavamientos": ["constitucion:5,4>constitucion:4,5"],
+      "enclavamientos": [
+        "constitucion:5,4>constitucion:4,5",
+        "constitucion:5,4>constitucion:4,4:W"
+      ],
       "idSector": "constitucion"
     },
     "constitucion:6,4": {
@@ -444,21 +447,21 @@
     "constitucion:2,4:W": {
       "dir": "W",
       "primaria": {
-        "estado": "alto"
-      },
-      "izq": {
         "estado": "libre"
       },
+      "izq": {
+        "estado": "alto"
+      },
       "der": {
-        "estado": "precaucion"
+        "estado": "alto"
       }
     },
     "constitucion:4,4:W": {
       "primaria": {
-        "estado": "alto"
+        "estado": "libre"
       },
       "der": {
-        "estado": "precaucion"
+        "estado": "alto"
       },
       "dir": "W"
     }
@@ -468,12 +471,12 @@
       "tipo": "senalCambio",
       "senal": "constitucion:8,3:SE",
       "normal": {
-        "primaria": "libre",
-        "izq": "alto"
+        "previo": true
       },
       "desviado": {
         "primaria": "alto",
-        "izq": "precaucion"
+        "izq": "precaucion",
+        "guardar": true
       }
     },
     "constitucion:2,4>constitucion:2,4:W": {
@@ -505,12 +508,12 @@
       "tipo": "senalCambio",
       "senal": "constitucion:4,4:W",
       "normal": {
-        "primaria": "libre",
-        "der": "alto"
+        "previo": true
       },
       "desviado": {
         "primaria": "alto",
-        "der": "precaucion"
+        "der": "precaucion",
+        "guardar": true
       }
     },
     "constitucion:5,4>constitucion:4,5": {
@@ -524,6 +527,18 @@
       "celda": "constitucion:5,4",
       "normal": "normal",
       "desviado": "desviado"
+    },
+    "constitucion:5,4>constitucion:4,4:W": {
+      "tipo": "senalCambio",
+      "senal": "constitucion:4,4:W",
+      "normal": {
+        "previo": true
+      },
+      "desviado": {
+        "primaria": "alto",
+        "der": "alto",
+        "guardar": true
+      }
     },
     "constitucion:5,5>constitucion:4,4": {
       "tipo": "apareados",
