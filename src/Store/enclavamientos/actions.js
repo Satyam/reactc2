@@ -1,4 +1,3 @@
-import map from 'lodash/map';
 import { createAction } from '@reduxjs/toolkit';
 
 import {
@@ -56,21 +55,22 @@ export function setEnclavamientos(idCelda) {
                 console.error(idEnclavamiento, enclavamiento);
               } else {
                 await Promise.all(
-                  map(enclavamiento._prev, async (estado, luz) => {
-                    await dispatch(doSetLuzEstado(idSenal, luz, estado));
+                  Object.keys(enclavamiento._prev).map(async luz => {
+                    await dispatch(
+                      doSetLuzEstado(idSenal, luz, enclavamiento._prev[luz])
+                    );
                   })
                 );
                 dispatch(clearPrevio(idEnclavamiento));
               }
             } else {
               await Promise.all(
-                map(
-                  caso,
+                Object.keys(caso).map(
                   // prettier-ignore
-                  async (estado, luz) => {
+                  async (luz) => {
                   if (luz === 'guardar') return;
                   if (selSenalIsManual(getState(), idSenal, luz)) return;
-                  await dispatch(doSetLuzEstado(idSenal, luz, estado));
+                  await dispatch(doSetLuzEstado(idSenal, luz, caso[luz]));
                 }
                 )
               );
