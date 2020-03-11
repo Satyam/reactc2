@@ -69,17 +69,27 @@ export default function MenuComponent() {
                   Admin. Sectores
                 </DropdownItem>
                 <DropdownItem divider />
-                {sectores.map(sector => (
-                  <DropdownItem
-                    tag={Link}
-                    to={`/sector/${sector.idSector}`}
-                    key={sector.idSector}
-                    title={sector.descr}
-                    active={match && match.params.idSector === sector.idSector}
-                  >
-                    {sector.descrCorta}
-                  </DropdownItem>
-                ))}
+                {sectores
+                  .sort((sa, sb) => {
+                    var descrA = sa.descrCorta.toUpperCase();
+                    var descrB = sb.descrCorta.toUpperCase();
+                    if (descrA < descrB) return -1;
+                    if (descrA > descrB) return 1;
+                    return 0;
+                  })
+                  .map(sector => (
+                    <DropdownItem
+                      tag={Link}
+                      to={`/sector/${sector.idSector}`}
+                      key={sector.idSector}
+                      title={sector.descr}
+                      active={
+                        match && match.params.idSector === sector.idSector
+                      }
+                    >
+                      {sector.descrCorta}
+                    </DropdownItem>
+                  ))}
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
