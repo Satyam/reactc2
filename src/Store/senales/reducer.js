@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { senales } from '../data.json';
-import { doSetLuzEstado, setLuzManual } from './actions';
+import { senales } from 'Store/data.js';
+import { plainSetLuzEstado, setLuzManual } from './actions';
 
 export default createReducer(senales || [], {
-  [doSetLuzEstado]: (state, action) => {
+  [plainSetLuzEstado]: (state, action) => {
     const { idSenal, luz, estado } = action.payload;
     state[idSenal][luz].estado = estado;
   },

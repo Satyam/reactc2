@@ -3,8 +3,7 @@ import { createAction } from '@reduxjs/toolkit';
 import {
   selCelda,
   selSenal,
-  selEnclavamiento,
-  selSenalIsManual,
+  selEnclavamientos,
   selEnclavamientosActive,
 } from 'Store/selectors';
 
@@ -12,77 +11,99 @@ import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
 export const setPendiente = createAction('setPendiente');
 export const clearPendientes = createAction('clearPendientes');
-export const guardarPrevio = createAction(
-  'guardarPrevio',
-  (idEnclavamiento, senal) => ({
-    payload: {
-      idEnclavamiento,
-      _prev: Object.keys(senal).reduce((_p, luz) => {
-        if (luz === 'dir') return _p;
-        return {
-          ..._p,
-          [luz]: senal[luz].estado,
-        };
-      }, {}),
-    },
-  })
-);
-export const clearPrevio = createAction('clearPrevio');
 
-export function setEnclavamientos(idCelda) {
-  return async (dispatch, getState) => {
-    if (!selEnclavamientosActive(getState())) return;
-    const celda = selCelda(getState(), idCelda);
-    if (celda.manual || !celda.enclavamientos) return;
-    await Promise.all(
-      celda.enclavamientos.map(async idEnclavamiento => {
-        const enclavamiento = selEnclavamiento(getState(), idEnclavamiento);
-        switch (enclavamiento.tipo) {
-          case 'apareados':
-            await dispatch(
-              doSetCambio(enclavamiento.celda, enclavamiento[celda.posicion])
-            );
-            return;
-          case 'senalCambio': {
-            const caso = enclavamiento[celda.posicion];
-            const idSenal = enclavamiento.senal;
-            if (caso.guardar) {
-              const senal = selSenal(getState(), idSenal);
-              dispatch(guardarPrevio(idEnclavamiento, senal));
-            }
-            if (caso.previo) {
-              if (!enclavamiento._prev) {
-                console.error(idEnclavamiento, enclavamiento);
-              } else {
-                await Promise.all(
-                  Object.keys(enclavamiento._prev).map(async luz => {
-                    await dispatch(
-                      doSetLuzEstado(idSenal, luz, enclavamiento._prev[luz])
-                    );
-                  })
-                );
-                dispatch(clearPrevio(idEnclavamiento));
-              }
-            } else {
-              await Promise.all(
-                Object.keys(caso).map(
-                  // prettier-ignore
-                  async (luz) => {
-                  if (luz === 'guardar') return;
-                  if (selSenalIsManual(getState(), idSenal, luz)) return;
-                  await dispatch(doSetLuzEstado(idSenal, luz, caso[luz]));
-                }
-                )
+export function setEnclavamientos(idOrigen, tipoOrigen) {
+  return (dispatch, getState) => {
+    const browseEnclavamientos = origen => {
+      const enclavamientos = selEnclavamientos(getState());
+      return Promise.all(
+        Object.keys(enclavamientos).map(idTarget => {
+          const { tipo, ...dependencias } = enclavamientos[idTarget];
+          switch (tipo) {
+            case 'cambio':
+              const celdaTarget = selCelda(getState(), idTarget);
+              return Object.keys(dependencias).find(idCeldaSource => {
+                const celdaSource = selCelda(getState(), idCeldaSource);
+                const posicionEsperada =
+                  dependencias[idCeldaSource][celdaSource.posicion];
+                if (posicionEsperada === celdaTarget.posicion) return false;
+                console.log(idTarget, celdaTarget.posicion, posicionEsperada);
+                return dispatch(doSetCambio(idCeldaSource, posicionEsperada));
+              });
+            case 'senal': {
+              const senalTarget = selSenal(getState(), idTarget);
+              return Promise.all(
+                Object.keys(dependencias).map(idCeldaSource => {
+                  const celdaSource = selCelda(getState(), idCeldaSource);
+                  const estados =
+                    dependencias[idCeldaSource][celdaSource.posicion];
+                  const nuevoEstado = Object.keys(estados).reduce(
+                    (nuevoEstado, luz) => {
+                      switch (estados[luz]) {
+                        case 'rojo':
+                          return {
+                            ...nuevoEstado,
+                            [luz]: 'rojo',
+                          };
+                        case 'amarillo':
+                          return nuevoEstado[luz] === 'verde'
+                            ? {
+                                ...nuevoEstado,
+                                [luz]: 'amarillo',
+                              }
+                            : nuevoEstado;
+                        default:
+                          return nuevoEstado;
+                      }
+                    },
+                    {
+                      izq: 'verde',
+                      primaria: 'verde',
+                      der: 'verde',
+                    }
+                  );
+                  return Promise.all(
+                    Object.keys(nuevoEstado).map(luz => {
+                      if (luz in senalTarget) {
+                        if (senalTarget[luz].estado === nuevoEstado[luz])
+                          return false;
+                        return dispatch(
+                          doSetLuzEstado(idTarget, luz, nuevoEstado[luz])
+                        );
+                      }
+                      return false;
+                    })
+                  );
+                })
               );
             }
-            return;
+            default:
+              throw new Error(
+                `Celda ${idTarget} tiene enclavamiento desconocido ${tipo}`
+              );
           }
-          default:
-            throw new Error(
-              `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
-            );
-        }
-      })
-    );
+        })
+      );
+    };
+
+    if (!selEnclavamientosActive(getState())) return;
+    switch (tipoOrigen) {
+      case 'cambio':
+        const idCelda = idOrigen;
+        const celda = selCelda(getState(), idCelda);
+        if (celda.manual) return;
+        return browseEnclavamientos(celda);
+
+      case 'senal':
+        const idSenal = idOrigen;
+        const senal = selSenal(getState(), idSenal);
+        if (senal.manual) return;
+        return browseEnclavamientos(senal);
+      default:
+        console.error(
+          `Llamado setEnclavamientos con id: ${idOrigen}, tipo: ${tipoOrigen}`
+        );
+        return;
+    }
   };
 }

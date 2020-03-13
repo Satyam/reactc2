@@ -1,7 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { setPendiente, setEnclavamientos, clearPendientes } from '../actions';
-import { selCelda, selPendiente } from '../selectors';
+import {
+  setPendiente,
+  setEnclavamientos,
+  clearPendientes,
+} from 'Store/actions';
+import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 
 export const plainSetCambio = createAction(
   'setCambio',
@@ -16,6 +20,7 @@ export const plainSetCambio = createAction(
 export function doSetCambio(idCelda, posicion) {
   return async (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
+    debugger;
     if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
       throw new Error(`Celda ${idCelda}  no es un cambio`);
     }
@@ -27,13 +32,15 @@ export function doSetCambio(idCelda, posicion) {
     }
     await dispatch(setPendiente(idCelda));
     await dispatch(plainSetCambio(idCelda, posicion));
-    await dispatch(setEnclavamientos(idCelda));
   };
 }
 
 export function setCambio(idCelda, posicion) {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     await dispatch(doSetCambio(idCelda, posicion));
+    if (!selCeldaIsManual(getState(), idCelda)) {
+      await dispatch(setEnclavamientos(idCelda, 'cambio'));
+    }
     await dispatch(clearPendientes());
   };
 }

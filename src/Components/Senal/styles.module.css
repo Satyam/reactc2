@@ -1,23 +1,23 @@
 .senal {
-	stroke-width: 2;
-	stroke: black;
+  stroke-width: 2;
+  stroke: black;
 }
 .senal:hover {
   stroke: lightblue;
 }
 
-.libre {
+.verde {
   fill: green;
 }
 
-.alto {
+.rojo {
   fill: red;
 }
 
-.precaucion {
+.amarillo {
   fill: yellow;
 }
 
 .luzManual {
-	stroke: lightpink;
+  stroke: lightpink;
 }

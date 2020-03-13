@@ -1,4 +1,4 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { sectores } from '../data.json';
+import { sectores } from 'Store/data.js';
 
 export default createReducer(sectores || [], {});

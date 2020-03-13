@@ -13,10 +13,10 @@ import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 import styles from './styles.module.css';
 
 export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
-  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, 'alto');
+  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, 'rojo');
   const onSetPrecaucion = ev =>
     isPlainClick(ev) && onSetEstado(luz, 'precaucion');
-  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, 'libre');
+  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, 'verde');
   const onSetLuzManual = ev => isPlainClick(ev) && onSetManual(luz, !manual);
 
   return (
@@ -24,21 +24,21 @@ export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
       <ButtonGroup vertical>
         <Button
           size="sm"
-          color={estado === 'alto' ? 'danger' : 'outline-danger'}
+          color={estado === 'rojo' ? 'danger' : 'outline-danger'}
           onClick={onSetAlto}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === 'precaucion' ? 'warning' : 'outline-warning'}
+          color={estado === 'amarillo' ? 'warning' : 'outline-warning'}
           onClick={onSetPrecaucion}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === 'libre' ? 'success' : 'outline-success'}
+          color={estado === 'verde' ? 'success' : 'outline-success'}
           onClick={onSetLibre}
         >
           <Circle />
