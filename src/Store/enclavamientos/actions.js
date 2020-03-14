@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import promiseSerial from 'Utils/promiseSerial';
 
 import {
   selCelda,
@@ -16,20 +17,23 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
   return (dispatch, getState) => {
     const browseEnclavamientos = origen => {
       const enclavamientos = selEnclavamientos(getState());
-      return Promise.all(
+      return promiseSerial(
         Object.keys(enclavamientos).map(idTarget => {
+          if (idTarget === idOrigen) return false;
           const { tipo, ...dependencias } = enclavamientos[idTarget];
           switch (tipo) {
-            case 'cambio':
+            case 'cambio': {
               const celdaTarget = selCelda(getState(), idTarget);
-              return Object.keys(dependencias).find(idCeldaSource => {
-                const celdaSource = selCelda(getState(), idCeldaSource);
-                const posicionEsperada =
-                  dependencias[idCeldaSource][celdaSource.posicion];
-                if (posicionEsperada === celdaTarget.posicion) return false;
-                console.log(idTarget, celdaTarget.posicion, posicionEsperada);
-                return dispatch(doSetCambio(idCeldaSource, posicionEsperada));
-              });
+              return Promise.resolve(
+                Object.keys(dependencias).find(idCeldaSource => {
+                  const celdaSource = selCelda(getState(), idCeldaSource);
+                  const posicionEsperada =
+                    dependencias[idCeldaSource][celdaSource.posicion];
+                  if (posicionEsperada === celdaTarget.posicion) return false;
+                  return dispatch(doSetCambio(idTarget, posicionEsperada));
+                })
+              );
+            }
             case 'senal': {
               const senalTarget = selSenal(getState(), idTarget);
               return Promise.all(
@@ -77,6 +81,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
                 })
               );
             }
+
             default:
               throw new Error(
                 `Celda ${idTarget} tiene enclavamiento desconocido ${tipo}`

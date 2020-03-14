@@ -20,7 +20,6 @@ export const plainSetCambio = createAction(
 export function doSetCambio(idCelda, posicion) {
   return async (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
-    debugger;
     if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
       throw new Error(`Celda ${idCelda}  no es un cambio`);
     }
