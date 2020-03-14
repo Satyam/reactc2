@@ -123,7 +123,7 @@ export const celdas = {
   },
   'constitucion:8,3': {
     tipo: 'cambio',
-    posicion: 'normal',
+    posicionInicial: 'normal',
     punta: {
       dir: 'SE',
     },
@@ -160,7 +160,7 @@ export const celdas = {
   },
   'constitucion:2,4': {
     tipo: 'triple',
-    posicion: 'centro',
+    posicionInicial: 'centro',
     punta: {
       dir: 'W',
     },
@@ -202,7 +202,7 @@ export const celdas = {
   },
   'constitucion:4,4': {
     tipo: 'cambio',
-    posicion: 'normal',
+    posicionInicial: 'normal',
     punta: {
       dir: 'W',
     },
@@ -220,7 +220,7 @@ export const celdas = {
   },
   'constitucion:5,4': {
     tipo: 'cambio',
-    posicion: 'normal',
+    posicionInicial: 'normal',
     punta: {
       dir: 'E',
     },
@@ -278,7 +278,7 @@ export const celdas = {
   },
   'constitucion:2,5': {
     tipo: 'cambio',
-    posicion: 'normal',
+    posicionInicial: 'normal',
     punta: {
       dir: 'W',
     },
@@ -316,7 +316,7 @@ export const celdas = {
   },
   'constitucion:4,5': {
     tipo: 'cambio',
-    posicion: 'normal',
+    posicionInicial: 'normal',
     punta: {
       dir: 'W',
     },
@@ -333,7 +333,7 @@ export const celdas = {
   },
   'constitucion:5,5': {
     tipo: 'cambio',
-    posicion: 'normal',
+    posicionInicial: 'normal',
     punta: {
       dir: 'E',
     },
@@ -460,6 +460,12 @@ export const enclavamientos = {
       normal: 'normal',
       desviado: 'desviado',
     },
+    'constitucion:4,5': {
+      desviado: 'normal',
+    },
+    'constitucion:5,4': {
+      desviado: 'normal',
+    },
   },
   'constitucion:4,5': {
     tipo: 'cambio',
@@ -480,6 +486,12 @@ export const enclavamientos = {
     'constitucion:4,4': {
       normal: 'normal',
       desviado: 'desviado',
+    },
+    'constitucion:4,5': {
+      desviado: 'normal',
+    },
+    'constitucion:5,4': {
+      desviado: 'normal',
     },
   },
   'constitucion:2,4:W': {

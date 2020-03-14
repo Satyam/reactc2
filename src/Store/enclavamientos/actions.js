@@ -28,7 +28,9 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
                 Object.keys(dependencias).find(idCeldaSource => {
                   const celdaSource = selCelda(getState(), idCeldaSource);
                   const posicionEsperada =
-                    dependencias[idCeldaSource][celdaSource.posicion];
+                    dependencias[idCeldaSource][celdaSource.posicion] ||
+                    celdaTarget.posicionInicial;
+
                   if (posicionEsperada === celdaTarget.posicion) return false;
                   return dispatch(doSetCambio(idTarget, posicionEsperada));
                 })

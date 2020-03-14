@@ -11,4 +11,12 @@ export default createReducer(celdas || [], {
     const { idCelda, manual } = action.payload;
     state[idCelda].manual = manual;
   },
+  '@@INIT': state => {
+    Object.keys(state).forEach(idCelda => {
+      const celda = state[idCelda];
+      if (celda.posicionInicial) {
+        celda.posicion = celda.posicionInicial;
+      }
+    });
+  },
 });
