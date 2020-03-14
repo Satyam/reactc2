@@ -22,7 +22,7 @@ export const CENTRO = 'centro';
 export const DER = 'der';
 
 export default function EstadoTriple({ idCelda, onClose }) {
-  const { coords, posicion, manual } = useSelector(state =>
+  const { x, y, posicion, manual } = useSelector(state =>
     selCelda(state, idCelda)
   );
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ export default function EstadoTriple({ idCelda, onClose }) {
   return (
     <>
       <PopoverHeader>
-        Triple {coords}
+        Triple {x} {y}
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>

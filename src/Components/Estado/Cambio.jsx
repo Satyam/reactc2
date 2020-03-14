@@ -18,7 +18,7 @@ const DESVIADO = 'desviado';
 const NORMAL = 'normal';
 
 export default function EstadoCambio({ idCelda, onClose }) {
-  const { coords, posicion, manual } = useSelector(state =>
+  const { x, y, posicion, manual } = useSelector(state =>
     selCelda(state, idCelda)
   );
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ export default function EstadoCambio({ idCelda, onClose }) {
   return (
     <>
       <PopoverHeader>
-        Cambio {coords}
+        Cambio {x} {y}
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>

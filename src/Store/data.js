@@ -7,7 +7,8 @@ export const celdas = {
     hacia: {
       dir: 'S',
     },
-    coords: '5,0',
+    x: 5,
+    y: 0,
     idSector: 'constitucion',
   },
   'constitucion:6,0': {
@@ -18,7 +19,8 @@ export const celdas = {
     hacia: {
       dir: 'S',
     },
-    coords: '6,0',
+    x: 6,
+    y: 0,
     idSector: 'constitucion',
   },
   'constitucion:5,1': {
@@ -29,7 +31,8 @@ export const celdas = {
     hacia: {
       dir: 'SW',
     },
-    coords: '5,1',
+    x: 5,
+    y: 1,
     idSector: 'constitucion',
   },
   'constitucion:6,1': {
@@ -40,7 +43,8 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '6,1',
+    x: 6,
+    y: 1,
     idSector: 'constitucion',
   },
   'constitucion:4,2': {
@@ -51,7 +55,8 @@ export const celdas = {
     hacia: {
       dir: 'SW',
     },
-    coords: '4,2',
+    x: 4,
+    y: 2,
     idSector: 'constitucion',
   },
   'constitucion:7,2': {
@@ -62,7 +67,8 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '7,2',
+    x: 7,
+    y: 2,
     idSector: 'constitucion',
   },
   'constitucion:3,3': {
@@ -73,7 +79,8 @@ export const celdas = {
     hacia: {
       dir: 'SW',
     },
-    coords: '3,3',
+    x: 3,
+    y: 3,
     idSector: 'constitucion',
   },
   'constitucion:4,3': {
@@ -84,7 +91,8 @@ export const celdas = {
     hacia: {
       dir: 'E',
     },
-    coords: '4,3',
+    x: 4,
+    y: 3,
     idSector: 'constitucion',
   },
   'constitucion:5,3': {
@@ -96,7 +104,8 @@ export const celdas = {
       dir: 'E',
     },
     senales: ['constitucion:5,3:E'],
-    coords: '5,3',
+    x: 5,
+    y: 3,
     idSector: 'constitucion',
   },
   'constitucion:6,3': {
@@ -107,7 +116,8 @@ export const celdas = {
     hacia: {
       dir: 'E',
     },
-    coords: '6,3',
+    x: 6,
+    y: 3,
     idSector: 'constitucion',
   },
   'constitucion:7,3': {
@@ -118,7 +128,8 @@ export const celdas = {
     hacia: {
       dir: 'E',
     },
-    coords: '7,3',
+    x: 7,
+    y: 3,
     idSector: 'constitucion',
   },
   'constitucion:8,3': {
@@ -136,7 +147,8 @@ export const celdas = {
       },
     },
     senales: ['constitucion:8,3:SE'],
-    coords: '8,3',
+    x: 8,
+    y: 3,
     idSector: 'constitucion',
   },
   'constitucion:0,4': {
@@ -144,7 +156,8 @@ export const celdas = {
     desde: {
       dir: 'E',
     },
-    coords: '0,4',
+    x: 0,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:1,4': {
@@ -155,7 +168,8 @@ export const celdas = {
     hacia: {
       dir: 'E',
     },
-    coords: '1,4',
+    x: 1,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:2,4': {
@@ -176,7 +190,8 @@ export const celdas = {
       },
     },
     senales: ['constitucion:2,4:W'],
-    coords: '2,4',
+    x: 2,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:3,4': {
@@ -197,7 +212,8 @@ export const celdas = {
         dir: 'E',
       },
     },
-    coords: '3,4',
+    x: 3,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:4,4': {
@@ -215,7 +231,8 @@ export const celdas = {
       },
     },
     senales: ['constitucion:4,4:W'],
-    coords: '4,4',
+    x: 4,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:5,4': {
@@ -232,7 +249,8 @@ export const celdas = {
         dir: 'SW',
       },
     },
-    coords: '5,4',
+    x: 5,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:6,4': {
@@ -243,7 +261,8 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '6,4',
+    x: 6,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:9,4': {
@@ -254,7 +273,8 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '9,4',
+    x: 9,
+    y: 4,
     idSector: 'constitucion',
   },
   'constitucion:0,5': {
@@ -262,7 +282,8 @@ export const celdas = {
     desde: {
       dir: 'E',
     },
-    coords: '0,5',
+    x: 0,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:1,5': {
@@ -273,7 +294,8 @@ export const celdas = {
     hacia: {
       dir: 'E',
     },
-    coords: '1,5',
+    x: 1,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:2,5': {
@@ -290,7 +312,8 @@ export const celdas = {
         dir: 'NE',
       },
     },
-    coords: '2,5',
+    x: 2,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:3,5': {
@@ -311,7 +334,8 @@ export const celdas = {
         dir: 'E',
       },
     },
-    coords: '3,5',
+    x: 3,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:4,5': {
@@ -328,7 +352,8 @@ export const celdas = {
         dir: 'NE',
       },
     },
-    coords: '4,5',
+    x: 4,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:5,5': {
@@ -345,7 +370,8 @@ export const celdas = {
         dir: 'NW',
       },
     },
-    coords: '5,5',
+    x: 5,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:6,5': {
@@ -356,7 +382,8 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '6,5',
+    x: 6,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:7,5': {
@@ -367,7 +394,8 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '7,5',
+    x: 7,
+    y: 5,
     idSector: 'constitucion',
   },
   'constitucion:10,5': {
@@ -378,41 +406,9 @@ export const celdas = {
     hacia: {
       dir: 'SE',
     },
-    coords: '10,5',
+    x: 10,
+    y: 5,
     idSector: 'constitucion',
-  },
-  'retiro:0,0': {
-    tipo: 'linea',
-    desde: {
-      dir: 'E',
-    },
-    hacia: {
-      dir: 'W',
-    },
-    coords: '0,0',
-    idSector: 'retiro',
-  },
-  'retiro:1,0': {
-    tipo: 'linea',
-    desde: {
-      dir: 'E',
-    },
-    hacia: {
-      dir: 'W',
-    },
-    coords: '1,0',
-    idSector: 'retiro',
-  },
-  'retiro:2,0': {
-    tipo: 'linea',
-    desde: {
-      dir: 'E',
-    },
-    hacia: {
-      dir: 'W',
-    },
-    coords: '2,0',
-    idSector: 'retiro',
   },
 };
 export const senales = {
@@ -587,13 +583,5 @@ export const sectores = {
       'constitucion:7,5',
       'constitucion:10,5',
     ],
-  },
-  retiro: {
-    idSector: 'retiro',
-    descrCorta: 'Retiro',
-    descr: 'Mentira, apenas una línea',
-    ancho: 3,
-    alto: 1,
-    celdas: ['retiro:0,0', 'retiro:1,0', 'retiro:2,0'],
   },
 };

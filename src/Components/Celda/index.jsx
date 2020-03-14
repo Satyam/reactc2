@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import splitCoords from 'Utils/splitCoords';
 import isPlainClick from 'Utils/isPlainClick';
 import sanitize from 'Utils/sanitize';
 
@@ -26,8 +25,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
   const showEstado = useEstado();
 
   if (!cellWidth || !celda) return null;
-  const [x, y] = splitCoords(celda.coords);
-  const placement = x > cellsAcross / 2 ? 'left' : 'right';
+  const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
 
   const onClick = tipo => ev =>
     isPlainClick(ev) &&
@@ -37,7 +35,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
       placement,
     });
 
-  const label = celda.descr || `[${x},${y}]`;
+  const label = celda.descr || `[${celda.x},${celda.y}]`;
   const Renderer = {
     linea: Linea,
     cambio: Cambio,
@@ -52,8 +50,8 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
         [styles.manual]: celda.manual,
       })}
       style={{
-        left: x * cellWidth,
-        top: y * cellWidth,
+        left: celda.x * cellWidth,
+        top: celda.y * cellWidth,
         width: cellWidth,
         height: cellWidth,
       }}
