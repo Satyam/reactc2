@@ -7,7 +7,7 @@ import {
 } from 'Store/actions';
 import { selPendiente, selSenal } from 'Store/selectors';
 import { selSenalIsManual } from './selectors';
-
+import { SENAL } from 'Store/data';
 export const plainSetLuzEstado = createAction(
   'setLuzEstado',
   (idSenal, luz, estado) => ({
@@ -39,7 +39,7 @@ export function setLuzEstado(idSenal, luz, estado) {
   return async (dispatch, getState) => {
     await dispatch(doSetLuzEstado(idSenal, luz, estado));
     if (!selSenalIsManual(getState(), idSenal, luz)) {
-      await dispatch(setEnclavamientos(idSenal, 'senal'));
+      await dispatch(setEnclavamientos(idSenal, SENAL));
     }
     await dispatch(clearPendientes());
   };

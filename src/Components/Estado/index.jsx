@@ -14,16 +14,17 @@ import Cambio from './Cambio';
 import Triple from './Triple';
 import Senal from './Senal';
 
+import { CAMBIO, TRIPLE, SENAL } from 'Store/data';
 export const EstadoContext = createContext();
 
 function Content({ tipo, ...props }) {
   if (!tipo) return null;
   switch (tipo) {
-    case 'cambio':
+    case CAMBIO:
       return <Cambio {...props} />;
-    case 'triple':
+    case TRIPLE:
       return <Triple {...props} />;
-    case 'senal':
+    case SENAL:
       return <Senal {...props} />;
     default:
       return null;

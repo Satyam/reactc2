@@ -6,7 +6,7 @@ import {
   clearPendientes,
 } from 'Store/actions';
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
-
+import { CAMBIO, TRIPLE } from 'Store/data';
 export const plainSetCambio = createAction(
   'setCambio',
   (idCelda, posicion) => ({
@@ -20,7 +20,7 @@ export const plainSetCambio = createAction(
 export function doSetCambio(idCelda, posicion) {
   return async (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
-    if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
+    if (celda.tipo !== CAMBIO && celda.tipo !== TRIPLE) {
       throw new Error(`Celda ${idCelda}  no es un cambio`);
     }
     if (celda.posicion === posicion) {
@@ -38,7 +38,7 @@ export function setCambio(idCelda, posicion) {
   return async (dispatch, getState) => {
     await dispatch(doSetCambio(idCelda, posicion));
     if (!selCeldaIsManual(getState(), idCelda)) {
-      await dispatch(setEnclavamientos(idCelda, 'cambio'));
+      await dispatch(setEnclavamientos(idCelda, CAMBIO));
     }
     await dispatch(clearPendientes());
   };

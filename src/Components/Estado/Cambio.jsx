@@ -12,10 +12,8 @@ import {
 import isPlainClick from 'Utils/isPlainClick';
 import { setCambio, setCambioManual } from 'Store/actions';
 import { selCelda } from 'Store/selectors';
+import { NORMAL, DESVIADO } from 'Store/data';
 import styles from './styles.module.css';
-
-const DESVIADO = 'desviado';
-const NORMAL = 'normal';
 
 export default function EstadoCambio({ idCelda, onClose }) {
   const { x, y, posicion, manual } = useSelector(state =>

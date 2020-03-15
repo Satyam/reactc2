@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
-
+import { VERDE, AMARILLO, ROJO } from 'Store/data';
 import isPlainClick from 'Utils/isPlainClick';
 
 import { setLuzEstado, setLuzManual } from 'Store/actions';
@@ -13,10 +13,10 @@ import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 import styles from './styles.module.css';
 
 export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
-  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, 'rojo');
+  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, ROJO);
   const onSetPrecaucion = ev =>
     isPlainClick(ev) && onSetEstado(luz, 'precaucion');
-  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, 'verde');
+  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, VERDE);
   const onSetLuzManual = ev => isPlainClick(ev) && onSetManual(luz, !manual);
 
   return (
@@ -24,21 +24,21 @@ export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
       <ButtonGroup vertical>
         <Button
           size="sm"
-          color={estado === 'rojo' ? 'danger' : 'outline-danger'}
+          color={estado === ROJO ? 'danger' : 'outline-danger'}
           onClick={onSetAlto}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === 'amarillo' ? 'warning' : 'outline-warning'}
+          color={estado === AMARILLO ? 'warning' : 'outline-warning'}
           onClick={onSetPrecaucion}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === 'verde' ? 'success' : 'outline-success'}
+          color={estado === VERDE ? 'success' : 'outline-success'}
           onClick={onSetLibre}
         >
           <Circle />

@@ -1,107 +1,135 @@
+// Tipos de celda
+export const LINEA = 'linea';
+export const CAMBIO = 'cambio';
+export const TRIPLE = 'triple';
+export const CRUCE = 'cruce';
+export const PARAGOLPE = 'paragolpe';
+export const SENAL = 'senal';
+// Luces:
+export const VERDE = 'verde';
+export const AMARILLO = 'amarillo';
+export const ROJO = 'rojo';
+// Cambio:
+export const NORMAL = 'normal';
+export const DESVIADO = 'desviado';
+// Triple
+export const IZQ = 'izquierda';
+export const CENTRO = 'centro';
+export const DER = 'derecha';
+// Direcciones:
+export const N = 'N';
+export const NE = 'NE';
+export const E = 'E';
+export const SE = 'SE';
+export const S = 'S';
+export const SW = 'SW';
+export const W = 'W';
+export const NW = 'NW';
+
 export const celdas = {
   'constitucion:5,0': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'N',
+      dir: N,
     },
     hacia: {
-      dir: 'S',
+      dir: S,
     },
     x: 5,
     y: 0,
     idSector: 'constitucion',
   },
   'constitucion:6,0': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'N',
+      dir: N,
     },
     hacia: {
-      dir: 'S',
+      dir: S,
     },
     x: 6,
     y: 0,
     idSector: 'constitucion',
   },
   'constitucion:5,1': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'N',
+      dir: N,
     },
     hacia: {
-      dir: 'SW',
+      dir: SW,
     },
     x: 5,
     y: 1,
     idSector: 'constitucion',
   },
   'constitucion:6,1': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'N',
+      dir: N,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 6,
     y: 1,
     idSector: 'constitucion',
   },
   'constitucion:4,2': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'NE',
+      dir: NE,
     },
     hacia: {
-      dir: 'SW',
+      dir: SW,
     },
     x: 4,
     y: 2,
     idSector: 'constitucion',
   },
   'constitucion:7,2': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'NW',
+      dir: NW,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 7,
     y: 2,
     idSector: 'constitucion',
   },
   'constitucion:3,3': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'NE',
+      dir: NE,
     },
     hacia: {
-      dir: 'SW',
+      dir: SW,
     },
     x: 3,
     y: 3,
     idSector: 'constitucion',
   },
   'constitucion:4,3': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'SW',
+      dir: SW,
     },
     hacia: {
-      dir: 'E',
+      dir: E,
     },
     x: 4,
     y: 3,
     idSector: 'constitucion',
   },
   'constitucion:5,3': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'E',
+      dir: E,
     },
     senales: ['constitucion:5,3:E'],
     x: 5,
@@ -109,41 +137,41 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:6,3': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'E',
+      dir: E,
     },
     x: 6,
     y: 3,
     idSector: 'constitucion',
   },
   'constitucion:7,3': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'E',
+      dir: E,
     },
     x: 7,
     y: 3,
     idSector: 'constitucion',
   },
   'constitucion:8,3': {
-    tipo: 'cambio',
-    posicionInicial: 'normal',
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
     punta: {
-      dir: 'SE',
+      dir: SE,
     },
     ramas: {
       normal: {
-        dir: 'NW',
+        dir: NW,
       },
       desviado: {
-        dir: 'W',
+        dir: W,
       },
     },
     senales: ['constitucion:8,3:SE'],
@@ -152,41 +180,41 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:0,4': {
-    tipo: 'paragolpe',
+    tipo: PARAGOLPE,
     desde: {
-      dir: 'E',
+      dir: E,
     },
     x: 0,
     y: 4,
     idSector: 'constitucion',
   },
   'constitucion:1,4': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'E',
+      dir: E,
     },
     x: 1,
     y: 4,
     idSector: 'constitucion',
   },
   'constitucion:2,4': {
-    tipo: 'triple',
-    posicionInicial: 'centro',
+    tipo: TRIPLE,
+    posicionInicial: CENTRO,
     punta: {
-      dir: 'W',
+      dir: W,
     },
     ramas: {
       centro: {
-        dir: 'E',
+        dir: E,
       },
       izq: {
-        dir: 'NE',
+        dir: NE,
       },
       der: {
-        dir: 'SE',
+        dir: SE,
       },
     },
     senales: ['constitucion:2,4:W'],
@@ -195,21 +223,21 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:3,4': {
-    tipo: 'cruce',
+    tipo: CRUCE,
     l1: {
       desde: {
-        dir: 'SW',
+        dir: SW,
       },
       hacia: {
-        dir: 'NE',
+        dir: NE,
       },
     },
     l2: {
       desde: {
-        dir: 'W',
+        dir: W,
       },
       hacia: {
-        dir: 'E',
+        dir: E,
       },
     },
     x: 3,
@@ -217,17 +245,17 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:4,4': {
-    tipo: 'cambio',
-    posicionInicial: 'normal',
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
     punta: {
-      dir: 'W',
+      dir: W,
     },
     ramas: {
       normal: {
-        dir: 'E',
+        dir: E,
       },
       desviado: {
-        dir: 'SE',
+        dir: SE,
       },
     },
     senales: ['constitucion:4,4:W'],
@@ -236,17 +264,17 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:5,4': {
-    tipo: 'cambio',
-    posicionInicial: 'normal',
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
     punta: {
-      dir: 'E',
+      dir: E,
     },
     ramas: {
       normal: {
-        dir: 'W',
+        dir: W,
       },
       desviado: {
-        dir: 'SW',
+        dir: SW,
       },
     },
     x: 5,
@@ -254,62 +282,62 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:6,4': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 6,
     y: 4,
     idSector: 'constitucion',
   },
   'constitucion:9,4': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'NW',
+      dir: NW,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 9,
     y: 4,
     idSector: 'constitucion',
   },
   'constitucion:0,5': {
-    tipo: 'paragolpe',
+    tipo: PARAGOLPE,
     desde: {
-      dir: 'E',
+      dir: E,
     },
     x: 0,
     y: 5,
     idSector: 'constitucion',
   },
   'constitucion:1,5': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'E',
+      dir: E,
     },
     x: 1,
     y: 5,
     idSector: 'constitucion',
   },
   'constitucion:2,5': {
-    tipo: 'cambio',
-    posicionInicial: 'normal',
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
     punta: {
-      dir: 'W',
+      dir: W,
     },
     ramas: {
       normal: {
-        dir: 'E',
+        dir: E,
       },
       desviado: {
-        dir: 'NE',
+        dir: NE,
       },
     },
     x: 2,
@@ -317,21 +345,21 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:3,5': {
-    tipo: 'cruce',
+    tipo: CRUCE,
     l1: {
       desde: {
-        dir: 'NW',
+        dir: NW,
       },
       hacia: {
-        dir: 'SE',
+        dir: SE,
       },
     },
     l2: {
       desde: {
-        dir: 'W',
+        dir: W,
       },
       hacia: {
-        dir: 'E',
+        dir: E,
       },
     },
     x: 3,
@@ -339,17 +367,17 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:4,5': {
-    tipo: 'cambio',
-    posicionInicial: 'normal',
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
     punta: {
-      dir: 'W',
+      dir: W,
     },
     ramas: {
       normal: {
-        dir: 'E',
+        dir: E,
       },
       desviado: {
-        dir: 'NE',
+        dir: NE,
       },
     },
     x: 4,
@@ -357,17 +385,17 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:5,5': {
-    tipo: 'cambio',
-    posicionInicial: 'normal',
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
     punta: {
-      dir: 'E',
+      dir: E,
     },
     ramas: {
       normal: {
-        dir: 'W',
+        dir: W,
       },
       desviado: {
-        dir: 'NW',
+        dir: NW,
       },
     },
     x: 5,
@@ -375,36 +403,36 @@ export const celdas = {
     idSector: 'constitucion',
   },
   'constitucion:6,5': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'W',
+      dir: W,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 6,
     y: 5,
     idSector: 'constitucion',
   },
   'constitucion:7,5': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'NW',
+      dir: NW,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 7,
     y: 5,
     idSector: 'constitucion',
   },
   'constitucion:10,5': {
-    tipo: 'linea',
+    tipo: LINEA,
     desde: {
-      dir: 'NW',
+      dir: NW,
     },
     hacia: {
-      dir: 'SE',
+      dir: SE,
     },
     x: 10,
     y: 5,
@@ -414,133 +442,133 @@ export const celdas = {
 export const senales = {
   'constitucion:5,3:E': {
     primaria: {
-      estado: 'verde',
+      estado: VERDE,
     },
-    dir: 'E',
+    dir: E,
   },
   'constitucion:8,3:SE': {
-    dir: 'SE',
+    dir: SE,
     primaria: {
-      estado: 'verde',
+      estado: VERDE,
     },
     izq: {
-      estado: 'rojo',
+      estado: ROJO,
     },
   },
   'constitucion:2,4:W': {
-    dir: 'W',
+    dir: W,
     primaria: {
-      estado: 'verde',
+      estado: VERDE,
     },
     izq: {
-      estado: 'rojo',
+      estado: ROJO,
     },
     der: {
-      estado: 'rojo',
+      estado: ROJO,
     },
   },
   'constitucion:4,4:W': {
     primaria: {
-      estado: 'verde',
+      estado: VERDE,
     },
     der: {
-      estado: 'rojo',
+      estado: ROJO,
     },
-    dir: 'W',
+    dir: W,
   },
 };
 export const enclavamientos = {
   'constitucion:4,4': {
-    tipo: 'cambio',
+    tipo: CAMBIO,
     'constitucion:5,5': {
-      normal: 'normal',
-      desviado: 'desviado',
+      [NORMAL]: NORMAL,
+      [DESVIADO]: DESVIADO,
     },
     'constitucion:4,5': {
-      desviado: 'normal',
+      [DESVIADO]: NORMAL,
     },
     'constitucion:5,4': {
-      desviado: 'normal',
+      [DESVIADO]: NORMAL,
     },
   },
   'constitucion:4,5': {
-    tipo: 'cambio',
+    tipo: CAMBIO,
     'constitucion:5,4': {
-      normal: 'normal',
-      desviado: 'desviado',
+      [NORMAL]: NORMAL,
+      [DESVIADO]: DESVIADO,
     },
   },
   'constitucion:5,4': {
-    tipo: 'cambio',
+    tipo: CAMBIO,
     'constitucion:4,5': {
-      normal: 'normal',
-      desviado: 'desviado',
+      [NORMAL]: NORMAL,
+      [DESVIADO]: DESVIADO,
     },
   },
   'constitucion:5,5': {
-    tipo: 'cambio',
+    tipo: CAMBIO,
     'constitucion:4,4': {
-      normal: 'normal',
-      desviado: 'desviado',
+      [NORMAL]: NORMAL,
+      [DESVIADO]: DESVIADO,
     },
     'constitucion:4,5': {
-      desviado: 'normal',
+      [DESVIADO]: NORMAL,
     },
     'constitucion:5,4': {
-      desviado: 'normal',
+      [DESVIADO]: NORMAL,
     },
   },
   'constitucion:2,4:W': {
-    tipo: 'senal',
+    tipo: SENAL,
     'constitucion:2,4': {
       izq: {
-        izq: 'verde',
-        primaria: 'rojo',
-        der: 'rojo',
+        izq: VERDE,
+        primaria: ROJO,
+        der: ROJO,
       },
       centro: {
-        izq: 'rojo',
-        primaria: 'verde',
-        der: 'rojo',
+        izq: ROJO,
+        primaria: VERDE,
+        der: ROJO,
       },
       der: {
-        izq: 'rojo',
-        primaria: 'rojo',
-        der: 'verde',
+        izq: ROJO,
+        primaria: ROJO,
+        der: VERDE,
       },
     },
   },
   'constitucion:4,4:W': {
-    tipo: 'senal',
+    tipo: SENAL,
     'constitucion:4,4': {
-      normal: {
-        der: 'rojo',
+      [NORMAL]: {
+        der: ROJO,
       },
-      desviado: {
-        primaria: 'rojo',
-        der: 'amarillo',
+      [DESVIADO]: {
+        primaria: ROJO,
+        der: AMARILLO,
       },
     },
     'constitucion:5,4': {
-      normal: {
-        der: 'rojo',
+      [NORMAL]: {
+        der: ROJO,
       },
-      desviado: {
-        primaria: 'rojo',
-        der: 'amarillo',
+      [DESVIADO]: {
+        primaria: ROJO,
+        der: AMARILLO,
       },
     },
   },
   'constitucion:8,3:SE': {
-    tipo: 'senal',
+    tipo: SENAL,
     'constitucion:8,3': {
-      normal: {
-        izq: 'rojo',
-        primaria: 'verde',
+      [NORMAL]: {
+        izq: ROJO,
+        primaria: VERDE,
       },
-      desviado: {
-        izq: 'amarillo',
-        primaria: 'rojo',
+      [DESVIADO]: {
+        izq: AMARILLO,
+        primaria: ROJO,
       },
     },
   },

@@ -7,6 +7,7 @@ import {
   selEnclavamientos,
   selEnclavamientosActive,
 } from 'Store/selectors';
+import { VERDE, AMARILLO, ROJO, CAMBIO, SENAL } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
@@ -22,7 +23,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
           if (idTarget === idOrigen) return false;
           const { tipo, ...dependencias } = enclavamientos[idTarget];
           switch (tipo) {
-            case 'cambio': {
+            case CAMBIO: {
               const celdaTarget = selCelda(getState(), idTarget);
               return Promise.resolve(
                 Object.keys(dependencias).find(idCeldaSource => {
@@ -36,7 +37,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
                 })
               );
             }
-            case 'senal': {
+            case SENAL: {
               const senalTarget = selSenal(getState(), idTarget);
               return Promise.all(
                 Object.keys(dependencias).map(idCeldaSource => {
@@ -46,16 +47,16 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
                   const nuevoEstado = Object.keys(estados).reduce(
                     (nuevoEstado, luz) => {
                       switch (estados[luz]) {
-                        case 'rojo':
+                        case ROJO:
                           return {
                             ...nuevoEstado,
-                            [luz]: 'rojo',
+                            [luz]: ROJO,
                           };
-                        case 'amarillo':
-                          return nuevoEstado[luz] === 'verde'
+                        case AMARILLO:
+                          return nuevoEstado[luz] === VERDE
                             ? {
                                 ...nuevoEstado,
-                                [luz]: 'amarillo',
+                                [luz]: AMARILLO,
                               }
                             : nuevoEstado;
                         default:
@@ -63,9 +64,9 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
                       }
                     },
                     {
-                      izq: 'verde',
-                      primaria: 'verde',
-                      der: 'verde',
+                      izq: VERDE,
+                      primaria: VERDE,
+                      der: VERDE,
                     }
                   );
                   return Promise.all(
@@ -95,13 +96,13 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
 
     if (!selEnclavamientosActive(getState())) return;
     switch (tipoOrigen) {
-      case 'cambio':
+      case CAMBIO:
         const idCelda = idOrigen;
         const celda = selCelda(getState(), idCelda);
         if (celda.manual) return;
         return browseEnclavamientos(celda);
 
-      case 'senal':
+      case SENAL:
         const idSenal = idOrigen;
         const senal = selSenal(getState(), idSenal);
         if (senal.manual) return;

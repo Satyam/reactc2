@@ -5,6 +5,7 @@ import { useEstado } from 'Components/Estado';
 
 import isPlainClick from 'Utils/isPlainClick';
 import { CENTRO_CELDA, ANG } from 'Components/common';
+import { SENAL } from 'Store/data';
 
 import { selSenal } from 'Store/selectors';
 import styles from './styles.module.css';
@@ -18,7 +19,7 @@ export default function Senal({ idSenal, idCelda, placement }) {
   const onClick = ev =>
     isPlainClick(ev) &&
     showEstado({
-      tipo: 'senal',
+      tipo: SENAL,
       idCelda,
       idSenal,
       placement,

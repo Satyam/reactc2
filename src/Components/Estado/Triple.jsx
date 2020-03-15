@@ -17,9 +17,7 @@ import {
 
 import styles from './styles.module.css';
 
-export const IZQ = 'izq';
-export const CENTRO = 'centro';
-export const DER = 'der';
+import { IZQ, CENTRO, DER } from 'Store/data';
 
 export default function EstadoTriple({ idCelda, onClose }) {
   const { x, y, posicion, manual } = useSelector(state =>
