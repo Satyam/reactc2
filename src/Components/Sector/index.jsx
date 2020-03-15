@@ -27,7 +27,7 @@ export default function Sector({ idSector }) {
                 key={idCelda}
                 idCelda={idCelda}
                 cellsAcross={ancho}
-                cellWidth={Math.floor(width / ancho)}
+                cellWidth={Math.min(Math.floor(width / ancho), 200)}
               />
             ))}
           </div>
