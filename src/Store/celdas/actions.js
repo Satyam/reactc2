@@ -7,6 +7,7 @@ import {
 } from 'Store/actions';
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 import { CAMBIO, TRIPLE } from 'Store/data';
+
 export const plainSetCambio = createAction(
   'setCambio',
   (idCelda, posicion) => ({
@@ -24,13 +25,11 @@ export function doSetCambio(idCelda, posicion) {
       throw new Error(`Celda ${idCelda}  no es un cambio`);
     }
     if (celda.posicion === posicion) {
-      return;
+      return false;
     }
-    if (selPendiente(getState(), idCelda)) {
-      throw new Error(`Celda ${idCelda} error: loop por enclavamiento`);
-    }
+    if (selPendiente(getState(), idCelda)) return false;
     await dispatch(setPendiente(idCelda));
-    await dispatch(plainSetCambio(idCelda, posicion));
+    return await dispatch(plainSetCambio(idCelda, posicion));
   };
 }
 
@@ -40,7 +39,7 @@ export function setCambio(idCelda, posicion) {
     if (!selCeldaIsManual(getState(), idCelda)) {
       await dispatch(setEnclavamientos(idCelda, CAMBIO));
     }
-    await dispatch(clearPendientes());
+    return await dispatch(clearPendientes());
   };
 }
 

@@ -8,6 +8,7 @@ import {
 import { selPendiente, selSenal } from 'Store/selectors';
 import { selSenalIsManual } from './selectors';
 import { SENAL } from 'Store/data';
+
 export const plainSetLuzEstado = createAction(
   'setLuzEstado',
   (idSenal, luz, estado) => ({
@@ -25,13 +26,11 @@ export function doSetLuzEstado(idSenal, luz, estado) {
     if (!senal[luz]) {
       throw new Error(`Señal ${idSenal} no tiene luz ${luz}`);
     }
-    if (senal[luz].estado === estado) return;
+    if (senal[luz].estado === estado) return false;
     const idLuz = `${idSenal}:${luz}`;
-    if (selPendiente(getState(), idLuz)) {
-      throw new Error(`Senal ${idSenal} error: loop por enclavamiento`);
-    }
+    if (selPendiente(getState(), idLuz)) return false;
     await dispatch(setPendiente(idLuz));
-    await dispatch(plainSetLuzEstado(idSenal, luz, estado));
+    return await dispatch(plainSetLuzEstado(idSenal, luz, estado));
   };
 }
 
@@ -41,7 +40,7 @@ export function setLuzEstado(idSenal, luz, estado) {
     if (!selSenalIsManual(getState(), idSenal, luz)) {
       await dispatch(setEnclavamientos(idSenal, SENAL));
     }
-    await dispatch(clearPendientes());
+    return await dispatch(clearPendientes());
   };
 }
 
