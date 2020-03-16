@@ -617,179 +617,239 @@ export const senales = {
     },
   },
 };
-export const enclavamientos = {
-  'constitucion:4,4': {
+export const enclavamientos = [
+  {
+    idTarget: 'constitucion:4,4',
     tipo: CAMBIO,
     idSector: 'constitucion',
-    'constitucion:5,5': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
-    'constitucion:4,5': {
-      [DESVIADO]: NORMAL,
-    },
+    dependencias: [
+      {
+        idSource: 'constitucion:5,5',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+      {
+        idSource: 'constitucion:4,5',
+        [DESVIADO]: NORMAL,
+      },
+    ],
   },
-  'constitucion:4,5': {
+  {
+    idTarget: 'constitucion:4,5',
     tipo: CAMBIO,
     idSector: 'constitucion',
-    'constitucion:5,4': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
+    dependencias: [
+      {
+        idSource: 'constitucion:5,4',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+    ],
   },
-  'constitucion:5,4': {
+  {
+    idTarget: 'constitucion:5,4',
     tipo: CAMBIO,
     idSector: 'constitucion',
-    'constitucion:4,5': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
+    dependencias: [
+      {
+        idSource: 'constitucion:4,5',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+    ],
   },
-  'constitucion:5,5': {
+  {
+    idTarget: 'constitucion:5,5',
     tipo: CAMBIO,
     idSector: 'constitucion',
-    'constitucion:4,4': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
-    'constitucion:4,5': {
-      [DESVIADO]: NORMAL,
-    },
+    dependencias: [
+      {
+        idSource: 'constitucion:4,4',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+      {
+        idSource: 'constitucion:4,5',
+        [DESVIADO]: NORMAL,
+      },
+    ],
   },
-  'constitucion:2,4:W': {
+  {
+    idTarget: 'constitucion:2,4:W',
     tipo: SENAL,
     idSector: 'constitucion',
-    'constitucion:2,4': {
-      [IZQ]: {
-        izq: VERDE,
-        primaria: ROJO,
-        der: ROJO,
+    dependencias: [
+      {
+        idSource: 'constitucion:2,4',
+        [IZQ]: {
+          izq: VERDE,
+          primaria: ROJO,
+          der: ROJO,
+        },
+        [CENTRO]: {
+          izq: ROJO,
+          primaria: VERDE,
+          der: ROJO,
+        },
+        [DER]: {
+          izq: ROJO,
+          primaria: ROJO,
+          der: VERDE,
+        },
       },
-      [CENTRO]: {
-        izq: ROJO,
-        primaria: VERDE,
-        der: ROJO,
-      },
-      [DER]: {
-        izq: ROJO,
-        primaria: ROJO,
-        der: VERDE,
-      },
-    },
+    ],
   },
-  'constitucion:4,4:W': {
+  {
+    idTarget: 'constitucion:4,4:W',
     tipo: SENAL,
     idSector: 'constitucion',
-    'constitucion:4,4': {
-      [NORMAL]: {
-        der: ROJO,
+    dependencias: [
+      {
+        idSource: 'constitucion:4,4',
+        [NORMAL]: {
+          der: ROJO,
+        },
+        [DESVIADO]: {
+          primaria: ROJO,
+          der: AMARILLO,
+        },
       },
-      [DESVIADO]: {
-        primaria: ROJO,
-        der: AMARILLO,
+      {
+        idSource: 'constitucion:5,4',
+        [NORMAL]: {
+          der: ROJO,
+        },
+        [DESVIADO]: {
+          primaria: ROJO,
+          der: AMARILLO,
+        },
       },
-    },
-    'constitucion:5,4': {
-      [NORMAL]: {
-        der: ROJO,
-      },
-      [DESVIADO]: {
-        primaria: ROJO,
-        der: AMARILLO,
-      },
-    },
+    ],
   },
-  'constitucion:8,3:SE': {
+  {
+    idTarget: 'constitucion:8,3:SE',
     tipo: SENAL,
     idSector: 'constitucion',
-    'constitucion:8,3': {
-      [NORMAL]: {
-        izq: ROJO,
-        primaria: VERDE,
+    dependencias: [
+      {
+        idSource: 'constitucion:8,3',
+        [NORMAL]: {
+          izq: ROJO,
+          primaria: VERDE,
+        },
+        [DESVIADO]: {
+          izq: AMARILLO,
+          primaria: ROJO,
+        },
       },
-      [DESVIADO]: {
-        izq: AMARILLO,
-        primaria: ROJO,
-      },
-    },
+    ],
   },
-  'simpleDesvio:0,0:W': {
+  {
+    idTarget: 'simpleDesvio:0,0:W',
     tipo: SENAL,
     idSector: 'simpleDesvio',
-    'simpleDesvio:0,0': {
-      [NORMAL]: {
-        izq: ROJO,
-        primaria: VERDE,
+    dependencias: [
+      {
+        idSource: 'simpleDesvio:0,0',
+        [NORMAL]: {
+          izq: ROJO,
+          primaria: VERDE,
+        },
+        [DESVIADO]: {
+          izq: AMARILLO,
+          primaria: ROJO,
+        },
       },
-      [DESVIADO]: {
-        izq: AMARILLO,
-        primaria: ROJO,
+    ],
+  },
+  {
+    idTarget: 'cruceDobleCambio:0,0',
+    tipo: CAMBIO,
+    idSector: 'cruceDobleCambio',
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:1,1',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
       },
-    },
+      {
+        idSource: 'cruceDobleCambio:0,1',
+        [DESVIADO]: NORMAL,
+      },
+    ],
   },
-  'cruceDobleCambio:0,0': {
+  {
+    idTarget: 'cruceDobleCambio:0,1',
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
-    'cruceDobleCambio:1,1': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
-    'cruceDobleCambio:0,1': {
-      [DESVIADO]: NORMAL,
-    },
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:1,0',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+      {
+        idSource: 'cruceDobleCambio:0,0',
+        [DESVIADO]: NORMAL,
+      },
+    ],
   },
-  'cruceDobleCambio:0,1': {
+  {
+    idTarget: 'cruceDobleCambio:1,0',
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
-    'cruceDobleCambio:1,0': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
-    'cruceDobleCambio:0,0': {
-      [DESVIADO]: NORMAL,
-    },
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:0,1',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+      {
+        idSource: 'cruceDobleCambio:1,1',
+        [DESVIADO]: NORMAL,
+      },
+    ],
   },
-  'cruceDobleCambio:1,0': {
+  {
+    idTarget: 'cruceDobleCambio:1,1',
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
-    'cruceDobleCambio:0,1': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
-    'cruceDobleCambio:1,1': {
-      [DESVIADO]: NORMAL,
-    },
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:0,0',
+        [NORMAL]: NORMAL,
+        [DESVIADO]: DESVIADO,
+      },
+      {
+        idSource: 'cruceDobleCambio:0,1',
+        [DESVIADO]: NORMAL,
+      },
+    ],
   },
-  'cruceDobleCambio:1,1': {
-    tipo: CAMBIO,
-    idSector: 'cruceDobleCambio',
-    'cruceDobleCambio:0,0': {
-      [NORMAL]: NORMAL,
-      [DESVIADO]: DESVIADO,
-    },
-    'cruceDobleCambio:0,1': {
-      [DESVIADO]: NORMAL,
-    },
-  },
-  'cruceDobleCambio:0,0:W': {
+  {
+    idTarget: 'cruceDobleCambio:0,0:W',
     tipo: SENAL,
     idSector: 'cruceDobleCambio',
-    'cruceDobleCambio:0,0': {
-      [NORMAL]: {
-        primaria: VERDE,
-        der: ROJO,
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:0,0',
+        [NORMAL]: {
+          primaria: VERDE,
+          der: ROJO,
+        },
+        [DESVIADO]: {
+          primaria: ROJO,
+          der: AMARILLO,
+        },
       },
-      [DESVIADO]: {
-        primaria: ROJO,
-        der: AMARILLO,
+      {
+        idSource: 'cruceDobleCambio:1,0',
+        [DESVIADO]: {
+          primaria: ROJO,
+          der: ROJO,
+        },
       },
-    },
-    'cruceDobleCambio:1,0': {
-      [DESVIADO]: {
-        primaria: ROJO,
-        der: ROJO,
-      },
-    },
+    ],
   },
   // 'cruceDobleCambio:1,0:E': {
   //   tipo: SENAL,
@@ -803,7 +863,7 @@ export const enclavamientos = {
   //   tipo: SENAL,
   //   idSector: 'cruceDobleCambio',
   // },
-};
+];
 export const sectores = {
   constitucion: {
     idSector: 'constitucion',

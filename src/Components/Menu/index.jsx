@@ -64,7 +64,7 @@ export default function MenuComponent() {
               <DropdownToggle nav caret>
                 {sector ? sector.descrCorta : 'Sectores'}
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu>
                 <DropdownItem tag={Link} to="/adminSectores/">
                   Admin. Sectores
                 </DropdownItem>
