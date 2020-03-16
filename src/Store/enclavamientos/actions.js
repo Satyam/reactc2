@@ -38,20 +38,49 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
               der: VERDE,
             };
             dependencias.forEach(dep => {
-              const celdaSource = selCelda(getState(), dep.idSource);
-              const estadoBuscado = dep[celdaSource.posicion] || {};
-              Object.keys(estadoBuscado).forEach(luz => {
-                switch (estadoBuscado[luz]) {
-                  case ROJO:
-                    nuevoEstado[luz] = ROJO;
-                    break;
-                  case AMARILLO:
-                    if (nuevoEstado[luz] === VERDE) nuevoEstado[luz] = AMARILLO;
-                    break;
-                  default:
-                    break;
-                }
-              });
+              switch (dep.tipo) {
+                case CAMBIO:
+                  const celdaSource = selCelda(getState(), dep.idSource);
+                  const estadoBuscado = dep[celdaSource.posicion] || {};
+                  Object.keys(estadoBuscado).forEach(luz => {
+                    switch (estadoBuscado[luz]) {
+                      case ROJO:
+                        nuevoEstado[luz] = ROJO;
+                        break;
+                      case AMARILLO:
+                        if (nuevoEstado[luz] === VERDE)
+                          nuevoEstado[luz] = AMARILLO;
+                        break;
+                      default:
+                        break;
+                    }
+                  });
+                  break;
+                case SENAL:
+                  const senalSource = selSenal(getState(), dep.idSource);
+                  dep.luces.forEach(
+                    ({ luzSource, cuando, luzTarget, estado }) => {
+                      if (senalSource[luzSource].estado === cuando) {
+                        switch (estado) {
+                          case ROJO:
+                            nuevoEstado[luzTarget] = ROJO;
+                            break;
+                          case AMARILLO:
+                            if (nuevoEstado[luzTarget] === VERDE)
+                              nuevoEstado[luzTarget] = AMARILLO;
+                            break;
+                          default:
+                            break;
+                        }
+                      }
+                    }
+                  );
+                  break;
+                default:
+                  throw new Error(
+                    `Dependencia ${dep.idSource} de ${idTarget} tiene tipo desconocido: ${dep.tipo}`
+                  );
+              }
             });
             return Promise.all(
               Object.keys(nuevoEstado).map(luz => {
