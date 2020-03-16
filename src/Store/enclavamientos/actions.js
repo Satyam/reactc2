@@ -85,7 +85,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
     do {
       countDown--;
     } while (countDown && (await browseEnclavamientos(entity)));
-    if (!countDown) console.error(idOrigen, countDown);
-    return !countDown;
+    if (!countDown) throw new Error(`Enclavamiento en loop por ${idOrigen}`);
+    return !!countDown;
   };
 }
