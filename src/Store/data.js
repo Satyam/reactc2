@@ -716,12 +716,9 @@ export const enclavamientos = [
       },
       {
         idSource: 'constitucion:5,4',
-        [NORMAL]: {
-          der: ROJO,
-        },
         [DESVIADO]: {
           primaria: ROJO,
-          der: AMARILLO,
+          der: ROJO,
         },
       },
     ],
@@ -851,18 +848,81 @@ export const enclavamientos = [
       },
     ],
   },
-  // 'cruceDobleCambio:1,0:E': {
-  //   tipo: SENAL,
-  //   idSector: 'cruceDobleCambio',
-  // },
-  // 'cruceDobleCambio:0,1:W': {
-  //   tipo: SENAL,
-  //   idSector: 'cruceDobleCambio',
-  // },
-  // 'cruceDobleCambio:1,1:E': {
-  //   tipo: SENAL,
-  //   idSector: 'cruceDobleCambio',
-  // },
+  {
+    idTarget: 'cruceDobleCambio:1,0:E',
+    tipo: SENAL,
+    idSector: 'cruceDobleCambio',
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:1,0',
+        [NORMAL]: {
+          primaria: VERDE,
+          izq: ROJO,
+        },
+        [DESVIADO]: {
+          primaria: ROJO,
+          izq: AMARILLO,
+        },
+      },
+      {
+        idSource: 'cruceDobleCambio:0,0',
+        [DESVIADO]: {
+          primaria: ROJO,
+          izq: ROJO,
+        },
+      },
+    ],
+  },
+  {
+    idTarget: 'cruceDobleCambio:0,1:W',
+    tipo: SENAL,
+    idSector: 'cruceDobleCambio',
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:0,1',
+        [NORMAL]: {
+          primaria: VERDE,
+          izq: ROJO,
+        },
+        [DESVIADO]: {
+          primaria: ROJO,
+          izq: AMARILLO,
+        },
+      },
+      {
+        idSource: 'cruceDobleCambio:1,1',
+        [DESVIADO]: {
+          primaria: ROJO,
+          izq: ROJO,
+        },
+      },
+    ],
+  },
+  {
+    idTarget: 'cruceDobleCambio:1,1:E',
+    tipo: SENAL,
+    idSector: 'cruceDobleCambio',
+    dependencias: [
+      {
+        idSource: 'cruceDobleCambio:1,1',
+        [NORMAL]: {
+          primaria: VERDE,
+          der: ROJO,
+        },
+        [DESVIADO]: {
+          primaria: ROJO,
+          der: AMARILLO,
+        },
+      },
+      {
+        idSource: 'cruceDobleCambio:0,1',
+        [DESVIADO]: {
+          primaria: ROJO,
+          der: ROJO,
+        },
+      },
+    ],
+  },
 ];
 export const sectores = {
   constitucion: {

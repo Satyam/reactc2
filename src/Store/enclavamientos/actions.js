@@ -21,10 +21,10 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
         const celdaTarget = selCelda(getState(), idTarget);
         switch (tipo) {
           case CAMBIO: {
-            return solvePromises(dependencias, source => {
-              const celdaSource = selCelda(getState(), source.idSource);
+            return solvePromises(dependencias, dep => {
+              const celdaSource = selCelda(getState(), dep.idSource);
               const posicionEsperada =
-                source[celdaSource.posicion] || celdaTarget.posicionInicial;
+                dep[celdaSource.posicion] || celdaTarget.posicionInicial;
 
               if (posicionEsperada === celdaTarget.posicion) return false;
               return dispatch(doSetCambio(idTarget, posicionEsperada));
@@ -32,56 +32,39 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
           }
           case SENAL: {
             const senalTarget = selSenal(getState(), idTarget);
-            return solvePromises(dependencias, source => {
-              const celdaSource = selCelda(getState(), source.idSource);
-              const estados = source[celdaSource.posicion];
-              console.log(1, { idTarget, idSource: source.idSource, estados });
-              const nuevoEstado = Object.keys(estados || []).reduce(
-                (nuevoEstado, luz) => {
-                  console.log(2, { luz, estado: estados[luz], nuevoEstado });
-                  debugger;
-                  switch (estados[luz]) {
-                    case ROJO:
-                      return {
-                        ...nuevoEstado,
-                        [luz]: ROJO,
-                      };
-                    case AMARILLO:
-                      return nuevoEstado[luz] === VERDE
-                        ? {
-                            ...nuevoEstado,
-                            [luz]: AMARILLO,
-                          }
-                        : nuevoEstado;
-                    default:
-                      return nuevoEstado;
-                  }
-                },
-                {
-                  izq: VERDE,
-                  primaria: VERDE,
-                  der: VERDE,
+            const nuevoEstado = {
+              izq: VERDE,
+              primaria: VERDE,
+              der: VERDE,
+            };
+            dependencias.forEach(dep => {
+              const celdaSource = selCelda(getState(), dep.idSource);
+              const estadoBuscado = dep[celdaSource.posicion] || {};
+              Object.keys(estadoBuscado).forEach(luz => {
+                switch (estadoBuscado[luz]) {
+                  case ROJO:
+                    nuevoEstado[luz] = ROJO;
+                    break;
+                  case AMARILLO:
+                    if (nuevoEstado[luz] === VERDE) nuevoEstado[luz] = AMARILLO;
+                    break;
+                  default:
+                    break;
                 }
-              );
-              return Promise.all(
-                Object.keys(nuevoEstado).map(luz => {
-                  if (luz in senalTarget) {
-                    if (senalTarget[luz].estado === nuevoEstado[luz])
-                      return false;
-                    console.log(3, {
-                      idTarget,
-                      luz,
-                      estado: nuevoEstado[luz],
-                    });
-                    debugger;
-                    return dispatch(
-                      doSetLuzEstado(idTarget, luz, nuevoEstado[luz])
-                    );
-                  }
-                  return false;
-                })
-              ).then(results => results.find(result => !!result));
+              });
             });
+            return Promise.all(
+              Object.keys(nuevoEstado).map(luz => {
+                if (luz in senalTarget) {
+                  if (senalTarget[luz].estado === nuevoEstado[luz])
+                    return false;
+                  return dispatch(
+                    doSetLuzEstado(idTarget, luz, nuevoEstado[luz])
+                  );
+                }
+                return false;
+              })
+            ).then(results => results.find(result => !!result));
           }
 
           default:
@@ -102,7 +85,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen) {
     do {
       countDown--;
     } while (countDown && (await browseEnclavamientos(entity)));
-    console.log(idOrigen, countDown);
+    if (!countDown) console.error(idOrigen, countDown);
     return !countDown;
   };
 }
