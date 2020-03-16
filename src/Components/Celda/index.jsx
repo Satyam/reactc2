@@ -20,7 +20,7 @@ import Triple from './Triple';
 import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 
-export default function Celda({ idCelda, cellsAcross, cellWidth }) {
+export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const celda = useSelector(state => selCelda(state, idCelda));
   const showEstado = useEstado();
 
@@ -50,7 +50,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth }) {
         [styles.manual]: celda.manual,
       })}
       style={{
-        left: celda.x * cellWidth,
+        left: padLeft + celda.x * cellWidth,
         top: celda.y * cellWidth,
         width: cellWidth,
         height: cellWidth,

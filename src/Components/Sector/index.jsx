@@ -20,18 +20,26 @@ export default function Sector({ idSector }) {
         <title>{descrCorta}</title>
       </Helmet>
       <ReactResizeDetector handleWidth>
-        {({ width }) => (
-          <div className={styles.sector}>
-            {celdas.map(idCelda => (
-              <Celda
-                key={idCelda}
-                idCelda={idCelda}
-                cellsAcross={ancho}
-                cellWidth={Math.min(Math.floor(width / ancho), 200)}
-              />
-            ))}
-          </div>
-        )}
+        {({ width }) => {
+          const cellWidth = Math.min(
+            Math.floor(width / ancho),
+            ancho > 8 ? 100 : 200
+          );
+          const padLeft = (width - ancho * cellWidth) / 2;
+          return (
+            <div className={styles.sector}>
+              {celdas.map(idCelda => (
+                <Celda
+                  key={idCelda}
+                  idCelda={idCelda}
+                  cellsAcross={ancho}
+                  cellWidth={cellWidth}
+                  padLeft={padLeft}
+                />
+              ))}
+            </div>
+          );
+        }}
       </ReactResizeDetector>
     </div>
   );
