@@ -75,11 +75,7 @@ export default function EstadoSenal({ idSenal, onClose }) {
               [styles.hidden]: !izq,
             })}
           >
-            <EstadoLuz
-              luz="izq"
-              estado={izq && izq.estado}
-              onSetEstado={onSetEstado}
-            />
+            <EstadoLuz luz="izq" estado={izq} onSetEstado={onSetEstado} />
           </div>
           <div
             className={classNames(styles.senal, {
@@ -88,7 +84,7 @@ export default function EstadoSenal({ idSenal, onClose }) {
           >
             <EstadoLuz
               luz="primaria"
-              estado={primaria && primaria.estado}
+              estado={primaria}
               onSetEstado={onSetEstado}
             />
           </div>
@@ -97,11 +93,7 @@ export default function EstadoSenal({ idSenal, onClose }) {
               [styles.hidden]: !der,
             })}
           >
-            <EstadoLuz
-              luz="der"
-              estado={der && der.estado}
-              onSetEstado={onSetEstado}
-            />
+            <EstadoLuz luz="der" estado={der} onSetEstado={onSetEstado} />
           </div>
         </div>
         <Button

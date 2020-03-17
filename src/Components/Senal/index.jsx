@@ -50,14 +50,14 @@ export default function Senal({ idSenal, idCelda, placement }) {
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
       <circle
-        className={classNames(styles.primaria, styles[primaria.estado])}
+        className={classNames(styles.primaria, styles[primaria])}
         cx={izq || der ? x2 : x1}
         cy={y}
         r={r}
       />
       {izq && (
         <circle
-          className={classNames(styles.izq, styles[izq.estado])}
+          className={classNames(styles.izq, styles[izq])}
           cx={x1}
           cy={y + r}
           r={r}
@@ -65,7 +65,7 @@ export default function Senal({ idSenal, idCelda, placement }) {
       )}
       {der && (
         <circle
-          className={classNames(styles.der, styles[der.estado])}
+          className={classNames(styles.der, styles[der])}
           cx={x1}
           cy={y - r}
           r={r}

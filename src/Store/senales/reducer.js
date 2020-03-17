@@ -5,7 +5,7 @@ import { plainSetLuzEstado, setSenalManual } from './actions';
 export default createReducer(senales || [], {
   [plainSetLuzEstado]: (state, action) => {
     const { idSenal, luz, estado } = action.payload;
-    state[idSenal][luz].estado = estado;
+    state[idSenal][luz] = estado;
   },
   [setSenalManual]: (state, action) => {
     const { idSenal, manual } = action.payload;

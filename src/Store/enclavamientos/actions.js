@@ -64,7 +64,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                   const senalSource = selSenal(getState(), dep.idSource);
                   dep.luces.forEach(
                     ({ luzSource, cuando, luzTarget, estado }) => {
-                      if (senalSource[luzSource].estado === cuando) {
+                      if (senalSource[luzSource] === cuando) {
                         switch (estado) {
                           case ROJO:
                             nuevoEstado[luzTarget] = ROJO;
@@ -89,8 +89,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             return Promise.all(
               Object.keys(nuevoEstado).map(luz => {
                 if (luz in senalTarget) {
-                  if (senalTarget[luz].estado === nuevoEstado[luz])
-                    return false;
+                  if (senalTarget[luz] === nuevoEstado[luz]) return false;
 
                   return dispatch(
                     doSetLuzEstado(idTarget, luz, nuevoEstado[luz])

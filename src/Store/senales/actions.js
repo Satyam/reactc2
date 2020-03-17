@@ -26,7 +26,7 @@ export function doSetLuzEstado(idSenal, luz, estado) {
     if (!senal[luz]) {
       throw new Error(`Señal ${idSenal} no tiene luz ${luz}`);
     }
-    if (senal[luz].estado === estado) return false;
+    if (senal[luz] === estado) return false;
     const idLuz = `${idSenal}:${luz}`;
     if (selPendiente(getState(), idLuz)) return false;
     await dispatch(setPendiente(idLuz));
