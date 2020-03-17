@@ -34,7 +34,7 @@ export default function EstadoCambio({ idCelda, onClose }) {
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>
-        <ButtonGroup>
+        <ButtonGroup className={styles.cambio}>
           <Button
             size="sm"
             onClick={onSetCambioNormal}

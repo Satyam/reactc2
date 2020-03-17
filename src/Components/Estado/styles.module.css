@@ -10,6 +10,9 @@
 .senales {
   margin: 0 auto;
 }
+.cambio {
+  display: flex !important;
+}
 
 .senal {
   float: left;
