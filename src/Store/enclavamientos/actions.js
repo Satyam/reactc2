@@ -35,6 +35,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
           }
           case SENAL: {
             const senalTarget = selSenal(getState(), idTarget);
+            if (selSenalIsManual(getState(), idTarget)) return false;
             const nuevoEstado = {
               izq: VERDE,
               primaria: VERDE,
@@ -90,7 +91,6 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 if (luz in senalTarget) {
                   if (senalTarget[luz].estado === nuevoEstado[luz])
                     return false;
-                  if (selSenalIsManual(getState(), idTarget, luz)) return false;
 
                   return dispatch(
                     doSetLuzEstado(idTarget, luz, nuevoEstado[luz])

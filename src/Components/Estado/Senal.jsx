@@ -5,27 +5,22 @@ import { Locked, Unlocked, Circle } from 'Components/Icons';
 import { VERDE, AMARILLO, ROJO, SENAL } from 'Store/data';
 import isPlainClick from 'Utils/isPlainClick';
 
-import { setLuzEstado, setLuzManual, setEnclavamientos } from 'Store/actions';
+import { setLuzEstado, setSenalManual, setEnclavamientos } from 'Store/actions';
 import { selSenal } from 'Store/senales/selectors';
 
 import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import styles from './styles.module.css';
 
-export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
-  const onSetAlto = ev => manual && isPlainClick(ev) && onSetEstado(luz, ROJO);
+export function EstadoLuz({ luz, estado, onSetEstado }) {
+  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, ROJO);
   const onSetPrecaucion = ev =>
-    isPlainClick(ev) && manual && onSetEstado(luz, 'precaucion');
-  const onSetLibre = ev =>
-    manual && isPlainClick(ev) && onSetEstado(luz, VERDE);
-  const onSetLuzManual = ev => isPlainClick(ev) && onSetManual(luz, !manual);
+    isPlainClick(ev) && onSetEstado(luz, 'precaucion');
+  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, VERDE);
 
   return (
     <>
-      <ButtonGroup
-        vertical
-        className={classNames({ [styles.disabled]: !manual })}
-      >
+      <ButtonGroup vertical>
         <Button
           size="sm"
           color={estado === ROJO ? 'danger' : 'outline-danger'}
@@ -48,28 +43,20 @@ export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
           <Circle />
         </Button>
       </ButtonGroup>
-      <Button
-        className={styles.manual}
-        size="sm"
-        color={manual ? 'danger' : 'outline-info'}
-        onClick={onSetLuzManual}
-      >
-        {manual ? <Unlocked /> : <Locked />}
-      </Button>
     </>
   );
 }
 
 export default function EstadoSenal({ idSenal, onClose }) {
-  const { dir, izq, primaria, der } = useSelector(state =>
+  const { dir, izq, manual, primaria, der } = useSelector(state =>
     selSenal(state, idSenal)
   );
 
   const dispatch = useDispatch();
   const onSetEstado = (luz, estado) =>
-    dispatch(setLuzEstado(idSenal, luz, estado));
-  const onSetManual = (luz, manual) => {
-    dispatch(setLuzManual(idSenal, luz, manual));
+    manual && dispatch(setLuzEstado(idSenal, luz, estado));
+  const onSetManual = () => {
+    dispatch(setSenalManual(idSenal, !manual));
     if (!manual) dispatch(setEnclavamientos(idSenal, SENAL, true));
   };
 
@@ -81,42 +68,50 @@ export default function EstadoSenal({ idSenal, onClose }) {
       </PopoverHeader>
       <PopoverBody>
         <div
-          className={classNames(styles.senal, styles.pushDown, {
-            [styles.hidden]: !izq,
-          })}
+          className={classNames(styles.senales, { [styles.disabled]: !manual })}
         >
-          <EstadoLuz
-            luz="izq"
-            manual={izq && izq.manual}
-            estado={izq && izq.estado}
-            onSetManual={onSetManual}
-            onSetEstado={onSetEstado}
-          />
+          <div
+            className={classNames(styles.senal, styles.pushDown, {
+              [styles.hidden]: !izq,
+            })}
+          >
+            <EstadoLuz
+              luz="izq"
+              estado={izq && izq.estado}
+              onSetEstado={onSetEstado}
+            />
+          </div>
+          <div
+            className={classNames(styles.senal, {
+              [styles.hidden]: !primaria,
+            })}
+          >
+            <EstadoLuz
+              luz="primaria"
+              estado={primaria && primaria.estado}
+              onSetEstado={onSetEstado}
+            />
+          </div>
+          <div
+            className={classNames(styles.senal, styles.pushDown, {
+              [styles.hidden]: !der,
+            })}
+          >
+            <EstadoLuz
+              luz="der"
+              estado={der && der.estado}
+              onSetEstado={onSetEstado}
+            />
+          </div>
         </div>
-        <div
-          className={classNames(styles.senal, { [styles.hidden]: !primaria })}
+        <Button
+          className={styles.manual}
+          size="sm"
+          color={manual ? 'danger' : 'outline-info'}
+          onClick={onSetManual}
         >
-          <EstadoLuz
-            luz="primaria"
-            manual={primaria && primaria.manual}
-            estado={primaria && primaria.estado}
-            onSetManual={onSetManual}
-            onSetEstado={onSetEstado}
-          />
-        </div>
-        <div
-          className={classNames(styles.senal, styles.pushDown, {
-            [styles.hidden]: !der,
-          })}
-        >
-          <EstadoLuz
-            luz="der"
-            manual={der && der.manual}
-            estado={der && der.estado}
-            onSetManual={onSetManual}
-            onSetEstado={onSetEstado}
-          />
-        </div>
+          {manual ? <Unlocked /> : <Locked />}
+        </Button>
       </PopoverBody>
     </>
   );

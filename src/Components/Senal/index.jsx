@@ -41,25 +41,23 @@ export default function Senal({ idSenal, idCelda, placement }) {
 
   return (
     <g
-      className={styles.senal}
+      className={classNames(styles.senal, {
+        [styles.manual]: senal.manual,
+      })}
       transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
       onClick={onClick}
     >
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
       <circle
-        className={classNames(styles.primaria, styles[primaria.estado], {
-          [styles.luzManual]: primaria.manual,
-        })}
+        className={classNames(styles.primaria, styles[primaria.estado])}
         cx={izq || der ? x2 : x1}
         cy={y}
         r={r}
       />
       {izq && (
         <circle
-          className={classNames(styles.izq, styles[izq.estado], {
-            [styles.luzManual]: izq.manual,
-          })}
+          className={classNames(styles.izq, styles[izq.estado])}
           cx={x1}
           cy={y + r}
           r={r}
@@ -67,9 +65,7 @@ export default function Senal({ idSenal, idCelda, placement }) {
       )}
       {der && (
         <circle
-          className={classNames(styles.der, styles[der.estado], {
-            [styles.luzManual]: der.manual,
-          })}
+          className={classNames(styles.der, styles[der.estado])}
           cx={x1}
           cy={y - r}
           r={r}

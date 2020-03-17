@@ -37,19 +37,18 @@ export function doSetLuzEstado(idSenal, luz, estado) {
 export function setLuzEstado(idSenal, luz, estado) {
   return async (dispatch, getState) => {
     await dispatch(doSetLuzEstado(idSenal, luz, estado));
-    if (!selSenalIsManual(getState(), idSenal, luz)) {
+    if (!selSenalIsManual(getState(), idSenal)) {
       await dispatch(setEnclavamientos(idSenal, SENAL));
     }
     return await dispatch(clearPendientes());
   };
 }
 
-export const setLuzManual = createAction(
-  'setLuzManual',
-  (idSenal, luz, manual) => ({
+export const setSenalManual = createAction(
+  'setSenalManual',
+  (idSenal, manual) => ({
     payload: {
       idSenal,
-      luz,
       manual,
     },
   })

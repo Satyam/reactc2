@@ -8,7 +8,7 @@
 }
 
 .senales {
-  text-align: center;
+  margin: 0 auto;
 }
 
 .senal {
@@ -19,7 +19,9 @@
 }
 
 .manual {
+  clear: both;
   display: block !important;
+  margin: 0 auto;
   margin-top: 3px;
 }
 
