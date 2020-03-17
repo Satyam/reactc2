@@ -4,6 +4,7 @@ import {
   selEnclavamientos,
   selEnclavamientosActive,
   selSenalIsManual,
+  selCeldaIsManual,
 } from 'Store/selectors';
 import { VERDE, AMARILLO, ROJO, CAMBIO, SENAL } from 'Store/data';
 
@@ -28,6 +29,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 dep[celdaSource.posicion] || celdaTarget.posicionInicial;
 
               if (posicionEsperada === celdaTarget.posicion) return false;
+              if (selCeldaIsManual(getState(), idTarget)) return false;
               return dispatch(doSetCambio(idTarget, posicionEsperada));
             });
           }
