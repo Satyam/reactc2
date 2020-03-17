@@ -30,3 +30,6 @@
 .close {
   margin-left: 0.5em;
 }
+.disabled {
+  opacity: 0.5;
+}

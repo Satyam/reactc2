@@ -11,13 +11,13 @@ import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 const solvePromises = (arr, fn) =>
   Promise.all(arr.map(fn)).then(results => results.find(result => !!result));
 
-export function setEnclavamientos(idOrigen, tipoOrigen) {
+export function setEnclavamientos(idOrigen, tipoOrigen, force) {
   return async (dispatch, getState) => {
     const browseEnclavamientos = origen => {
       const enclavamientos = selEnclavamientos(getState(), origen.idSector);
       return solvePromises(enclavamientos, encl => {
         const { idTarget, tipo, dependencias } = encl;
-        if (idTarget === idOrigen) return false;
+        if (!force && idTarget === idOrigen) return false;
         const celdaTarget = selCelda(getState(), idTarget);
         switch (tipo) {
           case CAMBIO: {

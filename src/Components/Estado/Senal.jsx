@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
-import { VERDE, AMARILLO, ROJO } from 'Store/data';
+import { VERDE, AMARILLO, ROJO, SENAL } from 'Store/data';
 import isPlainClick from 'Utils/isPlainClick';
 
-import { setLuzEstado, setLuzManual } from 'Store/actions';
+import { setLuzEstado, setLuzManual, setEnclavamientos } from 'Store/actions';
 import { selSenal } from 'Store/senales/selectors';
 
 import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
@@ -13,15 +13,19 @@ import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
 import styles from './styles.module.css';
 
 export function EstadoLuz({ luz, manual, estado, onSetManual, onSetEstado }) {
-  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, ROJO);
+  const onSetAlto = ev => manual && isPlainClick(ev) && onSetEstado(luz, ROJO);
   const onSetPrecaucion = ev =>
-    isPlainClick(ev) && onSetEstado(luz, 'precaucion');
-  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, VERDE);
+    isPlainClick(ev) && manual && onSetEstado(luz, 'precaucion');
+  const onSetLibre = ev =>
+    manual && isPlainClick(ev) && onSetEstado(luz, VERDE);
   const onSetLuzManual = ev => isPlainClick(ev) && onSetManual(luz, !manual);
 
   return (
     <>
-      <ButtonGroup vertical>
+      <ButtonGroup
+        vertical
+        className={classNames({ [styles.disabled]: !manual })}
+      >
         <Button
           size="sm"
           color={estado === ROJO ? 'danger' : 'outline-danger'}
@@ -64,8 +68,10 @@ export default function EstadoSenal({ idSenal, onClose }) {
   const dispatch = useDispatch();
   const onSetEstado = (luz, estado) =>
     dispatch(setLuzEstado(idSenal, luz, estado));
-  const onSetManual = (luz, manual) =>
+  const onSetManual = (luz, manual) => {
     dispatch(setLuzManual(idSenal, luz, manual));
+    if (!manual) dispatch(setEnclavamientos(idSenal, SENAL, true));
+  };
 
   return (
     <>
