@@ -763,19 +763,16 @@ export const enclavamientos = [
         idSource: 'constitucion:2,4',
         tipo: CAMBIO,
         [IZQ]: {
-          izq: VERDE,
           primaria: ROJO,
           der: ROJO,
         },
         [CENTRO]: {
           izq: ROJO,
-          primaria: VERDE,
           der: ROJO,
         },
         [DER]: {
           izq: ROJO,
           primaria: ROJO,
-          der: VERDE,
         },
       },
     ],
@@ -816,7 +813,6 @@ export const enclavamientos = [
         tipo: CAMBIO,
         [NORMAL]: {
           izq: ROJO,
-          primaria: VERDE,
         },
         [DESVIADO]: {
           izq: AMARILLO,
@@ -835,7 +831,6 @@ export const enclavamientos = [
         tipo: CAMBIO,
         [NORMAL]: {
           izq: ROJO,
-          primaria: VERDE,
         },
         [DESVIADO]: {
           izq: AMARILLO,
@@ -925,7 +920,6 @@ export const enclavamientos = [
         idSource: 'cruceDobleCambio:0,0',
         tipo: CAMBIO,
         [NORMAL]: {
-          primaria: VERDE,
           der: ROJO,
         },
         [DESVIADO]: {
@@ -952,7 +946,6 @@ export const enclavamientos = [
         idSource: 'cruceDobleCambio:1,0',
         tipo: CAMBIO,
         [NORMAL]: {
-          primaria: VERDE,
           izq: ROJO,
         },
         [DESVIADO]: {
@@ -979,7 +972,6 @@ export const enclavamientos = [
         idSource: 'cruceDobleCambio:0,1',
         tipo: CAMBIO,
         [NORMAL]: {
-          primaria: VERDE,
           izq: ROJO,
         },
         [DESVIADO]: {
@@ -1006,7 +998,6 @@ export const enclavamientos = [
         idSource: 'cruceDobleCambio:1,1',
         tipo: CAMBIO,
         [NORMAL]: {
-          primaria: VERDE,
           der: ROJO,
         },
         [DESVIADO]: {
