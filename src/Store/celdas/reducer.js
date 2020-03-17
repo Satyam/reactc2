@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { celdas } from 'Store/data.js';
+import { celdas } from 'Store/data';
 import { plainSetCambio, setCambioManual } from './actions';
 
 export default createReducer(celdas || [], {

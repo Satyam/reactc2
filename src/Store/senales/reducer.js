@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { senales } from 'Store/data.js';
+import { senales } from 'Store/data';
 import { plainSetLuzEstado, setSenalManual } from './actions';
 
 export default createReducer(senales || [], {
