@@ -3,6 +3,7 @@ import {
   selSenal,
   selEnclavamientos,
   selEnclavamientosActive,
+  selSenalIsManual,
 } from 'Store/selectors';
 import { VERDE, AMARILLO, ROJO, CAMBIO, SENAL } from 'Store/data';
 
@@ -87,6 +88,8 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 if (luz in senalTarget) {
                   if (senalTarget[luz].estado === nuevoEstado[luz])
                     return false;
+                  if (selSenalIsManual(getState(), idTarget, luz)) return false;
+
                   return dispatch(
                     doSetLuzEstado(idTarget, luz, nuevoEstado[luz])
                   );
