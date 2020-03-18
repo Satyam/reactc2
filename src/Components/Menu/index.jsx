@@ -61,7 +61,7 @@ export default function MenuComponent() {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
+              <DropdownToggle nav caret title={sector.descr}>
                 {sector ? sector.descrCorta : 'Sectores'}
               </DropdownToggle>
               <DropdownMenu>
