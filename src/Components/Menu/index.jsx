@@ -6,12 +6,14 @@ import './styles.module.css';
 import {
   showTeletipo as showTeletipoAction,
   enclavamientosActive,
+  showCoords as showCoordsAction,
 } from 'Store/actions';
 import {
   selSectores,
   selSector,
   selShowTeletipo,
   selEnclavamientosActive,
+  selShowCoords,
 } from 'Store/selectors';
 import {
   Collapse,
@@ -39,6 +41,7 @@ export default function MenuComponent() {
   );
   const isEnclavamientoActive = useSelector(selEnclavamientosActive);
   const showTeletipo = useSelector(selShowTeletipo);
+  const showCoords = useSelector(selShowCoords);
 
   const dispatch = useDispatch();
 
@@ -46,7 +49,7 @@ export default function MenuComponent() {
   const toggleTeletipo = () => dispatch(showTeletipoAction(!showTeletipo));
   const toggleEnclavamientos = () =>
     dispatch(enclavamientosActive(!isEnclavamientoActive));
-
+  const toggleShowCoords = () => dispatch(showCoordsAction(!showCoords));
   return (
     <div>
       <Navbar color="light" light expand="md">
@@ -95,6 +98,9 @@ export default function MenuComponent() {
                   active={isEnclavamientoActive}
                 >
                   Enclavamientos
+                </DropdownItem>
+                <DropdownItem onClick={toggleShowCoords} active={showCoords}>
+                  Coordenadas
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
