@@ -16,8 +16,8 @@ import {
   NW,
 } from './constantes';
 
-export const celdas = {
-  'constitucion:5,0': {
+export const celdas = [
+  {
     tipo: LINEA,
     desde: N,
     hacia: S,
@@ -25,7 +25,7 @@ export const celdas = {
     y: 0,
     idSector: 'constitucion',
   },
-  'constitucion:6,0': {
+  {
     tipo: LINEA,
     desde: N,
     hacia: S,
@@ -33,7 +33,7 @@ export const celdas = {
     y: 0,
     idSector: 'constitucion',
   },
-  'constitucion:5,1': {
+  {
     tipo: LINEA,
     desde: N,
     hacia: SW,
@@ -41,7 +41,7 @@ export const celdas = {
     y: 1,
     idSector: 'constitucion',
   },
-  'constitucion:6,1': {
+  {
     tipo: LINEA,
     desde: N,
     hacia: SE,
@@ -49,7 +49,7 @@ export const celdas = {
     y: 1,
     idSector: 'constitucion',
   },
-  'constitucion:4,2': {
+  {
     tipo: LINEA,
     desde: NE,
     hacia: SW,
@@ -57,7 +57,7 @@ export const celdas = {
     y: 2,
     idSector: 'constitucion',
   },
-  'constitucion:7,2': {
+  {
     tipo: LINEA,
     desde: NW,
     hacia: SE,
@@ -65,7 +65,7 @@ export const celdas = {
     y: 2,
     idSector: 'constitucion',
   },
-  'constitucion:3,3': {
+  {
     tipo: LINEA,
     desde: NE,
     hacia: SW,
@@ -73,7 +73,7 @@ export const celdas = {
     y: 3,
     idSector: 'constitucion',
   },
-  'constitucion:4,3': {
+  {
     tipo: LINEA,
     desde: SW,
     hacia: E,
@@ -81,7 +81,7 @@ export const celdas = {
     y: 3,
     idSector: 'constitucion',
   },
-  'constitucion:5,3': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -90,7 +90,7 @@ export const celdas = {
     y: 3,
     idSector: 'constitucion',
   },
-  'constitucion:6,3': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -98,7 +98,7 @@ export const celdas = {
     y: 3,
     idSector: 'constitucion',
   },
-  'constitucion:7,3': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -106,7 +106,7 @@ export const celdas = {
     y: 3,
     idSector: 'constitucion',
   },
-  'constitucion:8,3': {
+  {
     tipo: CAMBIO,
     posicionInicial: NORMAL,
     punta: SE,
@@ -119,14 +119,14 @@ export const celdas = {
     y: 3,
     idSector: 'constitucion',
   },
-  'constitucion:0,4': {
+  {
     tipo: PARAGOLPE,
     desde: E,
     x: 0,
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:1,4': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -134,7 +134,7 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:2,4': {
+  {
     tipo: TRIPLE,
     posicionInicial: CENTRO,
     punta: W,
@@ -148,7 +148,7 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:3,4': {
+  {
     tipo: CRUCE,
     l1: {
       desde: SW,
@@ -162,7 +162,7 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:4,4': {
+  {
     tipo: CAMBIO,
     posicionInicial: NORMAL,
     punta: W,
@@ -175,7 +175,7 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:5,4': {
+  {
     tipo: CAMBIO,
     posicionInicial: NORMAL,
     punta: E,
@@ -187,7 +187,7 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:6,4': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: SE,
@@ -195,7 +195,7 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:9,4': {
+  {
     tipo: LINEA,
     desde: NW,
     hacia: SE,
@@ -203,14 +203,14 @@ export const celdas = {
     y: 4,
     idSector: 'constitucion',
   },
-  'constitucion:0,5': {
+  {
     tipo: PARAGOLPE,
     desde: E,
     x: 0,
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:1,5': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -218,7 +218,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:2,5': {
+  {
     tipo: CAMBIO,
     posicionInicial: NORMAL,
     punta: W,
@@ -230,7 +230,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:3,5': {
+  {
     tipo: CRUCE,
     l1: {
       desde: NW,
@@ -244,7 +244,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:4,5': {
+  {
     tipo: CAMBIO,
     posicionInicial: NORMAL,
     punta: W,
@@ -256,7 +256,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:5,5': {
+  {
     tipo: CAMBIO,
     posicionInicial: NORMAL,
     punta: E,
@@ -268,7 +268,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:6,5': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: SE,
@@ -276,7 +276,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:7,5': {
+  {
     tipo: LINEA,
     desde: NW,
     hacia: SE,
@@ -284,7 +284,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'constitucion:10,5': {
+  {
     tipo: LINEA,
     desde: NW,
     hacia: SE,
@@ -292,7 +292,7 @@ export const celdas = {
     y: 5,
     idSector: 'constitucion',
   },
-  'simpleDesvio:0,0': {
+  {
     tipo: CAMBIO,
     x: 0,
     y: 0,
@@ -305,7 +305,7 @@ export const celdas = {
     senales: ['simpleDesvio:0,0:W'],
     idSector: 'simpleDesvio',
   },
-  'cruceDobleCambio:0,0': {
+  {
     tipo: CAMBIO,
     x: 0,
     y: 0,
@@ -318,7 +318,7 @@ export const celdas = {
     senales: ['cruceDobleCambio:0,0:W'],
     idSector: 'cruceDobleCambio',
   },
-  'cruceDobleCambio:1,0': {
+  {
     tipo: CAMBIO,
     x: 1,
     y: 0,
@@ -331,7 +331,7 @@ export const celdas = {
     senales: ['cruceDobleCambio:1,0:E'],
     idSector: 'cruceDobleCambio',
   },
-  'cruceDobleCambio:0,1': {
+  {
     tipo: CAMBIO,
     x: 0,
     y: 1,
@@ -344,7 +344,7 @@ export const celdas = {
     senales: ['cruceDobleCambio:0,1:W'],
     idSector: 'cruceDobleCambio',
   },
-  'cruceDobleCambio:1,1': {
+  {
     tipo: CAMBIO,
     x: 1,
     y: 1,
@@ -357,7 +357,7 @@ export const celdas = {
     senales: ['cruceDobleCambio:1,1:E'],
     idSector: 'cruceDobleCambio',
   },
-  'senalesEncadenadas:0,0': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -366,7 +366,7 @@ export const celdas = {
     idSector: 'senalesEncadenadas',
     senales: ['senalesEncadenadas:0,0:W'],
   },
-  'senalesEncadenadas:1,0': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -374,7 +374,7 @@ export const celdas = {
     y: 0,
     idSector: 'senalesEncadenadas',
   },
-  'senalesEncadenadas:2,0': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -382,7 +382,7 @@ export const celdas = {
     y: 0,
     idSector: 'senalesEncadenadas',
   },
-  'senalesEncadenadas:3,0': {
+  {
     tipo: LINEA,
     desde: W,
     hacia: E,
@@ -391,4 +391,4 @@ export const celdas = {
     idSector: 'senalesEncadenadas',
     senales: ['senalesEncadenadas:3,0:W'],
   },
-};
+];

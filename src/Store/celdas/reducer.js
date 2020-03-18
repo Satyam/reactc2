@@ -2,21 +2,32 @@ import { createReducer } from '@reduxjs/toolkit';
 import { celdas } from 'Store/data';
 import { plainSetCambio, setCambioManual } from './actions';
 
-export default createReducer(celdas || [], {
-  [plainSetCambio]: (state, action) => {
-    const { idCelda, posicion } = action.payload;
-    state[idCelda].posicion = posicion;
-  },
-  [setCambioManual]: (state, action) => {
-    const { idCelda, manual } = action.payload;
-    state[idCelda].manual = manual;
-  },
-  '@@INIT': state => {
-    Object.keys(state).forEach(idCelda => {
-      const celda = state[idCelda];
-      if (celda.posicionInicial) {
-        celda.posicion = celda.posicionInicial;
-      }
-    });
-  },
-});
+export default createReducer(
+  {},
+  {
+    [plainSetCambio]: (state, action) => {
+      const { idCelda, posicion } = action.payload;
+      state[idCelda].posicion = posicion;
+    },
+    [setCambioManual]: (state, action) => {
+      const { idCelda, manual } = action.payload;
+      state[idCelda].manual = manual;
+    },
+    '@@INIT': () =>
+      celdas.reduce((cs, c) => {
+        const idCelda = `${c.idSector}:${c.x},${c.y}`;
+        if (cs[idCelda])
+          throw new Error(
+            `Definición de celda en [${c.x},${c.y}] de ${c.idSector} repetida.`
+          );
+        return {
+          ...cs,
+          [idCelda]: {
+            ...c,
+            idCelda,
+            posicion: c.posicionInicial,
+          },
+        };
+      }, {}),
+  }
+);

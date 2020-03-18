@@ -3,17 +3,18 @@ import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import ReactResizeDetector from 'react-resize-detector';
 
-import { selSector } from 'Store/selectors';
+import { selSector, selCeldas } from 'Store/selectors';
 
 import Celda from 'Components/Celda';
 import styles from './styles.module.css';
 
 export default function Sector({ idSector }) {
   const sector = useSelector(state => selSector(state, idSector));
+  const celdas = useSelector(state => selCeldas(state, idSector));
 
   if (!sector) return <img alt="loading..." src="/icons/loading.gif" />;
 
-  const { ancho, celdas, descrCorta } = sector;
+  const { ancho, descrCorta } = sector;
   return (
     <div>
       <Helmet>
@@ -28,10 +29,10 @@ export default function Sector({ idSector }) {
           const padLeft = (width - ancho * cellWidth) / 2;
           return (
             <div className={styles.sector}>
-              {celdas.map(idCelda => (
+              {celdas.map(c => (
                 <Celda
-                  key={idCelda}
-                  idCelda={idCelda}
+                  key={c.idCelda}
+                  idCelda={c.idCelda}
                   cellsAcross={ancho}
                   cellWidth={cellWidth}
                   padLeft={padLeft}
