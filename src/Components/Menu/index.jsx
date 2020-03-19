@@ -31,7 +31,7 @@ import {
 
 import { GitHub } from 'Components/Icons';
 
-export default function MenuComponent() {
+export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const match = useRouteMatch('/sector/:idSector');
 
@@ -56,6 +56,7 @@ export default function MenuComponent() {
         <NavbarBrand
           color="default"
           href={process.env.NODE_ENV === 'production' ? '/CTC' : '/'}
+          title="Volver al inicio"
         >
           CTC
         </NavbarBrand>
@@ -64,7 +65,11 @@ export default function MenuComponent() {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret title={sector.descr}>
+              <DropdownToggle
+                nav
+                caret
+                title={sector ? sector.descr : 'Seleccione sector a visualizar'}
+              >
                 {sector ? sector.descrCorta : 'Sectores'}
               </DropdownToggle>
               <DropdownMenu>
@@ -86,7 +91,7 @@ export default function MenuComponent() {
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
+              <DropdownToggle nav caret title="Opciones de visualización">
                 Opciones
               </DropdownToggle>
               <DropdownMenu>
@@ -105,7 +110,10 @@ export default function MenuComponent() {
               </DropdownMenu>
             </UncontrolledDropdown>
             <NavItem>
-              <NavLink href="https://github.com/Satyam/reactc2">
+              <NavLink
+                href="https://github.com/Satyam/reactc2"
+                title="Ver código fuente en GitHub"
+              >
                 <GitHub /> Github
               </NavLink>
             </NavItem>
