@@ -15,6 +15,7 @@ import {
   selEnclavamientosActive,
   selShowCoords,
 } from 'Store/selectors';
+import { useEstado } from 'Components/Estado';
 import {
   Collapse,
   Navbar,
@@ -42,9 +43,12 @@ export default function Menu() {
   const isEnclavamientoActive = useSelector(selEnclavamientosActive);
   const showTeletipo = useSelector(selShowTeletipo);
   const showCoords = useSelector(selShowCoords);
-
+  const showEstado = useEstado();
   const dispatch = useDispatch();
 
+  const hideEstado = idSector => () => {
+    if (sector && sector.idSector !== idSector) showEstado({});
+  };
   const toggleOpen = () => setIsOpen(!isOpen);
   const toggleTeletipo = () => dispatch(showTeletipoAction(!showTeletipo));
   const toggleEnclavamientos = () =>
@@ -77,15 +81,16 @@ export default function Menu() {
                   Admin. Sectores
                 </DropdownItem>
                 <DropdownItem divider />
-                {sectores.map(sector => (
+                {sectores.map(sect => (
                   <DropdownItem
                     tag={Link}
-                    to={`/sector/${sector.idSector}`}
-                    key={sector.idSector}
-                    title={sector.descr}
-                    active={match && match.params.idSector === sector.idSector}
+                    to={`/sector/${sect.idSector}`}
+                    key={sect.idSector}
+                    title={sect.descr}
+                    active={sector && sector.idSector === sect.idSector}
+                    onClick={hideEstado(sect.idSector)}
                   >
-                    {sector.descrCorta}
+                    {sect.descrCorta}
                   </DropdownItem>
                 ))}
               </DropdownMenu>

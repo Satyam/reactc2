@@ -18,7 +18,6 @@ import { CAMBIO, TRIPLE, SENAL } from 'Store/data';
 export const EstadoContext = createContext();
 
 function Content({ tipo, ...props }) {
-  if (!tipo) return null;
   switch (tipo) {
     case CAMBIO:
       return <Cambio {...props} />;
@@ -40,11 +39,16 @@ export function EstadoProvider({ children }) {
   // See:  https://github.com/reactstrap/reactstrap/issues/1404#issuecomment-538537763
   const ctx = useCallback(
     props => {
+      if (!props.tipo) {
+        setProps({ show: false });
+        return;
+      }
       const setThem = () =>
         setProps({
           ...props,
           show: true,
         });
+      console.log(props);
 
       if (show) {
         setProps({});
@@ -55,7 +59,6 @@ export function EstadoProvider({ children }) {
     },
     [setProps, show]
   );
-
   return (
     <EstadoContext.Provider value={ctx}>
       {children}
