@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import isPlainClick from 'Utils/isPlainClick';
 import sanitize from 'Utils/sanitize';
 
-import { selCelda, selShowCoords } from 'Store/selectors';
+import { selCelda, selShowCoords, selSenales } from 'Store/selectors';
 
 import Senal from 'Components/Senal';
 import { useEstado } from 'Components/Estado';
@@ -23,6 +23,9 @@ import Cruce from './Cruce';
 export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const celda = useSelector(state => selCelda(state, idCelda));
   const showCoords = useSelector(selShowCoords);
+  const senales = useSelector(state =>
+    selSenales(state, celda.idSector, celda.x, celda.y)
+  );
   const showEstado = useEstado();
 
   if (!cellWidth || !celda) return null;
@@ -68,14 +71,9 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
           {label}
         </text>
         <Renderer celda={celda} />
-        {celda.senales
-          ? celda.senales.map(idSenal => (
-              <Senal
-                idSenal={idSenal}
-                key={idSenal}
-                idCelda={idCelda}
-                placement={placement}
-              />
+        {senales
+          ? senales.map(senal => (
+              <Senal senal={senal} key={senal.dir} placement={placement} />
             ))
           : null}
       </svg>

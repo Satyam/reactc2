@@ -14,69 +14,91 @@ import {
 } from './constantes';
 /* eslint-enable no-unused-vars */
 
-export const senales = {
-  'constitucion:5,3:E': {
+export const senales = [
+  {
     idSector: 'constitucion',
     primaria: VERDE,
     dir: E,
+    x: 5,
+    y: 3,
   },
-  'constitucion:8,3:SE': {
+  {
     idSector: 'constitucion',
     dir: SE,
     primaria: VERDE,
     izq: ROJO,
+    x: 8,
+    y: 3,
   },
-  'constitucion:2,4:W': {
+  {
     idSector: 'constitucion',
     dir: W,
     primaria: VERDE,
     izq: ROJO,
     der: ROJO,
+    x: 2,
+    y: 4,
   },
-  'constitucion:4,4:W': {
+  {
     idSector: 'constitucion',
     dir: W,
     primaria: VERDE,
     der: ROJO,
+    x: 4,
+    y: 4,
   },
-  'simpleDesvio:0,0:W': {
+  {
     idSector: 'simpleDesvio',
     dir: W,
     primaria: VERDE,
     izq: ROJO,
+    x: 0,
+    y: 0,
   },
-  'cruceDobleCambio:0,0:W': {
+  {
     idSector: 'cruceDobleCambio',
     dir: W,
     primaria: VERDE,
     der: ROJO,
+    x: 0,
+    y: 0,
   },
-  'cruceDobleCambio:1,0:E': {
+  {
     idSector: 'cruceDobleCambio',
     dir: E,
     primaria: VERDE,
     izq: ROJO,
+    x: 1,
+    y: 0,
   },
-  'cruceDobleCambio:0,1:W': {
+  {
     idSector: 'cruceDobleCambio',
     dir: W,
     primaria: VERDE,
     izq: ROJO,
+    x: 0,
+    y: 1,
   },
-  'cruceDobleCambio:1,1:E': {
+  {
     idSector: 'cruceDobleCambio',
     dir: E,
     primaria: VERDE,
     der: ROJO,
+    x: 1,
+    y: 1,
   },
-  'senalesEncadenadas:0,0:W': {
+  {
     idSector: 'senalesEncadenadas',
     dir: W,
     primaria: VERDE,
+    x: 0,
+    y: 0,
   },
-  'senalesEncadenadas:3,0:W': {
+  {
     idSector: 'senalesEncadenadas',
     dir: W,
     primaria: VERDE,
+    x: 3,
+    y: 0,
   },
-};
+];

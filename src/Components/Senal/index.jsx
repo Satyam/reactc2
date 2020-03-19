@@ -1,17 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { useEstado } from 'Components/Estado';
 
 import isPlainClick from 'Utils/isPlainClick';
+import { buildIdCelda, buildIdSenal } from 'Utils/buildKeys';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { SENAL } from 'Store/data';
 
-import { selSenal } from 'Store/selectors';
 import styles from './styles.module.css';
 
-export default function Senal({ idSenal, idCelda, placement }) {
-  const senal = useSelector(state => selSenal(state, idSenal));
+export default function Senal({ senal, placement }) {
   const showEstado = useEstado();
 
   if (!senal) return null;
@@ -20,8 +18,8 @@ export default function Senal({ idSenal, idCelda, placement }) {
     isPlainClick(ev) &&
     showEstado({
       tipo: SENAL,
-      idCelda,
-      idSenal,
+      idCelda: buildIdCelda(senal.idSector, senal.x, senal.y),
+      idSenal: buildIdSenal(senal.idSector, senal.x, senal.y, senal.dir),
       placement,
     });
 
