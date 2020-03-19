@@ -14,8 +14,7 @@ import styles from './styles.module.css';
 
 export function EstadoLuz({ luz, estado, onSetEstado }) {
   const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, ROJO);
-  const onSetPrecaucion = ev =>
-    isPlainClick(ev) && onSetEstado(luz, 'precaucion');
+  const onSetPrecaucion = ev => isPlainClick(ev) && onSetEstado(luz, AMARILLO);
   const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, VERDE);
 
   return (
@@ -48,16 +47,23 @@ export function EstadoLuz({ luz, estado, onSetEstado }) {
 }
 
 export default function EstadoSenal({ idSenal, onClose }) {
-  const { dir, izq, manual, primaria, der } = useSelector(state =>
+  const { dir, izq, manual, soloManual, primaria, der } = useSelector(state =>
     selSenal(state, idSenal)
   );
 
   const dispatch = useDispatch();
-  const onSetEstado = (luz, estado) =>
-    manual && dispatch(setLuzEstado(idSenal, luz, estado));
-  const onSetManual = () => {
-    dispatch(setSenalManual(idSenal, !manual));
-    if (!manual) dispatch(setEnclavamientos(idSenal, SENAL, true));
+  const onSetEstado = async (luz, estado) => {
+    if (manual || soloManual) {
+      await dispatch(setLuzEstado(idSenal, luz, estado));
+    }
+    if (soloManual) {
+      await dispatch(setEnclavamientos(idSenal, SENAL, true));
+    }
+  };
+  const onSetManual = async () => {
+    await dispatch(setSenalManual(idSenal, !manual));
+    debugger;
+    if (manual) await dispatch(setEnclavamientos(idSenal, SENAL, true));
   };
 
   return (
@@ -68,7 +74,9 @@ export default function EstadoSenal({ idSenal, onClose }) {
       </PopoverHeader>
       <PopoverBody>
         <div
-          className={classNames(styles.senales, { [styles.disabled]: !manual })}
+          className={classNames(styles.senales, {
+            [styles.disabled]: !soloManual && !manual,
+          })}
         >
           <div
             className={classNames(styles.senal, styles.pushDown, {
@@ -96,14 +104,16 @@ export default function EstadoSenal({ idSenal, onClose }) {
             <EstadoLuz luz="der" estado={der} onSetEstado={onSetEstado} />
           </div>
         </div>
-        <Button
-          className={styles.manual}
-          size="sm"
-          color={manual ? 'danger' : 'outline-info'}
-          onClick={onSetManual}
-        >
-          {manual ? <Unlocked /> : <Locked />}
-        </Button>
+        {!soloManual && (
+          <Button
+            className={styles.manual}
+            size="sm"
+            color={manual ? 'danger' : 'outline-info'}
+            onClick={onSetManual}
+          >
+            {manual ? <Unlocked /> : <Locked />}
+          </Button>
+        )}
       </PopoverBody>
     </>
   );

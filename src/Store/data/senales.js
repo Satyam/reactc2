@@ -100,5 +100,6 @@ export const senales = [
     primaria: VERDE,
     x: 3,
     y: 0,
+    soloManual: true,
   },
 ];

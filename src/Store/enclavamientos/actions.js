@@ -18,13 +18,11 @@ const solvePromises = (arr, fn) =>
 export function setEnclavamientos(idOrigen, tipoOrigen, force) {
   return async (dispatch, getState) => {
     const browseEnclavamientos = origen => {
-      debugger;
       const idSector = origen.idSector;
       const enclavamientos = selEnclavamientos(getState(), idSector);
       return solvePromises(enclavamientos, encl => {
         const { x, y, dir, tipo, dependencias } = encl;
         const idTarget = buildId(idSector, x, y, dir);
-        debugger;
         if (!force && idTarget === idOrigen) return false;
         switch (tipo) {
           case CAMBIO: {
@@ -115,7 +113,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
         }
       });
     };
-    debugger;
+
     if (!selEnclavamientosActive(getState())) return;
     const entity =
       tipoOrigen === CAMBIO

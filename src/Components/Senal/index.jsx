@@ -40,7 +40,7 @@ export default function Senal({ senal, placement }) {
   return (
     <g
       className={classNames(styles.senal, {
-        [styles.manual]: senal.manual,
+        [styles.manual]: !senal.soloManual && senal.manual,
       })}
       transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
       onClick={onClick}
