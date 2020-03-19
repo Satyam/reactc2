@@ -11,35 +11,48 @@ import {
   VERDE,
   AMARILLO,
   ROJO,
+  N,
+  NE,
+  E,
+  SE,
+  S,
+  SW,
+  W,
+  NW,
 } from './constantes';
-/* eslint-ENable no-unused-vars*/
+/* eslint-enable no-unused-vars*/
 
 export const enclavamientos = [
   {
-    idTarget: 'constitucion:4,4',
+    x: 4,
+    y: 4,
     tipo: CAMBIO,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:5,5',
+        x: 5,
+        y: 5,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
       },
       {
-        idSource: 'constitucion:4,5',
+        x: 4,
+        y: 5,
         tipo: CAMBIO,
         [DESVIADO]: NORMAL,
       },
     ],
   },
   {
-    idTarget: 'constitucion:4,5',
+    x: 4,
+    y: 5,
     tipo: CAMBIO,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:5,4',
+        x: 5,
+        y: 4,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
@@ -47,12 +60,14 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'constitucion:5,4',
+    x: 5,
+    y: 4,
     tipo: CAMBIO,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:4,5',
+        x: 4,
+        y: 5,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
@@ -60,30 +75,36 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'constitucion:5,5',
+    x: 5,
+    y: 5,
     tipo: CAMBIO,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:4,4',
+        x: 4,
+        y: 4,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
       },
       {
-        idSource: 'constitucion:4,5',
+        x: 4,
+        y: 5,
         tipo: CAMBIO,
         [DESVIADO]: NORMAL,
       },
     ],
   },
   {
-    idTarget: 'constitucion:2,4:W',
+    x: 2,
+    y: 4,
+    dir: W,
     tipo: SENAL,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:2,4',
+        x: 2,
+        y: 4,
         tipo: CAMBIO,
         [IZQ]: {
           primaria: ROJO,
@@ -101,12 +122,15 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'constitucion:4,4:W',
+    x: 4,
+    y: 4,
+    dir: W,
     tipo: SENAL,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:4,4',
+        x: 4,
+        y: 4,
         tipo: CAMBIO,
         [NORMAL]: {
           der: ROJO,
@@ -117,7 +141,8 @@ export const enclavamientos = [
         },
       },
       {
-        idSource: 'constitucion:5,4',
+        x: 5,
+        y: 4,
         tipo: CAMBIO,
         [DESVIADO]: {
           primaria: ROJO,
@@ -127,12 +152,15 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'constitucion:8,3:SE',
+    x: 8,
+    y: 3,
+    dir: SE,
     tipo: SENAL,
     idSector: 'constitucion',
     dependencias: [
       {
-        idSource: 'constitucion:8,3',
+        x: 8,
+        y: 3,
         tipo: CAMBIO,
         [NORMAL]: {
           izq: ROJO,
@@ -145,12 +173,15 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'simpleDesvio:0,0:W',
+    x: 0,
+    y: 0,
+    dir: W,
     tipo: SENAL,
     idSector: 'simpleDesvio',
     dependencias: [
       {
-        idSource: 'simpleDesvio:0,0',
+        x: 0,
+        y: 0,
         tipo: CAMBIO,
         [NORMAL]: {
           izq: ROJO,
@@ -163,84 +194,99 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:0,0',
+    x: 0,
+    y: 0,
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:1,1',
+        x: 1,
+        y: 1,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
       },
       {
-        idSource: 'cruceDobleCambio:0,1',
+        x: 0,
+        y: 1,
         tipo: CAMBIO,
         [DESVIADO]: NORMAL,
       },
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:0,1',
+    x: 0,
+    y: 1,
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:1,0',
+        x: 1,
+        y: 0,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
       },
       {
-        idSource: 'cruceDobleCambio:0,0',
+        x: 0,
+        y: 0,
         tipo: CAMBIO,
         [DESVIADO]: NORMAL,
       },
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:1,0',
+    x: 1,
+    y: 0,
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:0,1',
+        x: 0,
+        y: 1,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
       },
       {
-        idSource: 'cruceDobleCambio:1,1',
+        x: 1,
+        y: 1,
         tipo: CAMBIO,
         [DESVIADO]: NORMAL,
       },
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:1,1',
+    x: 1,
+    y: 1,
     tipo: CAMBIO,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:0,0',
+        x: 0,
+        y: 0,
         tipo: CAMBIO,
         [NORMAL]: NORMAL,
         [DESVIADO]: DESVIADO,
       },
       {
-        idSource: 'cruceDobleCambio:0,1',
+        x: 0,
+        y: 1,
         tipo: CAMBIO,
         [DESVIADO]: NORMAL,
       },
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:0,0:W',
+    x: 0,
+    y: 0,
+    dir: W,
     tipo: SENAL,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:0,0',
+        x: 0,
+        y: 0,
         tipo: CAMBIO,
         [NORMAL]: {
           der: ROJO,
@@ -251,7 +297,8 @@ export const enclavamientos = [
         },
       },
       {
-        idSource: 'cruceDobleCambio:1,0',
+        x: 1,
+        y: 0,
         tipo: CAMBIO,
         [DESVIADO]: {
           primaria: ROJO,
@@ -261,12 +308,15 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:1,0:E',
+    x: 1,
+    y: 0,
+    dir: E,
     tipo: SENAL,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:1,0',
+        x: 1,
+        y: 0,
         tipo: CAMBIO,
         [NORMAL]: {
           izq: ROJO,
@@ -277,7 +327,8 @@ export const enclavamientos = [
         },
       },
       {
-        idSource: 'cruceDobleCambio:0,0',
+        x: 0,
+        y: 0,
         tipo: CAMBIO,
         [DESVIADO]: {
           primaria: ROJO,
@@ -287,12 +338,15 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:0,1:W',
+    x: 0,
+    y: 1,
+    dir: W,
     tipo: SENAL,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:0,1',
+        x: 0,
+        y: 1,
         tipo: CAMBIO,
         [NORMAL]: {
           izq: ROJO,
@@ -303,7 +357,8 @@ export const enclavamientos = [
         },
       },
       {
-        idSource: 'cruceDobleCambio:1,1',
+        x: 1,
+        y: 1,
         tipo: CAMBIO,
         [DESVIADO]: {
           primaria: ROJO,
@@ -313,12 +368,15 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'cruceDobleCambio:1,1:E',
+    x: 1,
+    y: 1,
+    dir: E,
     tipo: SENAL,
     idSector: 'cruceDobleCambio',
     dependencias: [
       {
-        idSource: 'cruceDobleCambio:1,1',
+        x: 1,
+        y: 1,
         tipo: CAMBIO,
         [NORMAL]: {
           der: ROJO,
@@ -329,7 +387,8 @@ export const enclavamientos = [
         },
       },
       {
-        idSource: 'cruceDobleCambio:0,1',
+        x: 0,
+        y: 1,
         tipo: CAMBIO,
         [DESVIADO]: {
           primaria: ROJO,
@@ -339,12 +398,16 @@ export const enclavamientos = [
     ],
   },
   {
-    idTarget: 'senalesEncadenadas:0,0:W',
+    x: 0,
+    y: 0,
+    dir: W,
     tipo: SENAL,
     idSector: 'senalesEncadenadas',
     dependencias: [
       {
-        idSource: 'senalesEncadenadas:3,0:W',
+        x: 3,
+        y: 0,
+        dir: W,
         tipo: SENAL,
         luces: [
           {

@@ -1,3 +1,5 @@
+import { buildId } from 'Utils/buildKeys';
+
 import {
   selCelda,
   selSenal,
@@ -16,15 +18,20 @@ const solvePromises = (arr, fn) =>
 export function setEnclavamientos(idOrigen, tipoOrigen, force) {
   return async (dispatch, getState) => {
     const browseEnclavamientos = origen => {
-      const enclavamientos = selEnclavamientos(getState(), origen.idSector);
+      debugger;
+      const idSector = origen.idSector;
+      const enclavamientos = selEnclavamientos(getState(), idSector);
       return solvePromises(enclavamientos, encl => {
-        const { idTarget, tipo, dependencias } = encl;
+        const { x, y, dir, tipo, dependencias } = encl;
+        const idTarget = buildId(idSector, x, y, dir);
+        debugger;
         if (!force && idTarget === idOrigen) return false;
-        const celdaTarget = selCelda(getState(), idTarget);
         switch (tipo) {
           case CAMBIO: {
+            const celdaTarget = selCelda(getState(), idTarget);
             return solvePromises(dependencias, dep => {
-              const celdaSource = selCelda(getState(), dep.idSource);
+              const idSource = buildId(idSector, dep.x, dep.y);
+              const celdaSource = selCelda(getState(), idSource);
               const posicionEsperada =
                 dep[celdaSource.posicion] || celdaTarget.posicionInicial;
 
@@ -42,9 +49,10 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
               der: VERDE,
             };
             dependencias.forEach(dep => {
+              const idSource = buildId(idSector, dep.x, dep.y, dep.dir);
               switch (dep.tipo) {
                 case CAMBIO:
-                  const celdaSource = selCelda(getState(), dep.idSource);
+                  const celdaSource = selCelda(getState(), idSource);
                   const estadoBuscado = dep[celdaSource.posicion] || {};
                   Object.keys(estadoBuscado).forEach(luz => {
                     switch (estadoBuscado[luz]) {
@@ -61,7 +69,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                   });
                   break;
                 case SENAL:
-                  const senalSource = selSenal(getState(), dep.idSource);
+                  const senalSource = selSenal(getState(), idSource);
                   dep.luces.forEach(
                     ({ luzSource, cuando, luzTarget, estado }) => {
                       if (senalSource[luzSource] === cuando) {
@@ -107,7 +115,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
         }
       });
     };
-
+    debugger;
     if (!selEnclavamientosActive(getState())) return;
     const entity =
       tipoOrigen === CAMBIO
