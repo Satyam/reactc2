@@ -1,386 +1,437 @@
 # CTC
-Simulador de un Control de Tráfico Centralizado
 
-Esta aplicación simula el tablero mímico de una central de Control de Tráfico Centralizado (CTC).
+**Simulador de un Control de Tráfico Centralizado**
 
-El menú se abre del icono de las tres barras en el extremo izquierdo. Los sectores disponibles se muestran bajo el encabezado "Recientes" pues en su momento ese item habrá de mostrar los que el usuario ha usado más recientemente, mientras que los sectores se desplegarán de otra lista más larga.  Como sólo hay dos, entonces, no valía la pena agregar compllicaciones.
+Esta aplicación simula el tablero mímico de una central de Control de Tráfico Centralizado (CTC) con el objetivo de mostrar los efectos de los enclavamientos entre las varias señales y desvíos.
 
-El globito de dialogo a la derecha mostrará el teletipo.  Por ahora solo lo muestra, pero no hay nada que envíe mensajes al mismo, por lo que siempre está en blanco.
+Desde la barra de navegación se puede seleccionar el _sector_ con que se desea interactuar. Hay varios sectores que representan ejemplos básicos de tipos de enclavamientos y un único sector con cierto viso de realidad, que es la estación Constitución del subte C de Buenos Aires. La opción de Administrar Sectores no está activa al momento.
 
-Una de las opciones del menu es Login. Por el momento el único efecto es mostrar el nombre de usuario y, si la tiene, su foto, en lugar del monigote anónimo y el alias `guest` a la derecha.
+Un segundo item de la barra de menú permite:
 
-Si se selecciona un sector (sugiero Constitución) mostrará el nombre en la barra azul y el mímico en el panel central.
+- activar o no el _teletipo_, pero dado que el envío de mensajes no está implementado, indicará que no hay mensajes.
+- habilitar o no los enclavamientos. Esto permite ver la diferencia en el funcionamiento con y sin enclavamientos.
+- mostrar las coordenadas de cada celda cuando no tienen nombre propio.
 
-Algunas de las celdas están activa, los cambios y también las señales.  Al hacer click en cualquiera de ellas se abre un panel a la derecha mostrando las opciones.
+Al seleccionar cualquier sector se mostrará el mímico correspondiente en el panel central.
 
-Si se pulsa cualquiera de los botones para cambiar la posición del cambio, se mostrará el efecto de inmediato y tras una ligera demora se propagarán los enclavamientos que tenga configurado, cambiarán las luces de los semaforos y otros cambios vinculados.
+Algunos de los elementos son activos, o sea que pueden responder a comandos del operador, a saber, los cambios y las señales. Al hacer click en cualquiera de ellas aparece un cuadro emergente (_pop-up_) mostrando las opciones.
 
-Tanto celdas como las senales dentro de las celdas se pueden poner en manual.  En ese caso, se pueden mover a mano, pero no responden al enclavamiento propagado desde otras celdas. La celda o senal tendrán un halo en rosa para indicar el estado manual.  Al salir de manual, se deberían propagar los enclavamientos pendientes.
+Si se pulsa cualquiera de los botones para cambiar la posición del cambio, se mostrará el efecto de inmediato y, si están activos, se propagarán los enclavamientos que tenga configurado, cambiarán las luces de los semáforos y otros cambios vinculados.
 
-Para volver al mímico, basta hacer click en cualquier lugar del tablero.
+Tanto celdas como las señales dentro de las celdas se pueden poner en manual, lo que se indica con candado abierto o cerrado. Las señales que estén sujetas a enclavamientos sólo pueden manipularse si previamente se ponen en manual, las que no, pueden manipularse libremente.
 
-La opción Admin Sectores permite agregar, actualizar o borrar nuevos sectores.  Si se agrega un sector con un identificador ya existente, actualizará ese sector. Se recomienda llamar al archivo por el mismo identificador del sector.
+La celda o señal cambiará de color de fondo para indicar el estado manual.
 
-----
+Al estar en manual los cambios se pueden mover a mano y las luces de las señales cambiarse, pero no modifican el estado de las demás ni responden al enclavamiento propagado desde otras celdas. Al salir de manual, se propagan los enclavamientos pendientes.
 
-La configuración de los diversos sectores está dada por archivos en formato [JSON](http://www.json.org/).
+---
 
-* [Descripción de un sector](#descripci%C3%B3n-de-un-sector)
-	* [Celdas](#celdas)
-		* [Línea](#linea)
-		* [Cambio](#cambio)
-		* [Paragolpe](#paragolpe)
-		* [Cruce](#cruce)
-		* [Triple](#triple)
-	* [Señales](#se%C3%B1ales)
-	* [Enclavamientos](#enclavamientos)
-		* [Apareados](#apareados)
-		* [Cambio a señal](#cambio-a-se%C3%B1al)
+La configuración de los diversos sectores, sus celdas y señales está dada en los [varios archivos](https://github.com/Satyam/reactc2/tree/master/src/Store/data) de configuración. Estos archivos están compilados en la aplicación por lo que no pueden ser modificados por el usuario. Cada vez que se reinicie la aplicación, volverá a estos mismos valores iniciales.
 
+Los archivos de configuración contienen listas de propiedades para los distintos elementos. Tanto los elementos dentro de estas listas como las propiedades dentro de cada elemento pueden darse en cualquier orden.
 
-Acorde al estándar del formato JSON, todos los nombres de propiedades han de estar entrecomillados.
+- [CTC](#ctc)
+	- [Sectores](#sectores)
+		- [Celdas](#celdas)
+			- [tipo: LINEA](#tipo-linea)
+			- [tipo: CAMBIO](#tipo-cambio)
+			- [tipo: PARAGOLPE](#tipo-paragolpe)
+			- [tipo: CRUCE](#tipo-cruce)
+			- [tipo: TRIPLE](#tipo-triple)
+		- [Señales](#señales)
+	- [Enclavamientos](#enclavamientos)
+		- [CAMBIO dependiendo de CAMBIO](#cambio-dependiendo-de-cambio)
+		- [CAMBIO dependiendo de SENAL](#cambio-dependiendo-de-senal)
+		- [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
+		- [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
 
-Los valores de las claves de este diccionario se corresponden a los nombres de archivo a los cuales ha de agregársele la extensión `.json`.  Así pues, la entrada `"constitucion"` corresponde al archivo `data/constitucion.json`. Las claves del diccionario así como los nombres de los archivos deben ser únicos dentro de la aplicación.  Ninguno de ellos se muestra al usuario y no se recomienda el uso de caracteres que pudieran causar problemas de portabilidad entre sistemas operativos, tales como vocales acentuadas o incluso espacios en blanco.
+## Sectores
 
-## Descripción de un sector
+Los varios sectores están descriptos en el archivo [sectores.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/sectores.js#L6). Este exporta una lista (`Array`) de definición de sectores en lo que en JavaScript se denomina _objeto literal_ (Object Literal). Los sectores pueden declararse en cualquier orden.
 
-Cada sector está descrito en un archivo en formato JSON.
+El archivo de definición de sectores comienza con una serie de [declaraciones de constantes](https://github.com/Satyam/reactc2/blob/master/src/Store/data/sectores.js#L1-L4) que se exportan. Como es habitual en JavaScript y otros lenguajes, las constantes suelen escribirse todas en mayúsculas, con guiones bajos para separar las palabras. La finalidad de estas constantes es, principalmente, reducir errores tipográficos y usualmente también reducir el tamaño del código. Dondequiera que se use la constante `CONSTITUCION` podría también escribirse `'constitucion'`, que es el valor que representa. La diferencia está en que un error tipográfico podría resultar en escribir, por ejemplo, `'constutucion'`, que pasaría totalmente inadvertido en cualquier chequeo de sintaxis pues un _string_ es libre de contener lo que se quiera. Esto no ocurre si se escribe `CONSTUTUCION` dado que esa constante no existe.
 
-El encabezado contiene información global sobre el sector, en particular:
+La definición de cada sector debe indicar:
 
-* `idSector`: El identificador único del sector. Este se usará internamente, el usuario no debería verlo nunca. Basta que sea único.  Usualmente es el mismo que el nombre del archivo en que está contenido, por ello, conviene que tenga caracteres válidos como nombre de archivo.
-* `descrCorta`: Un texto breve que describa el sector. Se usará, por ejemplo, en el menú.
-* `descr`: El nombre completo del sector.
-* `alto`: El número de celdas que ocupa este sector en altura.
-* `ancho`: El número de celdas que ocupa este sector a lo ancho.
-* `celdas`: Un objeto que describe cada una de las celdas.
+- `idSector`: El identificador único del sector. Este se usará internamente, el usuario no debería verlo nunca. Debe ser diferente para cada sector. Conviene que sea breve y que se limite a letras y números sin acentos o signos extraños. Este identificador formará parte del URL de las varias páginas, y es más elegante si es legible. Dado que la propiedad `idSector` se usará frecuentemente en todas las definiciones de otros elementos, se han definido las constantes mencionadas previamente.
+- `descrCorta`: Un texto breve que describa el sector. Este será el que el usuario vea y debe ser legible. Se usará, por ejemplo, en el menú y en la solapa del navegador. En los menúes, el listado de sectores estará ordenado alfabéticamente por esta propiedad.
+- `descr`: El nombre completo del sector. Se mostrará al dejar reposar el cursor sobre el ítem de menú.
+- `alto`: El número de celdas que ocupa este sector en altura.
+- `ancho`: El número de celdas que ocupa este sector a lo ancho.
 
-El valor de `descr` se mostrará en la solapa.  A diferencia del nombre de archivo, que el usuario no verá, este se mostrará en la solapa y debe ser legible.  Por ello, el archivo `constitucion.json` tiene como descripción en su encabezado: `"descr": "Constitución"`, con mayúscula y acento.
-
-La imagen que representa el sector se ajustará para ocupar el máximo espacio posible dentro de la pantalla basándose en el `alto` y `ancho` declarados en el encabezado.
-
-Por ejemplo, el archivo `constitucion.json` contendrá la siguiente descripción:
-
-	{
-	  "idSector": "constitucion",
-	  "descrCorta": "Constitución",
-	  "descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina",
-	  "ancho": 16,
-	  "alto": 7,
-		"celdas": [{
-		...
-		}]
-	}
-
-El orden de las propiedades es indistinto, pueden darse en cualquier orden. Eso se aplica a todo el archivo.
+El mímico que muestra el sector se ajustará el tamaño de las celdas para que todas ellas sean visibles en la pantalla basándose en el `alto` y `ancho` declarados en el encabezado.
 
 ### Celdas
 
-Cada sector esta compuesto de varias celdas.  No es necesario declarar las celdas vacías, así pues el número de celdas en esta sección es habitualmente menor que el producto de `alto` * `ancho` del encabezado pues las celdas vacías no necesitan declararse.
+Las celdas se declaran en el archivo [celdas.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L26). Todas las celdas de todos los sectores están contenidas en este archivo.
 
-La configuración de las celdas está formada por la propiedad `celdas` que apunta a un *arreglo* (array) de propiedades de cada celda.  Toda celda debe tener al menos las siguiente propiedades:
+No es necesario declarar las celdas vacías. Un sector declarado de 4 \* 3 celdas, no necesita 12 declaraciones. Las que no contengan ningún tramo de riel pueden omitirse.
 
-* `coords`: un par de números separados por coma indicando las coordenadas `X` e `Y` de la celda, contando desde cero con la celda `"0,0"` ubicada arriba a la izquierda.
-* `tipo`: indica el tipo de celda.  El resto de las propiedades de la celda depende del tipo, según se verá a continuación.
+Cada celda debe tener al menos las siguiente propiedades:
 
-La mayoría de las celdas pueden tener otras propiedades opcionales independientemente de su tipo, a saber [senales](#se%C3%B1ales) o [enclavamientos](#enclavamientos).
+- `idSector`: el identificador del sector a que pertenece esta celda. Se utilizan las constantes importadas del archivo `sectores.js`.
+- `x` e `y`: las coordenadas de la celda dentro del sector contando desde cero siendo la celda `x:0, y:0` la ubicada arriba a la izquierda.
+- `tipo`: indica el tipo de celda. El resto de las propiedades de la celda depende del tipo, según se verá a continuación.
+- `descr`: _(opcional)_ El mímico mostrará este texto en el ángulo inferior izquierdo de cada celda en la grilla. Si no estuviera presente y la opción correspondiente del menú habilitada, mostrará las coordenadas.
+
+La mayoría de las celdas pueden tener otras propiedades opcionales, que se describirán más adelante.
 
 Por ejemplo, el tipo más simple de celda es el que contiene una simple línea:
 
-	"celdas": [
-		...,
-		{
-			"coords": "5,0"
-			"tipo": "linea",
-			"descr": "XVI-b",
-			"desde": {
-				"dir":"N",
-			},
-			"hacia": {
-				"dir":"S"
-			}
-		},
-		...
+```js
+celdas: [
+  ...,
+  {
+    idSector: 'constitucion',
+    x: 5,
+    y: 0,
+    tipo: 'linea',
+    descr: 'XVI-b',
+    desde: 'N',
+    hacia: 'S',
+  },
+  ...
+]
+```
 
-Dentro de la lista de `celdas` la que se encuentra en la coordenada `5,0`  contiene un tramo de vía simple que va de norte `N` a sur `S`.  La leyenda `XVI-b` se mostrará en una esquina de la celda, si no se proveyera, simplemente se mostrará la coordenada.  Cada tramo de vía se define con al menos la propiedad `dir` (direción) que señala a alguno de los puntos cardinales.  
+Para conveniencia del programador, varios de los literales como `linea`, `N` y demás que se verán más adelante, se han definido como [constantes literales](https://github.com/Satyam/reactc2/blob/master/src/Store/data/constantes.js), de tal manera que en lugar de escribir `tipo: 'linea'` se puede escribir `tipo: LINEA` y `desde: 'N'` como `desde: N`. Nótese que en Javascript, las mayúsculas y minúsculas son diferentes y la convención habitual en programación es que las constantes llevan nombres en mayúscula. En conjunto con las constantes para los identificadores de los sectores, la definición previa quedaría así:
 
-Todas las celdas son más o menos cuadradas.  Todos los segmentos de vías que contienen irradian del centro de ese cuadrado hacia una de 8 posibles direcciones, las cuatro esquinas y los puntos intermedios de los lados.  Estos extremos se los llama por su coordenada geográfica.   Aún así, todas las líneas pasan por el centro del cuadrado.  Es obvio que una línea de norte a sur como la del ejemplo cruzará por el centro del cuadrado, pero también lo hará una que vaya de norte a este.  En lugar de hacer un simple trazo en diagonal uniendo estos lados, la celda se graficará con dos segmentos, uno desde el arriba (*norte*) hasta el centro y otro del centro a la derecha (*este*).
+```js
+celdas: [
+  ...,
+  {
+    idSector: CONSTITUCION
+    x: 5,
+    y: 0,
+    tipo: LINEA,
+    descr: 'XVI-b',
+    desde: N,
+    hacia: S,
+  },
+  ...
+]
+```
 
-	NW  N  NE
-	  \ | /
-	W - . - E
-	  / | \
-	SW  S  SE
+Esta definición nos dice que dentro de la lista de `celdas` la que se encuentra en la coordenada `5,0` del sector `CONSTITUCION` contiene un tramo de vía simple, una simple `LINEA`, que va de norte (`N`) a sur (`S`). La leyenda `'XVI-b'` se mostrará en una esquina de la celda y, si no se proveyera, simplemente se mostrará la coordenada. No se usan constantes para el nombre de la celda pues puede o no repetirse y no hay forma de validarlo, por lo que no se justifica.
+
+Todas las celdas son más o menos cuadradas (según la pantalla lo permita). Todos los segmentos de vías que contienen irradian del centro de ese cuadrado hacia una de 8 posibles direcciones, las cuatro esquinas y los puntos intermedios de los lados. Estos extremos se los llama por su coordenada geográfica. Aún así, todas las líneas pasan por el centro del cuadrado. Es obvio que una línea de norte a sur como la del ejemplo cruzará por el centro del cuadrado, pero también lo hará una que vaya de norte a este. En lugar de hacer un simple trazo en diagonal uniendo estos lados, la celda se graficará con dos segmentos, uno desde el arriba (_norte_) hasta el centro y otro del centro a la derecha (_este_).
+
+    NW  N  NE
+      \ | /
+    W - . - E
+      / | \
+    SW  S  SE
 
 Los tipos de celdas son:
 
-#### linea
+#### tipo: LINEA
 
-Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. Requiere las propiedades `desde` y `hacia` que contendrán la propiedad `dir` indicando los puntos geográficos que une.  Los nombres `desde` y `hacia` son arbitrarios y no señalan el sentido del tráfico en la línea.
-
-Ej.:
-
-	{
-		"coords": "5,0"
-		"tipo": "linea",
-		"descr": "XVI-b",
-		"desde": {
-			"dir":"N",
-		},
-		"hacia": {
-			"dir":"S"
-		}
-	}
-
-#### Cambio
-
-Contiene una vía con una entrada, la `punta` y dos `ramas`, una `normal` y otra `desviado`.  Si bien la salida `normal` suele ser la opuesta a la `punta` esto no es obligatorio.
-
-La propiedad opcional `posicion` indica la posición del cambio y su valor debe corresponder a alguna de las ramas.  Por defecto, es `normal`.
-
-La propiedad opcional `manual` excluye al cambio de cualquier automatismo (ver [Enclavamientos](#enclavamientos) más adelante) y sólo responderá a comandos manuales.  Habitualmente, este valor es establecido dinámicamente desde el tablero mímico. Por defecto es `false`.  Si se indica, el valor `true` of `false` no debe ir entrecomillado, dado que es un booleano, no una cadena de caracteres (o sea: `"manual": true,`)
-
-Ej:
-
-	{
-		"coords": "8,3",
-		"tipo": "cambio",
-		"posicion": "normal",
-		"punta": {
-			"dir": "SE"
-		},
-		"ramas": {
-			"normal": {
-				"dir": "NW"
-			},
-			"desviado": {
-				"dir": "W"
-			}
-		}
-	}
-
-#### Paragolpe
-
-Contiene un tramo de vía sin salida.  Requiere indicar la única salida mediante la propiedad `desde`.
-
-Ej:
-
-	{
-		"tipo": "paragolpe",
-		"desde": {
-			"dir": "E"
-		},
-		"coords": "0,4"
-	}
-
-#### Cruce
-
-Identifica un cruce de vías que no se conectan entre sí.  Pueden cruzarse a un mismo nivel o no.  Contiene las propiedades `l1` y `l2` identificando a las dos líneas que se cruzan.  Cada una de ellas lleva las propiedades `desde` y `hacia` como una celda de tipo `linea`. Opcionalmente pueden llevar la propiedad `nivel`.  Este valor es relativo, la línea con un nivel mayor cruza por encima de la de nivel menor.  Si los valores coinciden es que se cruzan a un mismo nivel.  Si falta el nivel se lo supone cero.
-
-Ej:
-
-	{
-		"coords": "3,4",
-		"tipo": "cruce",
-		"l1": {
-			"nivel": 1,
-			"desde": {
-				"dir": "SW"
-			},
-			"hacia": {
-				"dir": "NE"
-			}
-		},
-		"l2": {
-			"desde": {
-				"dir": "W"
-			},
-			"hacia": {
-				"dir": "E"
-			}
-		}
-	}
-
-En este ejemplo, la linea `l1` cruza por encima de la `l2` dado que la primera tiene `nivel` en 1 y la otra no indica nivel, por lo que se lo supone cero. Los números, al igual que los valores booleanos, no van entrecomillados.
-
-#### Triple
-
-Identifica un cambio de 3 salidas. Al igual que el cambio corriente, al extremo común se le llama `punta` y los otros serán `izq`, `centro` y `der`.  En realidad la denominación de `izq` y `der` es arbitraria y podrían estar cruzadas.
-
-Ej:
-
-	{
-		"coords": "2,4",
-		"tipo": "triple",
-		"posicion": "centro",
-		"punta": {
-			"dir": "W"
-		},
-		"ramas": {
-			"centro": {
-				"dir": "E"
-			},
-			"izq": {
-				"dir": "NE"
-			},
-			"der": {
-				"dir": "SE"
-			}
-		}
-	},
-
-La configuración admite la propiedad opcional `"posicion"` que debe corresponderse al nombre de algúna de las ramas, o sea, `izq`, `centro` o `der`.
-
-Al igual que el [cambio](#cambio), también admite la propiedad `manual`.
-
-#### Señales
-
-Las señales son parte opcional de las celdas y se declaran dentro de cada celda individual.
-
-Cada celda puede tener tantas señales como segmentos de vía, esto es 8. Ninguna celda tiene 8 segmentos, sólo las celdas de tipo `cruce` y `triple` tiene 4 segmentos, las demás no llegan a eso por lo que no tiene sentido que hubiera más señales que segmentos aunque nada impide poner una señal en medio del campo, donde nadie pueda verla.
-
-Las señales siempre son *entrantes* esto es, son visibles a los trenes que circulan en sentido entrante a la celda o sea, se dirigen a su centro. Una señal *saliente* de una celda es *entrante* en la contigua por lo tanto ha de definirse en la celda a que entra.
-
-Cada señal puede estar compuesta de hasta 3 luces, la `primaria` y dos secundarias `izq` y `der` por debajo de esta y ligeramente hacia un lado o al otro.  En el mímico, no se muestra un foco para cada color de los cuales sólo uno está encendido a un tiempo sino que se muestra un único círculo que cambia de color.  
-
-Las señales se identifican por la orientación del segmento en que se encuentran.
+Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. Requiere las propiedades `desde` y `hacia` indicando los puntos geográficos que une. Los nombres `desde` y `hacia` no señalan el sentido del tráfico en la línea.
 
 Ej.:
 
-	{
-		"coords": "4,4",
-		"tipo": "cambio",
-		"posicion": "normal",
-		"punta": {
-			"dir": "W"
-		},
-		"ramas": {
-			"normal": {
-				"dir": "E"
-			},
-			"desviado": {
-				"dir": "SE"
-			}
-		},
-		"senales": [{
-			"dir": "W",
-			"primaria": {
-				"estado": "alto"
-			},
-			"der": {
-				"estado": "precaucion"
-			}
-		}]
-	}
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 5,
+    y: 0,
+    tipo: LINEA,
+    descr: 'XVI-b',
+    desde: N,
+    hacia: S
+  }
+```
 
-En este ejemplo, en la celda `4,4` que contiene un cambio, habrá una señal en la punta que permite dar paso a cualquiera de los dos ramales.  La `punta` está hacia el lado izquierdo (`"W"`) al igual que lo está la única señal.  Esta está compuesta de dos luces, la `primaria` y la `der`, la primera en rojo (`alto`) la otra en amarillo (`precaucion`).   
+#### tipo: CAMBIO
 
-Podría agregarse otra luz en el segmento `invertido` (dirección `"SE"`) que regule el acceso de los trenes en el desvío a la vía principal:
+Contiene una vía con una entrada, la `punta` y dos `ramas`, una `normal` y otra `desviado`. Si bien la salida `normal` suele ser la opuesta a la `punta` esto no es obligatorio.
 
-	{
-		"coords": "4,4",
-		"tipo": "cambio",
-		"posicion": "normal",
-		"punta": {
-			"dir": "W"
-		},
-		"ramas": {
-			"normal": {
-				"dir": "E"
-			},
-			"desviado": {
-				"dir": "SE"
-			}
-		},
-		"senales": [{
-			"dir": "W",
-			"primaria": {
-				"estado": "alto"
-			},
-			"der": {
-				"estado": "precaucion"
-			}
-		},
-		{
-			"dir": "SE",
-			"primaria": {
-				"estado":"alto"
-			}
-		}]
-	}
+La propiedad opcional `posicionInicial` indica la posición del cambio y su valor debe corresponder a alguna de las ramas. Por defecto, es `NORMAL`.
 
-Las señales se identifican mediante 3 valores, las dos primeras las coordenadas de la celda a la cual se le agrega la orientación.  En el ejemplo anterior tenemos las señales `"4,4:W"` y `"4,4:SE"`.  Dentro de la configuración de la celda, la primera parte (`"4,4"`) se omite por redundante dado que la definición de la señal esta contenida dentro de la definición de la celda.
+Ej:
 
-El estado inicial de una señal está dado por el archivo de configuración, luego, este dependerá de los enclavamientos definidos más adelante o podrá ser puesta en manual.  Cuando una señal depende de dos o más enclavamientos, siempre mostrará el estado más restrictivo.  Por ejemplo, una señal se podrá depender de que un cambio esté en la posición normal y que ciertos segmentos de vía estén libres.  en este aso, la señal sólo se pondrá en verde si ambos enclavamientos coinciden en que deba estar en verde.
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 8,
+    y: 3,
+    tipo: CAMBIO,
+    posicionInicial: NORMAL,
+    punta: SE,
+    ramas: {
+      normal: NW,
+      desviado: W,
+    }
+  }
+```
 
-### Enclavamientos
+#### tipo: PARAGOLPE
 
-Llamamos enclavamientos a los automatismos que relacionan las acciones de los diversos elementos del tablero, por ejemplo, cambios que actúan en consonancia o que afectan señales.  
+Contiene un tramo de vía sin salida. Requiere indicar la única salida mediante la propiedad `desde`.
 
-Todos los enclavamientos tienen en común la propiedad `tipo` que indica qué clase de automatismo utiliza.
+Ej:
 
-#### Apareados
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 0,
+    y: 4,
+    tipo: PARAGOLPE,
+    desde: E,
+  }
+```
 
-Dos o más celdas con vías de `"tipo": "cambio"` están apareadas cuando se mueven en consonancia, cuando una cambia a un estado las otras cambian al estado que se indica.  Este enclavamiento sólo requiere que se enumeren las coordenadas de las celdas que contienen los cambios a aparear:
+#### tipo: CRUCE
 
-	{
-		"coords": "4,4",
-		"tipo": "cambio",
-		...
-		"enclavamientos": [{
-			"tipo": "apareados",
-			"celda": "constitucion:5,5",
-			"normal": "normal",
-			"desviado": "desviado"
-		}]
-	}
+Identifica un cruce de vías que no se conectan entre sí. Pueden cruzarse a un mismo nivel o no. Contiene las propiedades `l1` y `l2` identificando a las dos líneas que se cruzan. Cada una de ellas lleva las propiedades `desde` y `hacia` como una celda de tipo `LINEA`. Opcionalmente pueden llevar la propiedad `nivel` (por el momento no se usa). Este valor es relativo, la línea con un nivel mayor cruza por encima de la de nivel menor. Si los valores coinciden es que se cruzan a un mismo nivel. Si falta el nivel se lo supone cero.
 
-En este caso, el cambio que se encuentra en la celdas `4,4` está asociado a la celda en `constitucion:5,5` de tal manera que cuando la celda en `4,4` este en `normal` la otra también lo esté y viceversa.  Si la celda en `4,4` fuera de tipo `triple`, contendría descripciones para sus tres posibles estados y viceversa, una celda de tipo `cambio` podría afectar a una de tipo `triple`.  La razón de que la celda de destino se describa de una forma larga con el prefijo de `idSector`, esto es, `constitucion:5,5` es que la celda apareada puede estar en otro sector.
+Ej:
 
-#### Cambio a señal
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 3,
+    y: 4,
+    tipo: CRUCE,
+    l1: {
+      nivel: 1,
+      desde: SW,
+      hacia: NE,
+    },
+    l2: {
+      desde: W,
+      hacia: E,
+    },
+  },
+```
 
-Define un enclavamiento por el cual una señal responde al estado de un cambio o triple.  El cambio puede o no estar en la misma celda que la señal.
+En este ejemplo, la linea `l1` cruza por encima de la `l2` dado que la primera tiene `nivel` en 1 y la otra no indica nivel, por lo que se lo supone cero. Los números, al igual que los valores booleanos y las constantes, no van entrecomillados.
+
+#### tipo: TRIPLE
+
+Identifica un cambio de 3 salidas. Al igual que el cambio corriente, al extremo común se le llama `punta` y los otros serán `izq`, `centro` y `der`. En realidad la denominación de `izq` y `der` es arbitraria y podrían estar cruzadas.
+
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 2,
+    y: 4,
+    tipo: TRIPLE,
+    posicionInicial: CENTRO,
+    punta: W,
+    ramas: {
+      centro: E,
+      izq: NE,
+      der: SE,
+    },
+  },
+```
+
+La configuración admite la propiedad opcional `posicionInicial` que debe corresponderse al nombre de algúna de las ramas, o sea, `IZQ`, `CENTRO` o `DER`.
+
+### Señales
+
+Las señales son parte opcional de las celdas y se declaran en un archivo [senales.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/senales.js#L27).
+
+Cada celda puede tener tantas señales como segmentos de vía, esto es 8. Ninguna celda tiene 8 segmentos, sólo las celdas de tipo `CRUCE` y `TRIPLE` tienen 4 segmentos, las demás no llegan a eso por lo que no tiene sentido que hubiera más señales que segmentos aunque nada impide poner una señal en medio del campo, donde nadie pueda verla.
+
+Las señales siempre son _entrantes_ esto es, son visibles a los trenes que circulan en sentido entrante a la celda o sea, se dirigen a su centro. Una señal _saliente_ de una celda es _entrante_ en la contigua por lo tanto ha de definirse en esta última.
+
+Cada señal puede estar compuesta de hasta 3 luces, `izq`, `centro` y `der`. La del centro se muestra ligeramente elevada respecto de las otras dos, como en el vértice de un triángulo. En el mímico, no se muestra un foco para cada color de los cuales sólo uno está encendido a un tiempo sino que se muestra un único círculo que cambia de color.
+
+Las señales se identifican, además de los ya habituales `idSector`, `x` e `y`, por la orientación `dir` del segmento en que se encuentran.
+
+También se ha de indicar el estado de cada una de las luces,`izq`, `centro` y `der` que podrán estar en `VERDE`, `AMARILLO` o `ROJO`. Sólo es necesario enumerar las luces que existen, las que no se mencionan no aparecerán.
 
 Ej.:
 
-	{
-		"coords": "8,3",
-		"tipo": "cambio",
-		"posicion": "normal",
-		"punta": {
-			"dir": "SE"
-		},
-		"ramas": {
-			"normal": {
-				"dir": "NW"
-			},
-			"desviado": {
-				"dir": "W"
-			}
-		},
-		"senales": [{
-			"dir": "SE",
-			"primaria": {
-				"estado": "libre"
-			},
-			"izq": {
-				"estado": "alto"
-			}
-		}],
-		"enclavamientos": [{
-			"tipo": "senalCambio",
-			"senal": "constitucion:8,3:SE",
-			"normal": {
-				"primaria": "libre",
-				"izq": "alto"
-			},
-			"desviado": {
-				"primaria": "alto",
-				"izq": "precaucion"
-			}
-		}]
-	},
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 4,
+    y: 4,
+    dir: W,
+    centro: VERDE,
+    der: ROJO,
+  },
+```
 
-Esta entrada define un enclavamiento de tipo `senalCambio` donde la señal en `"constitucion:8,3:SE"` depende del cambio en esa misma celda `"8,3"`.  Cuando el cambio está en `"normal"` la luz `primaria` de la señal deberá estar en `"libre"` (verde) y la luz secundaria `"izq"` en `"alto"` (rojo).  Cuando el cambio está en la posición `"desviado"` la luz primaria estará en rojo y la luz secundaria en amarillo.
+En este ejemplo, en la celda `4,4` del sector `CONSTITUCION` habrá una señal en el lado izquierdo (`W`), apuntando hacia el centro. Esta celda se corresponde a un [CAMBIO](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L169-L180) donde la punta que permite dar paso a cualquiera de los dos ramales, está hacia el lado izquierdo (`W`) al igual que lo está la única señal. Esta está compuesta de dos luces, la `centro` y la `der`, inicialmente en VERDE y ROJO dado que la `posicionInicial` de ese cambio es `NORMAL`. Los enclavamientos cambiarán estos colores según corresponda.
 
-En el caso de una celda de tipo `triple` en lugar de propiedades `normal` y `desviado` tendrá propiedades `izq`, `centro` y `der`.
+Adicionalmente, se puede agregar la propiedad `soloManual: true`, (una propiedad que no existe es equivalente a tener valor `false`). Esta propiedad indica que la señal no es dependiente, por enclavamiento, de ningún otro elemento del sector y que, por ende, puede moverse libremente. Las señales que no tienen esta propiedad o, lo que es lo mismo, tienen `soloManual: false`, no pueden manipularse libremente sin antes ponerlas en modo manual, lo que las excluye de los enclavamientos.
+
+Podrían definirse otras dos señales para este mismo cambio, una en cada una de las ramas, a saber `E` y `SE`. En realidad, podrían definirse hasta 8 señales por celda, pero las que no estuvieran contiguas a un tramo de vía, no tienen sentido.
+
+El estado inicial de una señal está dado por el archivo de configuración. Posteriormente, este dependerá de los enclavamientos definidos más adelante o podrá ser puesta en manual y manejada por el operador. Cuando una señal depende de dos o más enclavamientos, siempre mostrará el estado más restrictivo. Por ejemplo, una señal podrá depender de que un cambio esté en la posición normal y que ciertos segmentos de vía estén libres. En este caso, la señal sólo se pondrá en verde si ambos enclavamientos coinciden en que deba estar en verde. Siempre que haya varias opciones para una señal, se aplicará el estado más restrictivo.
+
+## Enclavamientos
+
+Llamamos enclavamientos a los automatismos que relacionan las acciones de los diversos elementos del tablero, por ejemplo, cambios que actúan en consonancia o que afectan señales.
+
+Los enclavamientos están definidos en el archivo [enclavamientos.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/enclavamientos.js#L31)
+
+Todos los enclavamientos tienen al menos dos partes, el elemento que es **afectado** por el enclavamiento y el o los elementos que lo afectan, contenidos en la lista de `dependencias`, que denominaremos **origen**.
+
+Las propiedades comunes a todos los enclavamientos son:
+
+- `idSector`: el sector del elemento **afectado** por este enclavamiento.
+- `x` e `y`: para identificar las coordenadas de la celda **afectada** dentro de ese sector.
+- `tipo`: identifica al tipo de celda, ya sea `CAMBIO` o `SENAL`. Es importante destacar que las celdas de tipo `TRIPLE` a los efectos de los enclavamientos son un tipo más de cambio.
+- `dir`: (_opcional_) Si el **afectado** fuera de tipo `SENAL`, se deberá indicar cuál de las 8 posibles señales dentro de esta celda es la afectada.
+- `dependencias`: Una lista de los elementos **origen** de los que este **afectado** depende.
+
+Todas las dependencias tienen, al menos, las siguientes propiedades, que permiten identificar al **origen**:
+
+- `x` e `y`, dado que los elementos pueden interactuar entre celdas, es necesario indicar las coordenadas del **origen**.
+- `tipo`: el tipo del elemento **origen** del enclavamiento. Puede ser `CAMBIO` (que abarca a `TRIPLE`) o `SENAL`
+- `dir`: si el elemento fuera de `SENAL` deberá indicarse de cuál de las 8 posibles señales dentro de la celda.
+
+Llamará la atención la falta de la propiedad `idSector` pero por el momento no está previsto que los diferentes sectores interactúen unos con otros.
+
+Cada elemento **afectado** puede tener una o más dependencias.
+
+La combinación de los tipos de los elementos dependientes y sus dependencias nos dan 4 combinaciones
+
+### CAMBIO dependiendo de CAMBIO
+
+En este caso, el estado de un cambio (el **afectado**) depende de otro cambio (el **origen**). Por ejemplo:
+
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 4,
+    y: 4,
+    tipo: CAMBIO,
+    dependencias: [
+      {
+        x: 5,
+        y: 5,
+        tipo: CAMBIO,
+        normal: NORMAL,
+        desviado: DESVIADO,
+      },
+    ]
+  }
+```
+
+Esto nos indica que dentro del sector `CONSTITUCION` el `CAMBIO` en la celda `[4,4]` depende de el `CAMBIO` en la celda `[5,5]` tal que cuando la posición de este sea `NORMAL` el **afectado** también estará en `NORMAL` y viceversa cuando esté en `DESVIADO`.
+
+La sintaxis de JavaScript permitiría usar las constantes `NORMAL` y `DESVIADO` del lado izquierdo del `:` pero sólo si estuvieran encerradas en corchetes, a saber: `[NORMAL]` y `[DESVIADO]`, lo cual es un tanto confuso. Dado que hay otros mecanismos para validar los nombres de las propiedades, se ha preferido usar el nombre directamente y no la constante entre corchetes. Tal mecanismo no existe para el lado derecho, por lo que allí si se usan las constantes.
+
+Si ambos o alguno de los dos elementos fuera de tipo `TRIPLE` se usarán las constantes `IZQ`, `CENTRO` o `DER` en lugar de `NORMAL` y `DESVIADO`.
+
+### CAMBIO dependiendo de SENAL
+
+En este caso, el estado de un cambio dependería de una señal. Este caso no se ha estimado como realista por lo que el programa no la contempla .
+
+### SENAL dependiendo de CAMBIO
+
+Define un enclavamiento por el cual una señal, la **afectada** responde al estado de un CAMBIO o TRIPLE, el **origen**. El cambio puede o no estar en la misma celda que la señal.
+
+Ej.:
+
+```js
+  {
+    idSector: CONSTITUCION,
+    x: 4,
+    y: 4,
+    dir: W,
+    tipo: SENAL,
+    dependencias: [
+      {
+        x: 4,
+        y: 4,
+        tipo: CAMBIO,
+        normal: {
+          der: ROJO,
+        },
+        desviado: {
+          centro: ROJO,
+          der: AMARILLO,
+        },
+      },
+    ]
+  }
+```
+
+Aquí la **afectada** es la `SENAL` en la ubicación `[4,4]`, dirección `W`, del sector `CONSTITUCION`, que depende del `CAMBIO` en la misma celda `[4,4]` e indica que si el **origen** está en posición `normal`, la luz derecha `der`, que apunta al desvío, ha de estar en `ROJO`. En este caso, la luz `centro` ha de estar en `VERDE` pero esta (`VERDE`) es la opción por defecto, por lo que no es necesario mencionarla.
+
+A la inversa, si el cambio está en `desviado` la luz `centro` ha de estar en `ROJO` y la `der` en `AMARILLO`, para indicar la obligada reducción de velocidad al pasar por el desvío.
+
+Si el **origen** fuera un `TRIPLE` en lugar de usar `normal` y `desviado` se debería usar `izq`, `centro` y `der`.
+
+Esta señal tiene sólo dos luces `centro` y `der` por lo que no es necesario indicar qué pasaría con la `izq` que no existe, como que tampoco es necesario indicar las luces que han de estar en `VERDE`. Podrían hacerse ambas cosas, pero serían ignoradas.
+
+### SENAL dependiendo de SENAL
+
+En este caso, tanto **afectada** como **origen** son ambas señales.
+
+```js
+  {
+    idSector: SENALES_ENCADENADAS,
+    x: 0,
+    y: 0,
+    dir: W,
+    tipo: SENAL,
+    dependencias: [
+      {
+        x: 3,
+        y: 0,
+        dir: W,
+        tipo: SENAL,
+        luces: [
+          {
+            cuando: ROJO,
+            luzOrigen: CENTRO,
+            luzAfectada: CENTRO,
+            estado: AMARILLO,
+          },
+        ],
+      },
+    ],
+  },
+```
+
+El ejemplo nos dice que la `SENAL` del lado oeste (`W`) de la celda en `[0,0]` del sector `SENALES_ENCADENADAS` depende de la señal del lado `W` de la celda en `[3,0]`. Como una señal puede tener hasta 3 luces, debe indicarse la interacción entre las varias luces. Nótese que las luces relacionadas no tiene que corresponderse en posición. En este caso, ambas son luces del `CENTRO` pero esto es casualidad. La configuarción nos dice que `cuando` la luz `CENTRO` del **origen** esté en `ROJO` la `luzAfectada`, que también es la del `CENTRO`, ha de estar en `AMARILLO`.
+
+Podrían agregarse más líneas de configuración para los varios posibles colores de `luzOrigen` pero resulta que como el estado de `luzAfectada` para los otros casos, sería `VERDE` que es el valor por defecto, es innecesario, pero bién podría hacerse si se quisiera:
+
+```js
+  {
+    idSector: SENALES_ENCADENADAS,
+    x: 0,
+    y: 0,
+    dir: W,
+    tipo: SENAL,
+    dependencias: [
+      {
+        x: 3,
+        y: 0,
+        dir: W,
+        tipo: SENAL,
+        luces: [
+          {
+            cuando: ROJO,
+            luzOrigen: CENTRO,
+            luzAfectada: CENTRO,
+            estado: AMARILLO,
+          },
+          {
+            cuando: AMARILLO,
+            luzOrigen: CENTRO,
+            luzAfectada: CENTRO,
+            estado: VERDE,
+          },
+          {
+            cuando: VERDE,
+            luzOrigen: CENTRO,
+            luzAfectada: CENTRO,
+            estado: VERDE,
+          },
+        ],
+      },
+    ],
+  },
+```
+
+Igualmente, podrían sumarse entradas para las otras luces de `luzOrigen` (`izq` y `der`) si existieran o tuvieran alguna relación con las luces de esta señal.
