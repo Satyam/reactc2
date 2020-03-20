@@ -17,16 +17,23 @@ import {
 } from './constantes';
 /* eslint-enable no-unused-vars */
 
+import {
+  CONSTITUCION,
+  SIMPLE_DESVIO,
+  CRUCE_DOBLE_CAMBIO,
+  SENALES_ENCADENADAS,
+} from './sectores';
+
 export const senales = [
   {
-    idSector: 'constitucion',
+    idSector: CONSTITUCION,
     centro: VERDE,
     dir: E,
     x: 5,
     y: 3,
   },
   {
-    idSector: 'constitucion',
+    idSector: CONSTITUCION,
     dir: SE,
     centro: VERDE,
     izq: ROJO,
@@ -34,7 +41,7 @@ export const senales = [
     y: 3,
   },
   {
-    idSector: 'constitucion',
+    idSector: CONSTITUCION,
     dir: W,
     centro: VERDE,
     izq: ROJO,
@@ -43,7 +50,7 @@ export const senales = [
     y: 4,
   },
   {
-    idSector: 'constitucion',
+    idSector: CONSTITUCION,
     dir: W,
     centro: VERDE,
     der: ROJO,
@@ -51,7 +58,7 @@ export const senales = [
     y: 4,
   },
   {
-    idSector: 'simpleDesvio',
+    idSector: SIMPLE_DESVIO,
     dir: W,
     centro: VERDE,
     izq: ROJO,
@@ -59,7 +66,7 @@ export const senales = [
     y: 0,
   },
   {
-    idSector: 'cruceDobleCambio',
+    idSector: CRUCE_DOBLE_CAMBIO,
     dir: W,
     centro: VERDE,
     der: ROJO,
@@ -67,7 +74,7 @@ export const senales = [
     y: 0,
   },
   {
-    idSector: 'cruceDobleCambio',
+    idSector: CRUCE_DOBLE_CAMBIO,
     dir: E,
     centro: VERDE,
     izq: ROJO,
@@ -75,7 +82,7 @@ export const senales = [
     y: 0,
   },
   {
-    idSector: 'cruceDobleCambio',
+    idSector: CRUCE_DOBLE_CAMBIO,
     dir: W,
     centro: VERDE,
     izq: ROJO,
@@ -83,7 +90,7 @@ export const senales = [
     y: 1,
   },
   {
-    idSector: 'cruceDobleCambio',
+    idSector: CRUCE_DOBLE_CAMBIO,
     dir: E,
     centro: VERDE,
     der: ROJO,
@@ -91,14 +98,14 @@ export const senales = [
     y: 1,
   },
   {
-    idSector: 'senalesEncadenadas',
+    idSector: SENALES_ENCADENADAS,
     dir: W,
     centro: VERDE,
     x: 0,
     y: 0,
   },
   {
-    idSector: 'senalesEncadenadas',
+    idSector: SENALES_ENCADENADAS,
     dir: W,
     centro: VERDE,
     x: 3,
