@@ -32,14 +32,14 @@ export const enclavamientos = [
         x: 5,
         y: 5,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
       {
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        [DESVIADO]: NORMAL,
+        desviado: NORMAL,
       },
     ],
   },
@@ -53,8 +53,8 @@ export const enclavamientos = [
         x: 5,
         y: 4,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
     ],
   },
@@ -68,8 +68,8 @@ export const enclavamientos = [
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
     ],
   },
@@ -83,14 +83,14 @@ export const enclavamientos = [
         x: 4,
         y: 4,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
       {
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        [DESVIADO]: NORMAL,
+        desviado: NORMAL,
       },
     ],
   },
@@ -105,17 +105,17 @@ export const enclavamientos = [
         x: 2,
         y: 4,
         tipo: CAMBIO,
-        [IZQ]: {
-          [CENTRO]: ROJO,
-          [DER]: ROJO,
+        izq: {
+          centro: ROJO,
+          der: ROJO,
         },
-        [CENTRO]: {
-          [IZQ]: ROJO,
-          [DER]: ROJO,
+        centro: {
+          izq: ROJO,
+          der: ROJO,
         },
-        [DER]: {
-          [IZQ]: ROJO,
-          [CENTRO]: ROJO,
+        der: {
+          izq: ROJO,
+          centro: ROJO,
         },
       },
     ],
@@ -131,21 +131,21 @@ export const enclavamientos = [
         x: 4,
         y: 4,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [DER]: ROJO,
+        normal: {
+          der: ROJO,
         },
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [DER]: AMARILLO,
+        desviado: {
+          centro: ROJO,
+          der: AMARILLO,
         },
       },
       {
         x: 5,
         y: 4,
         tipo: CAMBIO,
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [DER]: ROJO,
+        desviado: {
+          centro: ROJO,
+          der: ROJO,
         },
       },
     ],
@@ -161,12 +161,12 @@ export const enclavamientos = [
         x: 8,
         y: 3,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [IZQ]: ROJO,
+        normal: {
+          izq: ROJO,
         },
-        [DESVIADO]: {
-          [IZQ]: AMARILLO,
-          [CENTRO]: ROJO,
+        desviado: {
+          izq: AMARILLO,
+          centro: ROJO,
         },
       },
     ],
@@ -182,12 +182,12 @@ export const enclavamientos = [
         x: 0,
         y: 0,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [IZQ]: ROJO,
+        normal: {
+          izq: ROJO,
         },
-        [DESVIADO]: {
-          [IZQ]: AMARILLO,
-          [CENTRO]: ROJO,
+        desviado: {
+          izq: AMARILLO,
+          centro: ROJO,
         },
       },
     ],
@@ -202,14 +202,14 @@ export const enclavamientos = [
         x: 1,
         y: 1,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
       {
         x: 0,
         y: 1,
         tipo: CAMBIO,
-        [DESVIADO]: NORMAL,
+        desviado: NORMAL,
       },
     ],
   },
@@ -223,14 +223,14 @@ export const enclavamientos = [
         x: 1,
         y: 0,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
       {
         x: 0,
         y: 0,
         tipo: CAMBIO,
-        [DESVIADO]: NORMAL,
+        desviado: NORMAL,
       },
     ],
   },
@@ -244,14 +244,14 @@ export const enclavamientos = [
         x: 0,
         y: 1,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
       {
         x: 1,
         y: 1,
         tipo: CAMBIO,
-        [DESVIADO]: NORMAL,
+        desviado: NORMAL,
       },
     ],
   },
@@ -265,14 +265,14 @@ export const enclavamientos = [
         x: 0,
         y: 0,
         tipo: CAMBIO,
-        [NORMAL]: NORMAL,
-        [DESVIADO]: DESVIADO,
+        normal: NORMAL,
+        desviado: DESVIADO,
       },
       {
         x: 0,
         y: 1,
         tipo: CAMBIO,
-        [DESVIADO]: NORMAL,
+        desviado: NORMAL,
       },
     ],
   },
@@ -287,21 +287,21 @@ export const enclavamientos = [
         x: 0,
         y: 0,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [DER]: ROJO,
+        normal: {
+          der: ROJO,
         },
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [DER]: AMARILLO,
+        desviado: {
+          centro: ROJO,
+          der: AMARILLO,
         },
       },
       {
         x: 1,
         y: 0,
         tipo: CAMBIO,
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [DER]: ROJO,
+        desviado: {
+          centro: ROJO,
+          der: ROJO,
         },
       },
     ],
@@ -317,21 +317,21 @@ export const enclavamientos = [
         x: 1,
         y: 0,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [IZQ]: ROJO,
+        normal: {
+          izq: ROJO,
         },
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [IZQ]: AMARILLO,
+        desviado: {
+          centro: ROJO,
+          izq: AMARILLO,
         },
       },
       {
         x: 0,
         y: 0,
         tipo: CAMBIO,
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [IZQ]: ROJO,
+        desviado: {
+          centro: ROJO,
+          izq: ROJO,
         },
       },
     ],
@@ -347,21 +347,21 @@ export const enclavamientos = [
         x: 0,
         y: 1,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [IZQ]: ROJO,
+        normal: {
+          izq: ROJO,
         },
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [IZQ]: AMARILLO,
+        desviado: {
+          centro: ROJO,
+          izq: AMARILLO,
         },
       },
       {
         x: 1,
         y: 1,
         tipo: CAMBIO,
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [IZQ]: ROJO,
+        desviado: {
+          centro: ROJO,
+          izq: ROJO,
         },
       },
     ],
@@ -377,21 +377,21 @@ export const enclavamientos = [
         x: 1,
         y: 1,
         tipo: CAMBIO,
-        [NORMAL]: {
-          [DER]: ROJO,
+        normal: {
+          der: ROJO,
         },
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [DER]: AMARILLO,
+        desviado: {
+          centro: ROJO,
+          der: AMARILLO,
         },
       },
       {
         x: 0,
         y: 1,
         tipo: CAMBIO,
-        [DESVIADO]: {
-          [CENTRO]: ROJO,
-          [DER]: ROJO,
+        desviado: {
+          centro: ROJO,
+          der: ROJO,
         },
       },
     ],
