@@ -70,15 +70,15 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 case SENAL:
                   const senalSource = selSenal(getState(), idSource);
                   dep.luces.forEach(
-                    ({ luzSource, cuando, luzTarget, estado }) => {
-                      if (senalSource[luzSource] === cuando) {
+                    ({ luzOrigen, cuando, luzAfectada, estado }) => {
+                      if (senalSource[luzOrigen] === cuando) {
                         switch (estado) {
                           case ROJO:
-                            nuevoEstado[luzTarget] = ROJO;
+                            nuevoEstado[luzAfectada] = ROJO;
                             break;
                           case AMARILLO:
-                            if (nuevoEstado[luzTarget] === VERDE)
-                              nuevoEstado[luzTarget] = AMARILLO;
+                            if (nuevoEstado[luzAfectada] === VERDE)
+                              nuevoEstado[luzAfectada] = AMARILLO;
                             break;
                           default:
                             break;
