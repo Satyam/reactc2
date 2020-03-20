@@ -9,11 +9,10 @@ export const SENAL = 'senal';
 export const VERDE = 'verde';
 export const AMARILLO = 'amarillo';
 export const ROJO = 'rojo';
-export const PRIMARIA = 'primaria';
 // Cambio:
 export const NORMAL = 'normal';
 export const DESVIADO = 'desviado';
-// Triple
+// Triple  y luces
 export const IZQ = 'izq';
 export const CENTRO = 'centro';
 export const DER = 'der';

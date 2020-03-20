@@ -47,7 +47,7 @@ export function EstadoLuz({ luz, estado, onSetEstado }) {
 }
 
 export default function EstadoSenal({ idSenal, onClose }) {
-  const { dir, izq, manual, soloManual, primaria, der } = useSelector(state =>
+  const { dir, izq, manual, soloManual, centro, der } = useSelector(state =>
     selSenal(state, idSenal)
   );
 
@@ -62,7 +62,6 @@ export default function EstadoSenal({ idSenal, onClose }) {
   };
   const onSetManual = async () => {
     await dispatch(setSenalManual(idSenal, !manual));
-    debugger;
     if (manual) await dispatch(setEnclavamientos(idSenal, SENAL, true));
   };
 
@@ -87,14 +86,10 @@ export default function EstadoSenal({ idSenal, onClose }) {
           </div>
           <div
             className={classNames(styles.senal, {
-              [styles.hidden]: !primaria,
+              [styles.hidden]: !centro,
             })}
           >
-            <EstadoLuz
-              luz="primaria"
-              estado={primaria}
-              onSetEstado={onSetEstado}
-            />
+            <EstadoLuz luz="centro" estado={centro} onSetEstado={onSetEstado} />
           </div>
           <div
             className={classNames(styles.senal, styles.pushDown, {

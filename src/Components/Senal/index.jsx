@@ -23,7 +23,7 @@ export default function Senal({ senal, placement }) {
       placement,
     });
 
-  const { dir, primaria, izq, der } = senal;
+  const { dir, centro, izq, der } = senal;
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
   constances como ANCHO_CELDA y demas porque deberían hacerse proporcional
@@ -48,27 +48,13 @@ export default function Senal({ senal, placement }) {
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
       <circle
-        className={classNames(styles.primaria, styles[primaria])}
+        className={styles[centro]}
         cx={izq || der ? x2 : x1}
         cy={y}
         r={r}
       />
-      {izq && (
-        <circle
-          className={classNames(styles.izq, styles[izq])}
-          cx={x1}
-          cy={y + r}
-          r={r}
-        />
-      )}
-      {der && (
-        <circle
-          className={classNames(styles.der, styles[der])}
-          cx={x1}
-          cy={y - r}
-          r={r}
-        />
-      )}
+      {izq && <circle className={styles[izq]} cx={x1} cy={y + r} r={r} />}
+      {der && <circle className={styles[der]} cx={x1} cy={y - r} r={r} />}
     </g>
   );
 }

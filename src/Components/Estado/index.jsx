@@ -48,7 +48,6 @@ export function EstadoProvider({ children }) {
           ...props,
           show: true,
         });
-      console.log(props);
 
       if (show) {
         setProps({});

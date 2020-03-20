@@ -8,7 +8,17 @@ import {
   selSenalIsManual,
   selCeldaIsManual,
 } from 'Store/selectors';
-import { VERDE, AMARILLO, ROJO, CAMBIO, SENAL } from 'Store/data';
+
+import {
+  VERDE,
+  AMARILLO,
+  ROJO,
+  CAMBIO,
+  SENAL,
+  IZQ,
+  CENTRO,
+  DER,
+} from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
@@ -42,9 +52,9 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             const senalTarget = selSenal(getState(), idTarget);
             if (selSenalIsManual(getState(), idTarget)) return false;
             const nuevoEstado = {
-              izq: VERDE,
-              primaria: VERDE,
-              der: VERDE,
+              [IZQ]: VERDE,
+              [CENTRO]: VERDE,
+              [DER]: VERDE,
             };
             dependencias.forEach(dep => {
               const idSource = buildId(idSector, dep.x, dep.y, dep.dir);
