@@ -6,14 +6,11 @@ import ReactResizeDetector from 'react-resize-detector';
 import { selSector, selCeldas } from 'Store/selectors';
 
 import Celda from 'Components/Celda';
-import loading from 'Components/Icons/loading.gif';
 import styles from './styles.module.css';
 
 export default function Sector({ idSector }) {
   const sector = useSelector(state => selSector(state, idSector));
   const celdas = useSelector(state => selCeldas(state, idSector));
-
-  if (!sector) return <img alt="loading..." src={loading} />;
 
   const { ancho, descrCorta } = sector;
   return (

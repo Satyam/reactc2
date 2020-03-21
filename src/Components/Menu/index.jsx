@@ -54,6 +54,7 @@ export default function Menu() {
   const toggleEnclavamientos = () =>
     dispatch(enclavamientosActive(!isEnclavamientoActive));
   const toggleShowCoords = () => dispatch(showCoordsAction(!showCoords));
+
   return (
     <div>
       <Navbar color="light" light expand="md">

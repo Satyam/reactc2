@@ -1,20 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { celdas } from 'Store/data';
-import { plainSetCambio, setCambioManual } from './actions';
+import { loadData, plainSetCambio, setCambioManual } from 'Store/actions';
 import { buildIdCelda } from 'Utils/buildKeys';
 
 export default createReducer(
   {},
   {
-    [plainSetCambio]: (state, action) => {
-      const { idCelda, posicion } = action.payload;
-      state[idCelda].posicion = posicion;
-    },
-    [setCambioManual]: (state, action) => {
-      const { idCelda, manual } = action.payload;
-      state[idCelda].manual = manual;
-    },
-    '@@INIT': () =>
+    [loadData]: state =>
       celdas.reduce((cs, c) => {
         const idCelda = buildIdCelda(c.idSector, c.x, c.y);
         if (cs[idCelda])
@@ -29,6 +21,14 @@ export default createReducer(
             posicion: c.posicionInicial,
           },
         };
-      }, {}),
+      }, state),
+    [plainSetCambio]: (state, action) => {
+      const { idCelda, posicion } = action.payload;
+      state[idCelda].posicion = posicion;
+    },
+    [setCambioManual]: (state, action) => {
+      const { idCelda, manual } = action.payload;
+      state[idCelda].manual = manual;
+    },
   }
 );
