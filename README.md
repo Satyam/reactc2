@@ -31,19 +31,19 @@ La configuración de los diversos sectores, sus celdas y señales está dada en 
 Los archivos de configuración contienen listas de propiedades para los distintos elementos. Tanto los elementos dentro de estas listas como las propiedades dentro de cada elemento pueden darse en cualquier orden.
 
 - [CTC](#ctc)
-	- [Sectores](#sectores)
-		- [Celdas](#celdas)
-			- [tipo: LINEA](#tipo-linea)
-			- [tipo: CAMBIO](#tipo-cambio)
-			- [tipo: PARAGOLPE](#tipo-paragolpe)
-			- [tipo: CRUCE](#tipo-cruce)
-			- [tipo: TRIPLE](#tipo-triple)
-		- [Señales](#señales)
-	- [Enclavamientos](#enclavamientos)
-		- [CAMBIO dependiendo de CAMBIO](#cambio-dependiendo-de-cambio)
-		- [CAMBIO dependiendo de SENAL](#cambio-dependiendo-de-senal)
-		- [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
-		- [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
+  - [Sectores](#sectores)
+    - [Celdas](#celdas)
+      - [tipo: LINEA](#tipo-linea)
+      - [tipo: CAMBIO](#tipo-cambio)
+      - [tipo: PARAGOLPE](#tipo-paragolpe)
+      - [tipo: CRUCE](#tipo-cruce)
+      - [tipo: TRIPLE](#tipo-triple)
+    - [Señales](#señales)
+  - [Enclavamientos](#enclavamientos)
+    - [CAMBIO dependiendo de CAMBIO](#cambio-dependiendo-de-cambio)
+    - [CAMBIO dependiendo de SENAL](#cambio-dependiendo-de-senal)
+    - [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
+    - [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
 
 ## Sectores
 
@@ -87,14 +87,13 @@ celdas: [
     y: 0,
     tipo: 'linea',
     descr: 'XVI-b',
-    desde: 'N',
-    hacia: 'S',
+    puntas: ['N', 'S'],
   },
   ...
 ]
 ```
 
-Para conveniencia del programador, varios de los literales como `linea`, `N` y demás que se verán más adelante, se han definido como [constantes literales](https://github.com/Satyam/reactc2/blob/master/src/Store/data/constantes.js), de tal manera que en lugar de escribir `tipo: 'linea'` se puede escribir `tipo: LINEA` y `desde: 'N'` como `desde: N`. Nótese que en Javascript, las mayúsculas y minúsculas son diferentes y la convención habitual en programación es que las constantes llevan nombres en mayúscula. En conjunto con las constantes para los identificadores de los sectores, la definición previa quedaría así:
+Para conveniencia del programador, varios de los literales como `linea`, `N` y demás que se verán más adelante, se han definido como [constantes literales](https://github.com/Satyam/reactc2/blob/master/src/Store/data/constantes.js), de tal manera que en lugar de escribir `tipo: 'linea'` se puede escribir `tipo: LINEA` y `puntas: ['N', 'S']` como `puntas: [N, S]`. Nótese que en Javascript, las mayúsculas y minúsculas son diferentes y la convención habitual en programación es que las constantes llevan nombres en mayúscula. En conjunto con las constantes para los identificadores de los sectores, la definición previa quedaría así:
 
 ```js
 celdas: [
@@ -105,14 +104,13 @@ celdas: [
     y: 0,
     tipo: LINEA,
     descr: 'XVI-b',
-    desde: N,
-    hacia: S,
+    puntas: [N, S],
   },
   ...
 ]
 ```
 
-Esta definición nos dice que dentro de la lista de `celdas` la que se encuentra en la coordenada `5,0` del sector `CONSTITUCION` contiene un tramo de vía simple, una simple `LINEA`, que va de norte (`N`) a sur (`S`). La leyenda `'XVI-b'` se mostrará en una esquina de la celda y, si no se proveyera, simplemente se mostrará la coordenada. No se usan constantes para el nombre de la celda pues puede o no repetirse y no hay forma de validarlo, por lo que no se justifica.
+Esta definición nos dice que dentro de la lista de `celdas` la que se encuentra en la coordenada `5,0` del sector `CONSTITUCION` contiene un tramo de vía simple, una simple `LINEA`, cuyos extremos apunta al norte (`N`) y al sur (`S`). La leyenda `'XVI-b'` se mostrará en una esquina de la celda y, si no se proveyera, simplemente se mostrará la coordenada. No se usan constantes para el nombre de la celda pues puede o no repetirse y no hay forma de validarlo, por lo que no se justifica.
 
 Todas las celdas son más o menos cuadradas (según la pantalla lo permita). Todos los segmentos de vías que contienen irradian del centro de ese cuadrado hacia una de 8 posibles direcciones, las cuatro esquinas y los puntos intermedios de los lados. Estos extremos se los llama por su coordenada geográfica. Aún así, todas las líneas pasan por el centro del cuadrado. Es obvio que una línea de norte a sur como la del ejemplo cruzará por el centro del cuadrado, pero también lo hará una que vaya de norte a este. En lugar de hacer un simple trazo en diagonal uniendo estos lados, la celda se graficará con dos segmentos, uno desde el arriba (_norte_) hasta el centro y otro del centro a la derecha (_este_).
 
@@ -126,7 +124,7 @@ Los tipos de celdas son:
 
 #### tipo: LINEA
 
-Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. Requiere las propiedades `desde` y `hacia` indicando los puntos geográficos que une. Los nombres `desde` y `hacia` no señalan el sentido del tráfico en la línea.
+Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. Requiere la propiedad `puntas` indicando los puntos geográficos que une. El orden de las puntas es indistinto.
 
 Ej.:
 
@@ -137,8 +135,7 @@ Ej.:
     y: 0,
     tipo: LINEA,
     descr: 'XVI-b',
-    desde: N,
-    hacia: S
+    puntas: [N, S]
   }
 ```
 
@@ -167,7 +164,7 @@ Ej:
 
 #### tipo: PARAGOLPE
 
-Contiene un tramo de vía sin salida. Requiere indicar la única salida mediante la propiedad `desde`.
+Contiene un tramo de vía sin salida. Requiere indicar la única salida mediante la propiedad `punta`.
 
 Ej:
 
@@ -177,13 +174,13 @@ Ej:
     x: 0,
     y: 4,
     tipo: PARAGOLPE,
-    desde: E,
+    punta: E,
   }
 ```
 
 #### tipo: CRUCE
 
-Identifica un cruce de vías que no se conectan entre sí. Pueden cruzarse a un mismo nivel o no. Contiene las propiedades `l1` y `l2` identificando a las dos líneas que se cruzan. Cada una de ellas lleva las propiedades `desde` y `hacia` como una celda de tipo `LINEA`. Opcionalmente pueden llevar la propiedad `nivel` (por el momento no se usa). Este valor es relativo, la línea con un nivel mayor cruza por encima de la de nivel menor. Si los valores coinciden es que se cruzan a un mismo nivel. Si falta el nivel se lo supone cero.
+Identifica un cruce de vías que no se conectan entre sí. Pueden cruzarse a un mismo nivel o no. Contiene las propiedades `linea1` y `linea2` que contienen, a si vez, las `puntas` que unecomo una celda de tipo `LINEA`. Opcionalmente pueden llevar la propiedad `nivel` (por el momento no se usa). Este valor es relativo, la línea con un nivel mayor cruza por encima de la de nivel menor. Si los valores coinciden es que se cruzan a un mismo nivel. Si falta el nivel se lo supone cero.
 
 Ej:
 
@@ -193,19 +190,17 @@ Ej:
     x: 3,
     y: 4,
     tipo: CRUCE,
-    l1: {
+    linea1: {
       nivel: 1,
-      desde: SW,
-      hacia: NE,
+      puntas: [SW, NE],
     },
     l2: {
-      desde: W,
-      hacia: E,
+      puntas: [W, E],
     },
   },
 ```
 
-En este ejemplo, la linea `l1` cruza por encima de la `l2` dado que la primera tiene `nivel` en 1 y la otra no indica nivel, por lo que se lo supone cero. Los números, al igual que los valores booleanos y las constantes, no van entrecomillados.
+En este ejemplo, la linea `linea1` cruza por encima de la `linea2` dado que la primera tiene `nivel` en 1 y la otra no indica nivel, por lo que se lo supone cero. Los números, al igual que los valores booleanos y las constantes, no van entrecomillados.
 
 #### tipo: TRIPLE
 
@@ -256,7 +251,7 @@ Ej.:
   },
 ```
 
-En este ejemplo, en la celda `4,4` del sector `CONSTITUCION` habrá una señal en el lado izquierdo (`W`), apuntando hacia el centro. Esta celda se corresponde a un [CAMBIO](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L169-L180) donde la punta que permite dar paso a cualquiera de los dos ramales, está hacia el lado izquierdo (`W`) al igual que lo está la única señal. Esta está compuesta de dos luces, la `centro` y la `der`, inicialmente en VERDE y ROJO dado que la `posicionInicial` de ese cambio es `NORMAL`. Los enclavamientos cambiarán estos colores según corresponda.
+En este ejemplo, en la celda `4,4` del sector `CONSTITUCION` habrá una señal en el lado izquierdo (`W`), apuntando hacia el centro. Esta celda se corresponde a un [CAMBIO](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L156-L166) donde la punta que permite dar paso a cualquiera de los dos ramales, está hacia el lado izquierdo (`W`) al igual que lo está la única señal. Esta está compuesta de dos luces, la `centro` y la `der`, inicialmente en VERDE y ROJO dado que la `posicionInicial` de ese cambio es `NORMAL`. Los enclavamientos cambiarán estos colores según corresponda.
 
 Adicionalmente, se puede agregar la propiedad `soloManual: true`, (una propiedad que no existe es equivalente a tener valor `false`). Esta propiedad indica que la señal no es dependiente, por enclavamiento, de ningún otro elemento del sector y que, por ende, puede moverse libremente. Las señales que no tienen esta propiedad o, lo que es lo mismo, tienen `soloManual: false`, no pueden manipularse libremente sin antes ponerlas en modo manual, lo que las excluye de los enclavamientos.
 

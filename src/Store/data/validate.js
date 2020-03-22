@@ -135,10 +135,15 @@ const baseCelda = j
   })
   .append(coords);
 
+const puntas = j
+  .array()
+  .items(dir)
+  .length(2)
+  .required();
+
 const celdaLinea = baseCelda.append({
   tipo: j.valid(LINEA),
-  desde: dir,
-  hacia: dir,
+  puntas,
 });
 
 const celdaCambio = baseCelda.append({
@@ -150,7 +155,7 @@ const celdaCambio = baseCelda.append({
 
 const celdaParagolpe = baseCelda.append({
   tipo: j.valid(PARAGOLPE),
-  desde: dir,
+  punta: dir,
 });
 
 const celdaTriple = baseCelda.append({
@@ -162,13 +167,19 @@ const celdaTriple = baseCelda.append({
 
 const celdaCruce = baseCelda.append({
   tipo: j.valid(CRUCE),
-  l1: j.object({
-    desde: dir,
-    hacia: dir,
+  linea1: j.object({
+    puntas,
+    nivel: j
+      .number()
+      .integer()
+      .min(0),
   }),
-  l2: j.object({
-    desde: dir,
-    hacia: dir,
+  linea2: j.object({
+    puntas,
+    nivel: j
+      .number()
+      .integer()
+      .min(0),
   }),
   nivel: j.boolean(),
 });
