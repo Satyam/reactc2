@@ -4,6 +4,27 @@
 
 Esta aplicación simula el tablero mímico de una central de Control de Tráfico Centralizado (CTC) con el objetivo de mostrar los efectos de los enclavamientos entre las varias señales y desvíos.
 
+- [CTC](#ctc)
+  - [Uso](#uso)
+    - [Comandos](#comandos)
+    - [Ver configuración](#ver-configuración)
+  - [Configuración](#configuración)
+    - [Sectores](#sectores)
+      - [Celdas](#celdas)
+        - [tipo: LINEA](#tipo-linea)
+        - [tipo: CAMBIO](#tipo-cambio)
+        - [tipo: PARAGOLPE](#tipo-paragolpe)
+        - [tipo: CRUCE](#tipo-cruce)
+        - [tipo: TRIPLE](#tipo-triple)
+      - [Señales](#señales)
+    - [Enclavamientos](#enclavamientos)
+      - [CAMBIO dependiendo de CAMBIO](#cambio-dependiendo-de-cambio)
+      - [CAMBIO dependiendo de SENAL](#cambio-dependiendo-de-senal)
+      - [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
+      - [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
+
+## Uso
+
 Desde la barra de navegación se puede seleccionar el _sector_ con que se desea interactuar. Hay varios sectores que representan ejemplos básicos de tipos de enclavamientos y un único sector con cierto viso de realidad, que es la estación Constitución del subte C de Buenos Aires. La opción de Administrar Sectores no está activa al momento.
 
 Un segundo item de la barra de menú permite:
@@ -13,6 +34,8 @@ Un segundo item de la barra de menú permite:
 - mostrar las coordenadas de cada celda cuando no tienen nombre propio.
 
 Al seleccionar cualquier sector se mostrará el mímico correspondiente en el panel central.
+
+### Comandos
 
 Algunos de los elementos son activos, o sea que pueden responder a comandos del operador, a saber, los cambios y las señales. Al hacer click en cualquiera de ellas aparece un cuadro emergente (_pop-up_) mostrando las opciones.
 
@@ -24,28 +47,21 @@ La celda o señal cambiará de color de fondo para indicar el estado manual.
 
 Al estar en manual los cambios se pueden mover a mano y las luces de las señales cambiarse, pero no modifican el estado de las demás ni responden al enclavamiento propagado desde otras celdas. Al salir de manual, se propagan los enclavamientos pendientes.
 
----
+### Ver configuración
+
+Se puede hacer un *click largo* (mantener el botón del ratón persionado durante un tiempo) sobre cualquier elemento del mímico para ver la configuración de cualquier elemento.  Esto se aplica tanto a elementos activos, como cambios y señales, como a los pasivos.
+
+En este caso, el *pop-up* mostrará de una a tres solapas con los datos de configuración del elemento seleccionado. Si es una señal, mostrará los datos de esa señal y los de la solapa subyacente.  En ambos casos, si la celda o la señal tuvieran enclavamientos, aparecerá una solapa para verlos.  
+
+Estos cuadros mostrarán la configuración activa en ese instante, no la configuración inicial. No sólo mstrará los cambios resultantes de los comandos sino también algunas propiedades de uso interno, que no se usan en los archivos de configuración.  Estas se enumeran en los siguientes párrafos, pero no deben incluirse en los archivos de configuración.
+
+## Configuración 
 
 La configuración de los diversos sectores, sus celdas y señales está dada en los [varios archivos](https://github.com/Satyam/reactc2/tree/master/src/Store/data) de configuración. Estos archivos están compilados en la aplicación por lo que no pueden ser modificados por el usuario. Cada vez que se reinicie la aplicación, volverá a estos mismos valores iniciales.
 
 Los archivos de configuración contienen listas de propiedades para los distintos elementos. Tanto los elementos dentro de estas listas como las propiedades dentro de cada elemento pueden darse en cualquier orden.
 
-- [CTC](#ctc)
-  - [Sectores](#sectores)
-    - [Celdas](#celdas)
-      - [tipo: LINEA](#tipo-linea)
-      - [tipo: CAMBIO](#tipo-cambio)
-      - [tipo: PARAGOLPE](#tipo-paragolpe)
-      - [tipo: CRUCE](#tipo-cruce)
-      - [tipo: TRIPLE](#tipo-triple)
-    - [Señales](#señales)
-  - [Enclavamientos](#enclavamientos)
-    - [CAMBIO dependiendo de CAMBIO](#cambio-dependiendo-de-cambio)
-    - [CAMBIO dependiendo de SENAL](#cambio-dependiendo-de-senal)
-    - [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
-    - [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
-
-## Sectores
+### Sectores
 
 Los varios sectores están descriptos en el archivo [sectores.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/sectores.js#L6). Este exporta una lista (`Array`) de definición de sectores en lo que en JavaScript se denomina _objeto literal_ (Object Literal). Los sectores pueden declararse en cualquier orden.
 
@@ -61,7 +77,7 @@ La definición de cada sector debe indicar:
 
 El mímico que muestra el sector se ajustará el tamaño de las celdas para que todas ellas sean visibles en la pantalla basándose en el `alto` y `ancho` declarados en el encabezado.
 
-### Celdas
+#### Celdas
 
 Las celdas se declaran en el archivo [celdas.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L26). Todas las celdas de todos los sectores están contenidas en este archivo.
 
@@ -73,6 +89,7 @@ Cada celda debe tener al menos las siguiente propiedades:
 - `x` e `y`: las coordenadas de la celda dentro del sector contando desde cero siendo la celda `x:0, y:0` la ubicada arriba a la izquierda.
 - `tipo`: indica el tipo de celda. El resto de las propiedades de la celda depende del tipo, según se verá a continuación.
 - `descr`: _(opcional)_ El mímico mostrará este texto en el ángulo inferior izquierdo de cada celda en la grilla. Si no estuviera presente y la opción correspondiente del menú habilitada, mostrará las coordenadas.
+- `idCelda`: (**no configurable**) el identificador interno usado dentro de la aplicación para ubicar el elemento.  No debe incluirse en el archivo de configuración pero aparecerá en el *pop-up* que muestra la configuración. 
 
 La mayoría de las celdas pueden tener otras propiedades opcionales, que se describirán más adelante.
 
@@ -122,7 +139,7 @@ Todas las celdas son más o menos cuadradas (según la pantalla lo permita). Tod
 
 Los tipos de celdas son:
 
-#### tipo: LINEA
+##### tipo: LINEA
 
 Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. Requiere la propiedad `puntas` indicando los puntos geográficos que une. El orden de las puntas es indistinto.
 
@@ -139,7 +156,7 @@ Ej.:
   }
 ```
 
-#### tipo: CAMBIO
+##### tipo: CAMBIO
 
 Contiene una vía con una entrada, la `punta` y dos `ramas`, una `normal` y otra `desviado`. Si bien la salida `normal` suele ser la opuesta a la `punta` esto no es obligatorio.
 
@@ -162,7 +179,12 @@ Ej:
   }
 ```
 
-#### tipo: PARAGOLPE
+Adicionalmente, al mostrar la configuración en el *pop-up* se podrán ver las siguientes propiedades, que no se deben indicar en el archivo de configuración.
+
+* `posicion`: La posición actual del cambio, ya sea `"normal"` o `"desviado"`.  En el *pop-up* nunca se mostrarán las constantes `NORMAL` o `DESVIADO` sino sus valores reales.
+* `manual`: Si el cambio estuviera en modo manual aparecerá `"manual": true`.  En caso contrario podrá simplemente no aparecer o lo hará como `"manual": false`.
+  
+##### tipo: PARAGOLPE
 
 Contiene un tramo de vía sin salida. Requiere indicar la única salida mediante la propiedad `punta`.
 
@@ -178,7 +200,7 @@ Ej:
   }
 ```
 
-#### tipo: CRUCE
+##### tipo: CRUCE
 
 Identifica un cruce de vías que no se conectan entre sí. Pueden cruzarse a un mismo nivel o no. Contiene las propiedades `linea1` y `linea2` que contienen, a si vez, las `puntas` que unecomo una celda de tipo `LINEA`. Opcionalmente pueden llevar la propiedad `nivel` (por el momento no se usa). Este valor es relativo, la línea con un nivel mayor cruza por encima de la de nivel menor. Si los valores coinciden es que se cruzan a un mismo nivel. Si falta el nivel se lo supone cero.
 
@@ -202,7 +224,7 @@ Ej:
 
 En este ejemplo, la linea `linea1` cruza por encima de la `linea2` dado que la primera tiene `nivel` en 1 y la otra no indica nivel, por lo que se lo supone cero. Los números, al igual que los valores booleanos y las constantes, no van entrecomillados.
 
-#### tipo: TRIPLE
+##### tipo: TRIPLE
 
 Identifica un cambio de 3 salidas. Al igual que el cambio corriente, al extremo común se le llama `punta` y los otros serán `izq`, `centro` y `der`. En realidad la denominación de `izq` y `der` es arbitraria y podrían estar cruzadas.
 
@@ -224,7 +246,13 @@ Identifica un cambio de 3 salidas. Al igual que el cambio corriente, al extremo 
 
 La configuración admite la propiedad opcional `posicionInicial` que debe corresponderse al nombre de algúna de las ramas, o sea, `IZQ`, `CENTRO` o `DER`.
 
-### Señales
+Adicionalmente, al mostrar la configuración en el *pop-up* se podrán ver las siguientes propiedades, que no se deben indicar en el archivo de configuración.
+
+* `posicion`: La posición actual del cambio, ya sea `"izq"`, `"centro"` o `"der"`.
+* `manual`: Si el cambio estuviera en modo manual aparecerá `"manual": true`.  En caso contrario podrá simplemente no aparecer o lo hará como `"manual": false`.
+  
+
+#### Señales
 
 Las señales son parte opcional de las celdas y se declaran en un archivo [senales.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/senales.js#L27).
 
@@ -255,11 +283,16 @@ En este ejemplo, en la celda `4,4` del sector `CONSTITUCION` habrá una señal e
 
 Adicionalmente, se puede agregar la propiedad `soloManual: true`, (una propiedad que no existe es equivalente a tener valor `false`). Esta propiedad indica que la señal no es dependiente, por enclavamiento, de ningún otro elemento del sector y que, por ende, puede moverse libremente. Las señales que no tienen esta propiedad o, lo que es lo mismo, tienen `soloManual: false`, no pueden manipularse libremente sin antes ponerlas en modo manual, lo que las excluye de los enclavamientos.
 
+En el *pop-up* de una celda aparecerán también las siguientes propiedades:
+
+* `idSenal`: el identificador interno para ubicar fácilmente esta señal en memoria de la aplicación.
+* `manual`: al igual que en el caso de un `CAMBIO` o `TRIPLE`, si la señal estuviera en modo manual, aparecerá esta propiedad con valor `true`.
+
 Podrían definirse otras dos señales para este mismo cambio, una en cada una de las ramas, a saber `E` y `SE`. En realidad, podrían definirse hasta 8 señales por celda, pero las que no estuvieran contiguas a un tramo de vía, no tienen sentido.
 
 El estado inicial de una señal está dado por el archivo de configuración. Posteriormente, este dependerá de los enclavamientos definidos más adelante o podrá ser puesta en manual y manejada por el operador. Cuando una señal depende de dos o más enclavamientos, siempre mostrará el estado más restrictivo. Por ejemplo, una señal podrá depender de que un cambio esté en la posición normal y que ciertos segmentos de vía estén libres. En este caso, la señal sólo se pondrá en verde si ambos enclavamientos coinciden en que deba estar en verde. Siempre que haya varias opciones para una señal, se aplicará el estado más restrictivo.
 
-## Enclavamientos
+### Enclavamientos
 
 Llamamos enclavamientos a los automatismos que relacionan las acciones de los diversos elementos del tablero, por ejemplo, cambios que actúan en consonancia o que afectan señales.
 
@@ -281,13 +314,15 @@ Todas las dependencias tienen, al menos, las siguientes propiedades, que permite
 - `tipo`: el tipo del elemento **origen** del enclavamiento. Puede ser `CAMBIO` (que abarca a `TRIPLE`) o `SENAL`
 - `dir`: si el elemento fuera de `SENAL` deberá indicarse de cuál de las 8 posibles señales dentro de la celda.
 
-Llamará la atención la falta de la propiedad `idSector` pero por el momento no está previsto que los diferentes sectores interactúen unos con otros.
+Llamará la atención la falta de la propiedad `idSector` en las dependencias pero, por el momento, no está previsto que los diferentes sectores interactúen unos con otros.
 
 Cada elemento **afectado** puede tener una o más dependencias.
 
+En el *pop-up* de configuración, sólo aparecerá la solapa de `Encl.` si el elemento seleccionado tuviera alguna. Las propiedades de las tablas de enclavamientos no son afectadas por la aplicación, dado que sus efectos se producen sobre otros elementos, en ningún caso afectan al enclavamiento en sí. Por ello, en el *pop-up* nunca cambian.
+
 La combinación de los tipos de los elementos dependientes y sus dependencias nos dan 4 combinaciones
 
-### CAMBIO dependiendo de CAMBIO
+#### CAMBIO dependiendo de CAMBIO
 
 En este caso, el estado de un cambio (el **afectado**) depende de otro cambio (el **origen**). Por ejemplo:
 
@@ -315,11 +350,11 @@ La sintaxis de JavaScript permitiría usar las constantes `NORMAL` y `DESVIADO` 
 
 Si ambos o alguno de los dos elementos fuera de tipo `TRIPLE` se usarán las constantes `IZQ`, `CENTRO` o `DER` en lugar de `NORMAL` y `DESVIADO`.
 
-### CAMBIO dependiendo de SENAL
+#### CAMBIO dependiendo de SENAL
 
 En este caso, el estado de un cambio dependería de una señal. Este caso no se ha estimado como realista por lo que el programa no la contempla .
 
-### SENAL dependiendo de CAMBIO
+#### SENAL dependiendo de CAMBIO
 
 Define un enclavamiento por el cual una señal, la **afectada** responde al estado de un CAMBIO o TRIPLE, el **origen**. El cambio puede o no estar en la misma celda que la señal.
 
@@ -357,7 +392,7 @@ Si el **origen** fuera un `TRIPLE` en lugar de usar `normal` y `desviado` se deb
 
 Esta señal tiene sólo dos luces `centro` y `der` por lo que no es necesario indicar qué pasaría con la `izq` que no existe, como que tampoco es necesario indicar las luces que han de estar en `VERDE`. Podrían hacerse ambas cosas, pero serían ignoradas.
 
-### SENAL dependiendo de SENAL
+#### SENAL dependiendo de SENAL
 
 En este caso, tanto **afectada** como **origen** son ambas señales.
 
