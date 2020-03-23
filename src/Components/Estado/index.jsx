@@ -13,25 +13,33 @@ import sanitize from 'Utils/sanitize';
 import Cambio from './Cambio';
 import Triple from './Triple';
 import Senal from './Senal';
+import ShowJson from './ShowJson';
 
 import { CAMBIO, TRIPLE, SENAL } from 'Store/data';
 export const EstadoContext = createContext();
 
-function Content({ tipo, ...props }) {
-  switch (tipo) {
-    case CAMBIO:
-      return <Cambio {...props} />;
-    case TRIPLE:
-      return <Triple {...props} />;
-    case SENAL:
-      return <Senal {...props} />;
-    default:
-      return null;
+function Content({ tipo, showJson, ...props }) {
+  if (showJson) {
+    return <ShowJson {...props} />;
+  } else {
+    switch (tipo) {
+      case CAMBIO:
+        return <Cambio {...props} />;
+      case TRIPLE:
+        return <Triple {...props} />;
+      case SENAL:
+        return <Senal {...props} />;
+      default:
+        return null;
+    }
   }
 }
 
 export function EstadoProvider({ children }) {
-  const [{ show, idCelda, placement, tipo, idSenal }, setProps] = useState({
+  const [
+    { show, idCelda, placement, tipo, idSenal, showJson },
+    setProps,
+  ] = useState({
     show: false,
   });
   const onClose = ev => isPlainClick(ev) && setProps({ show: false });
@@ -69,6 +77,7 @@ export function EstadoProvider({ children }) {
               idCelda,
               idSenal,
               onClose,
+              showJson,
             }}
           />
         </Popover>

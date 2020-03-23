@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useEstado } from 'Components/Estado';
 
@@ -11,17 +11,47 @@ import styles from './styles.module.css';
 
 export default function Senal({ senal, placement }) {
   const showEstado = useEstado();
+  const [timer, setTimer] = useState(false);
 
   if (!senal) return null;
 
-  const onClick = ev =>
-    isPlainClick(ev) &&
-    showEstado({
-      tipo: SENAL,
-      idCelda: buildIdCelda(senal.idSector, senal.x, senal.y),
-      idSenal: buildIdSenal(senal.idSector, senal.x, senal.y, senal.dir),
-      placement,
-    });
+  const onMouseDown = ev => {
+    if (isPlainClick(ev)) {
+      if (timer) window.clearTimeout(timer);
+      setTimer(
+        window.setTimeout(() => {
+          setTimer(false);
+          showEstado({
+            tipo: SENAL,
+            idCelda: buildIdCelda(senal.idSector, senal.x, senal.y),
+            idSenal: buildIdSenal(senal.idSector, senal.x, senal.y, senal.dir),
+            placement,
+            showJson: true,
+          });
+        }, 300)
+      );
+    }
+  };
+  const onMouseUp = ev => {
+    if (isPlainClick(ev)) {
+      if (timer) {
+        window.clearTimeout(timer);
+        showEstado({
+          tipo: SENAL,
+          idCelda: buildIdCelda(senal.idSector, senal.x, senal.y),
+          idSenal: buildIdSenal(senal.idSector, senal.x, senal.y, senal.dir),
+          placement,
+          showJson: false,
+        });
+      }
+    }
+  };
+
+  const onClick = ev => {
+    if (isPlainClick(ev)) {
+      setTimer(false);
+    }
+  };
 
   const { dir, centro, izq, der } = senal;
   /*
@@ -44,6 +74,8 @@ export default function Senal({ senal, placement }) {
       })}
       transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
       onClick={onClick}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
     >
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
