@@ -7,18 +7,8 @@
   margin-top: 1.5em;
 }
 
-.senales {
-  margin: 0 auto;
-}
 .cambio {
   display: flex !important;
-}
-
-.senal {
-  float: left;
-  border: thin solid silver;
-  border-radius: 3px;
-  padding: 2px;
 }
 
 .manual {
@@ -35,6 +25,23 @@
 .close {
   margin-left: 0.5em;
 }
+
 .disabled {
   opacity: 0.5;
+}
+
+.solapas {
+  border-bottom: thin solid silver;
+  margin-bottom: 2px;
+}
+
+.solapa {
+  background-color: lightcyan;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.solapa:hover {
+  background-color: lightblue;
 }

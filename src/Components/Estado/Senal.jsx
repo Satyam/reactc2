@@ -1,14 +1,20 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
 import { VERDE, AMARILLO, ROJO, SENAL } from 'Store/data';
 import isPlainClick from 'Utils/isPlainClick';
 
 import { setLuzEstado, setSenalManual, setEnclavamientos } from 'Store/actions';
-import { selSenal } from 'Store/senales/selectors';
 
-import { ButtonGroup, Button, PopoverHeader, PopoverBody } from 'reactstrap';
+import {
+  ButtonGroup,
+  Button,
+  PopoverBody,
+  Container,
+  Row,
+  Col,
+} from 'reactstrap';
 
 import styles from './styles.module.css';
 
@@ -46,10 +52,8 @@ export function EstadoLuz({ luz, estado, onSetEstado }) {
   );
 }
 
-export default function EstadoSenal({ idSenal, onClose }) {
-  const { dir, izq, manual, soloManual, centro, der } = useSelector(state =>
-    selSenal(state, idSenal)
-  );
+export default function EstadoSenal({ senal }) {
+  const { izq, manual, soloManual, centro, der, idSenal } = senal;
 
   const dispatch = useDispatch();
   const onSetEstado = async (luz, estado) => {
@@ -66,50 +70,60 @@ export default function EstadoSenal({ idSenal, onClose }) {
   };
 
   return (
-    <>
-      <PopoverHeader>
-        Señal {idSenal.split(':')[1]} - {dir}
-        <Button close className={styles.close} onClick={onClose} />
-      </PopoverHeader>
-      <PopoverBody>
+    <PopoverBody>
+      <Container>
         <div
-          className={classNames(styles.senales, {
+          className={classNames({
             [styles.disabled]: !soloManual && !manual,
           })}
         >
-          <div
-            className={classNames(styles.senal, styles.pushDown, {
-              [styles.hidden]: !izq,
-            })}
-          >
-            <EstadoLuz luz="izq" estado={izq} onSetEstado={onSetEstado} />
-          </div>
-          <div
-            className={classNames(styles.senal, {
-              [styles.hidden]: !centro,
-            })}
-          >
-            <EstadoLuz luz="centro" estado={centro} onSetEstado={onSetEstado} />
-          </div>
-          <div
-            className={classNames(styles.senal, styles.pushDown, {
-              [styles.hidden]: !der,
-            })}
-          >
-            <EstadoLuz luz="der" estado={der} onSetEstado={onSetEstado} />
-          </div>
+          <Row>
+            <Col>
+              <div
+                className={classNames(styles.pushDown, {
+                  [styles.hidden]: !izq,
+                })}
+              >
+                <EstadoLuz luz="izq" estado={izq} onSetEstado={onSetEstado} />
+              </div>
+            </Col>
+            <Col>
+              <div
+                className={classNames({
+                  [styles.hidden]: !centro,
+                })}
+              >
+                <EstadoLuz
+                  luz="centro"
+                  estado={centro}
+                  onSetEstado={onSetEstado}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div
+                className={classNames(styles.senal, styles.pushDown, {
+                  [styles.hidden]: !der,
+                })}
+              >
+                <EstadoLuz luz="der" estado={der} onSetEstado={onSetEstado} />
+              </div>
+            </Col>
+          </Row>
         </div>
         {!soloManual && (
-          <Button
-            className={styles.manual}
-            size="sm"
-            color={manual ? 'danger' : 'outline-info'}
-            onClick={onSetManual}
-          >
-            {manual ? <Unlocked /> : <Locked />}
-          </Button>
+          <Row>
+            <Button
+              className={styles.manual}
+              size="sm"
+              color={manual ? 'danger' : 'outline-info'}
+              onClick={onSetManual}
+            >
+              {manual ? <Unlocked /> : <Locked />}
+            </Button>
+          </Row>
         )}
-      </PopoverBody>
-    </>
+      </Container>
+    </PopoverBody>
   );
 }
