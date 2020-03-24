@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import { EstadoProvider } from 'Components/Estado';
 import Teletipo from 'Components/Teletipo';
 import Mimico from 'Components/Mimico';
 import Menu from 'Components/Menu';
@@ -28,15 +27,12 @@ export default function App({ username = '', sector, photoURL }) {
     <Router
       basename={process.env.NODE_ENV === 'production' ? '/CTC' : undefined}
     >
-      {' '}
-      <EstadoProvider>
-        <Helmet titleTemplate="CTC - %s" />
-        <Menu />
-        <Route path="/sector/:idSector">
-          <Mimico idSector="constitucion" />
-        </Route>
-        {showTeletipo && <Teletipo />}
-      </EstadoProvider>
+      <Helmet titleTemplate="CTC - %s" />
+      <Menu />
+      <Route path="/sector/:idSector">
+        <Mimico idSector="constitucion" />
+      </Route>
+      {showTeletipo && <Teletipo />}
     </Router>
   );
 }

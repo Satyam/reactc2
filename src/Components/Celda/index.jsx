@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import { isPlainClick } from 'Utils';
 
 import { selCelda, selShowCoords, selSenales } from 'Store/selectors';
-
+import { showEstado } from 'Store/actions';
 import Senal from 'Components/Senal';
-import { useEstado } from 'Components/Estado';
 
 import { ANCHO_CELDA } from 'Components/common';
 import styles from './styles.module.css';
@@ -25,18 +24,20 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const senales = useSelector(state =>
     selSenales(state, celda.idSector, celda.x, celda.y)
   );
-  const showEstado = useEstado();
 
+  const dispatch = useDispatch();
   if (!cellWidth || !celda) return null;
   const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
 
   const onClick = tipo => ev =>
     isPlainClick(ev) &&
-    showEstado({
-      tipo,
-      idCelda,
-      placement,
-    });
+    dispatch(
+      showEstado({
+        tipo,
+        idCelda,
+        placement,
+      })
+    );
 
   const label = celda.descr || (showCoords ? `[${celda.x},${celda.y}]` : '');
   const Renderer = {

@@ -15,7 +15,8 @@ import {
   selEnclavamientosActive,
   selShowCoords,
 } from 'Store/selectors';
-import { useEstado } from 'Components/Estado';
+import { hideEstado as hideEstadoAction } from 'Store/actions';
+
 import {
   Collapse,
   Navbar,
@@ -43,11 +44,10 @@ export default function Menu() {
   const isEnclavamientoActive = useSelector(selEnclavamientosActive);
   const showTeletipo = useSelector(selShowTeletipo);
   const showCoords = useSelector(selShowCoords);
-  const showEstado = useEstado();
   const dispatch = useDispatch();
 
   const hideEstado = idSector => () => {
-    if (sector && sector.idSector !== idSector) showEstado({});
+    if (sector && sector.idSector !== idSector) dispatch(hideEstadoAction());
   };
   const toggleOpen = () => setIsOpen(!isOpen);
   const toggleTeletipo = () => dispatch(showTeletipoAction(!showTeletipo));
