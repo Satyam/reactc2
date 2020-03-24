@@ -32,6 +32,7 @@ Un segundo item de la barra de menú permite:
 - activar o no el _teletipo_, pero dado que el envío de mensajes no está implementado, indicará que no hay mensajes.
 - habilitar o no los enclavamientos. Esto permite ver la diferencia en el funcionamiento con y sin enclavamientos.
 - mostrar las coordenadas de cada celda cuando no tienen nombre propio.
+- mostrar los datos de configuración de las celdas y señales al hacer click sobre ellas.
 
 Al seleccionar cualquier sector se mostrará el mímico correspondiente en el panel central.
 
@@ -49,11 +50,16 @@ Al estar en manual los cambios se pueden mover a mano y las luces de las señale
 
 ### Ver configuración
 
-Se puede hacer un *click largo* (mantener el botón del ratón persionado durante un tiempo) sobre cualquier elemento del mímico para ver la configuración de cualquier elemento.  Esto se aplica tanto a elementos activos, como cambios y señales, como a los pasivos.
+Cuando está activa la opción de `Mostrar Config.` en el menú de opciones, al hacer click sobre cualquier elemento del mímico se podrá ver la configuración de cualquier elemento.  Esto se aplica tanto a elementos activos, como cambios y señales, como a los pasivos.
 
-En este caso, el *pop-up* mostrará de una a tres solapas con los datos de configuración del elemento seleccionado. Si es una señal, mostrará los datos de esa señal y los de la solapa subyacente.  En ambos casos, si la celda o la señal tuvieran enclavamientos, aparecerá una solapa para verlos.  
+En este caso, el *pop-up* mostrará de uno a cuatro botones.  
 
-Estos cuadros mostrarán la configuración activa en ese instante, no la configuración inicial. No sólo mstrará los cambios resultantes de los comandos sino también algunas propiedades de uso interno, que no se usan en los archivos de configuración.  Estas se enumeran en los siguientes párrafos, pero no deben incluirse en los archivos de configuración.
+* Si el elemento fuera activo, el primero que aparecerá será el marcado `Cmd.` por *Comandos* que permitirá dar los comandos de siempre.  
+* Un botón `Celda` mostrará la configuración de la celda. 
+* Si es una señal, un botón `Señal` mostrará los datos de esa señal.  
+* Si la celda o la señal tuvieran enclavamientos, un botón marcado `Encl.` permitirá verlos.  
+
+Estos cuadros mostrarán la configuración activa en ese instante, no la configuración inicial. No sólo mostrará los cambios resultantes de los comandos sino también algunas propiedades de uso interno, que no se usan en los archivos de configuración.  Estas se enumeran en los siguientes párrafos, pero no deben incluirse en los archivos de configuración.
 
 ## Configuración 
 
