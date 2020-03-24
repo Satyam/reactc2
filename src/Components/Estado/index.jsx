@@ -15,11 +15,11 @@ import {
 } from 'reactstrap';
 
 import {
-  selCelda,
-  selSenal,
+  useCelda,
+  useSenal,
   selEnclavamiento,
   selShowEstado,
-  selJsonEnabled,
+  useShowConfig,
 } from 'Store/selectors';
 import { CAMBIO, TRIPLE } from 'Store/data';
 
@@ -46,9 +46,9 @@ export default function Estado() {
 
 function EstadoPopover({ idCelda, idSenal, placement }) {
   const [oldId, setOldId] = useState();
-  const celda = useSelector(state => selCelda(state, idCelda));
-  const senal = useSelector(state => selSenal(state, idSenal));
-  const jsonEnabled = useSelector(selJsonEnabled);
+  const celda = useCelda(idCelda);
+  const senal = useSenal(idSenal);
+  const [jsonEnabled] = useShowConfig();
   const enclavamiento = useSelector(state =>
     selEnclavamiento(state, senal || celda)
   );

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import { isPlainClick } from 'Utils';
 
-import { selCelda, selShowCoords, selSenales } from 'Store/selectors';
+import { useCelda, useShowCoords, useSenales } from 'Store/selectors';
 import { showEstado } from 'Store/actions';
 import Senal from 'Components/Senal';
 
@@ -19,12 +19,9 @@ import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 
 export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
-  const celda = useSelector(state => selCelda(state, idCelda));
-  const showCoords = useSelector(selShowCoords);
-  const senales = useSelector(state =>
-    selSenales(state, celda.idSector, celda.x, celda.y)
-  );
-
+  const celda = useCelda(idCelda);
+  const [showCoords] = useShowCoords();
+  const senales = useSenales(celda);
   const dispatch = useDispatch();
   if (!cellWidth || !celda) return null;
   const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';

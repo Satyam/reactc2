@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 import './styles.module.css';
 
 import {
-  showTeletipo as showTeletipoAction,
-  enclavamientosActive,
-  showCoords as showCoordsAction,
-  enableJson,
-} from 'Store/actions';
-import {
-  selSectores,
-  selSector,
-  selShowTeletipo,
-  selEnclavamientosActive,
-  selShowCoords,
-  selJsonEnabled,
+  useSectores,
+  useSector,
+  useShowTeletipo,
+  useEnclavamientosActive,
+  useShowCoords,
+  useShowConfig,
 } from 'Store/selectors';
+
 import { hideEstado as hideEstadoAction } from 'Store/actions';
 
 import {
@@ -39,25 +34,21 @@ export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const match = useRouteMatch('/sector/:idSector');
 
-  const sectores = useSelector(selSectores);
-  const sector = useSelector(
-    state => match && selSector(state, match.params.idSector)
-  );
-  const isEnclavamientoActive = useSelector(selEnclavamientosActive);
-  const showTeletipo = useSelector(selShowTeletipo);
-  const showCoords = useSelector(selShowCoords);
-  const jsonEnabled = useSelector(selJsonEnabled);
+  const sectores = useSectores();
+  const sector = useSector(match && match.params.idSector);
+  const [
+    enclavamientosActive,
+    toggleEnclavamientos,
+  ] = useEnclavamientosActive();
+  const [showTeletipo, toggleTeletipo] = useShowTeletipo();
+  const [showCoords, toggleShowCoords] = useShowCoords();
+  const [jsonEnabled, toggleShowJson] = useShowConfig();
   const dispatch = useDispatch();
 
   const hideEstado = idSector => () => {
     if (sector && sector.idSector !== idSector) dispatch(hideEstadoAction());
   };
   const toggleOpen = () => setIsOpen(!isOpen);
-  const toggleTeletipo = () => dispatch(showTeletipoAction(!showTeletipo));
-  const toggleEnclavamientos = () =>
-    dispatch(enclavamientosActive(!isEnclavamientoActive));
-  const toggleShowCoords = () => dispatch(showCoordsAction(!showCoords));
-  const toggleShowJson = () => dispatch(enableJson(!jsonEnabled));
 
   return (
     <div>
@@ -110,7 +101,7 @@ export default function Menu() {
                 </DropdownItem>
                 <DropdownItem
                   onClick={toggleEnclavamientos}
-                  active={isEnclavamientoActive}
+                  active={enclavamientosActive}
                 >
                   Enclavamientos
                 </DropdownItem>

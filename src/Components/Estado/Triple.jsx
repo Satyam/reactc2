@@ -1,9 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { isPlainClick } from 'Utils';
 
-import { setCambio, setCambioManual } from 'Store/actions';
-
+import { useSetCambio } from 'Store/actions';
+import { useCeldaManual } from 'Store/selectors';
 import { Button, ButtonGroup, PopoverBody } from 'reactstrap';
 
 import {
@@ -19,14 +18,13 @@ import styles from './styles.module.css';
 import { IZQ, CENTRO, DER } from 'Store/data';
 
 export default function EstadoTriple({ celda }) {
-  const { posicion, manual, idCelda } = celda;
-  const dispatch = useDispatch();
-  const onSetNormal = ev =>
-    isPlainClick(ev) && dispatch(setCambio(idCelda, CENTRO));
-  const onSetIzq = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, IZQ));
-  const onSetDer = ev => isPlainClick(ev) && dispatch(setCambio(idCelda, DER));
-  const onSetManual = ev =>
-    isPlainClick(ev) && dispatch(setCambioManual(idCelda, !manual));
+  const { posicion, idCelda } = celda;
+  const setCambio = useSetCambio();
+  const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
+  const onSetNormal = ev => isPlainClick(ev) && setCambio(idCelda, CENTRO);
+  const onSetIzq = ev => isPlainClick(ev) && setCambio(idCelda, IZQ);
+  const onSetDer = ev => isPlainClick(ev) && setCambio(idCelda, DER);
+  const onSetManual = ev => isPlainClick(ev) && toggleCeldaManual();
 
   return (
     <PopoverBody>
@@ -56,10 +54,10 @@ export default function EstadoTriple({ celda }) {
       <Button
         className={styles.manual}
         size="sm"
-        color={manual ? 'danger' : 'outline-info'}
+        color={celdaIsManual ? 'danger' : 'outline-info'}
         onClick={onSetManual}
       >
-        {manual ? <Unlocked /> : <Locked />}
+        {celdaIsManual ? <Unlocked /> : <Locked />}
       </Button>
     </PopoverBody>
   );

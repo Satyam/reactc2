@@ -10,20 +10,22 @@ import {
   Unlocked,
 } from 'Components/Icons';
 import { isPlainClick } from 'Utils';
-import { setCambio, setCambioManual } from 'Store/actions';
+import { setCambio } from 'Store/actions';
+import { useCeldaManual } from 'Store/selectors';
+
 import { NORMAL, DESVIADO } from 'Store/data';
 import styles from './styles.module.css';
 
 export default function EstadoCambio({ celda }) {
-  const { posicion, manual, idCelda } = celda;
+  const { posicion, idCelda } = celda;
   const dispatch = useDispatch();
 
   const onSetCambioNormal = ev =>
     isPlainClick(ev) && dispatch(setCambio(idCelda, NORMAL));
   const onSetCambioDesviado = ev =>
     isPlainClick(ev) && dispatch(setCambio(idCelda, DESVIADO));
-  const onSetManual = ev =>
-    isPlainClick(ev) && dispatch(setCambioManual(idCelda, !manual));
+  const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
+  const onSetManual = ev => isPlainClick(ev) && toggleCeldaManual();
   return (
     <PopoverBody>
       <ButtonGroup className={styles.cambio}>
@@ -45,10 +47,10 @@ export default function EstadoCambio({ celda }) {
       <Button
         className={styles.manual}
         size="sm"
-        color={manual ? 'danger' : 'outline-info'}
+        color={celdaIsManual ? 'danger' : 'outline-info'}
         onClick={onSetManual}
       >
-        {manual ? <Unlocked /> : <Locked />}
+        {celdaIsManual ? <Unlocked /> : <Locked />}
       </Button>
     </PopoverBody>
   );

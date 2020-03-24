@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 import {
   setPendiente,
@@ -52,3 +53,8 @@ export const setCambioManual = createAction(
     },
   })
 );
+
+export const useSetCambio = () => {
+  const dispatch = useDispatch();
+  return (idCelda, posicion) => dispatch(setCambio(idCelda, posicion));
+};

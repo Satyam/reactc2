@@ -1,4 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { useSelector, useDispatch } from 'react-redux';
+import { loadData } from 'Store/actions';
 
 export const selSectores = createSelector(
   state =>
@@ -18,3 +20,13 @@ export const selSectores = createSelector(
   sectores => sectores
 );
 export const selSector = (state, idSector) => state.sectores[idSector];
+
+export const useSector = idSector =>
+  useSelector(state => selSector(state, idSector));
+
+export const useSectores = () => {
+  const sectores = useSelector(selSectores);
+  const dispatch = useDispatch();
+  if (!sectores.length) dispatch(loadData());
+  return sectores;
+};

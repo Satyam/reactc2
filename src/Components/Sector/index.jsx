@@ -1,16 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import ReactResizeDetector from 'react-resize-detector';
 
-import { selSector, selCeldas } from 'Store/selectors';
+import { useSector, useCeldas } from 'Store/selectors';
 
 import Celda from 'Components/Celda';
 import styles from './styles.module.css';
 
 export default function Sector({ idSector }) {
-  const sector = useSelector(state => selSector(state, idSector));
-  const celdas = useSelector(state => selCeldas(state, idSector));
+  const sector = useSector(idSector);
+  const celdas = useCeldas(idSector);
 
   const { ancho, descrCorta } = sector;
   return (
