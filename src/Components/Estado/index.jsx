@@ -7,8 +7,7 @@ import React, {
 } from 'react';
 
 import { Popover } from 'reactstrap';
-import isPlainClick from 'Utils/isPlainClick';
-import sanitize from 'Utils/sanitize';
+import { isPlainClick } from 'Utils';
 
 import Content from './Content';
 
@@ -46,7 +45,7 @@ export function EstadoProvider({ children }) {
     <EstadoContext.Provider value={ctx}>
       {children}
       {show && (
-        <Popover isOpen={show} target={sanitize(idCelda)} placement={placement}>
+        <Popover isOpen={show} target={idCelda} placement={placement}>
           <Content
             {...{
               tipo,

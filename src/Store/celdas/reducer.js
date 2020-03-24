@@ -1,14 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { celdas } from 'Store/data';
 import { loadData, plainSetCambio, setCambioManual } from 'Store/actions';
-import { buildIdCelda } from 'Utils/buildKeys';
+import { buildId } from 'Utils';
 
 export default createReducer(
   {},
   {
     [loadData]: state =>
       celdas.reduce((cs, c) => {
-        const idCelda = buildIdCelda(c.idSector, c.x, c.y);
+        const idCelda = buildId(c);
         if (cs[idCelda])
           throw new Error(
             `Definición de celda en [${c.x},${c.y}] de ${c.idSector} repetida.`

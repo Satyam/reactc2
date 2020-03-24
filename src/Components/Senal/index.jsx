@@ -2,8 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useEstado } from 'Components/Estado';
 
-import isPlainClick from 'Utils/isPlainClick';
-import { buildIdCelda, buildIdSenal } from 'Utils/buildKeys';
+import { isPlainClick, buildId } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { SENAL } from 'Store/data';
 
@@ -18,8 +17,8 @@ export default function Senal({ senal, placement }) {
     isPlainClick(ev) &&
     showEstado({
       tipo: SENAL,
-      idCelda: buildIdCelda(senal.idSector, senal.x, senal.y),
-      idSenal: buildIdSenal(senal.idSector, senal.x, senal.y, senal.dir),
+      idCelda: buildId({ idSector: senal.idSector, x: senal.x, y: senal.y }),
+      idSenal: buildId(senal),
       placement,
     });
 

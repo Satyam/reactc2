@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
 import { VERDE, AMARILLO, ROJO, SENAL } from 'Store/data';
-import isPlainClick from 'Utils/isPlainClick';
+import { isPlainClick } from 'Utils';
 
 import { setLuzEstado, setSenalManual, setEnclavamientos } from 'Store/actions';
 

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import isPlainClick from 'Utils/isPlainClick';
-import sanitize from 'Utils/sanitize';
+import { isPlainClick } from 'Utils';
 
 import { selCelda, selShowCoords, selSenales } from 'Store/selectors';
 
@@ -49,7 +48,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   }[celda.tipo];
   return (
     <div
-      id={sanitize(idCelda)}
+      id={idCelda}
       className={classNames(styles.rect, {
         [styles.manual]: celda.manual,
       })}

@@ -9,7 +9,7 @@ import {
   Locked,
   Unlocked,
 } from 'Components/Icons';
-import isPlainClick from 'Utils/isPlainClick';
+import { isPlainClick } from 'Utils';
 import { setCambio, setCambioManual } from 'Store/actions';
 import { NORMAL, DESVIADO } from 'Store/data';
 import styles from './styles.module.css';

@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { senales } from 'Store/data';
 import { loadData, plainSetLuzEstado, setSenalManual } from 'Store/actions';
-import { buildIdSenal } from 'Utils/buildKeys';
+import { buildId } from 'Utils';
 
 export default createReducer(
   {},
@@ -16,7 +16,7 @@ export default createReducer(
     },
     [loadData]: state =>
       senales.reduce((ss, s) => {
-        const idSenal = buildIdSenal(s.idSector, s.x, s.y, s.dir);
+        const idSenal = buildId(s);
         if (ss[idSenal])
           throw new Error(
             `Definición de señal en [${s.x},${s.y}] de ${s.idSector} repetida.`

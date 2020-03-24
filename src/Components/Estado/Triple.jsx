@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import isPlainClick from 'Utils/isPlainClick';
+import { isPlainClick } from 'Utils';
 
 import { setCambio, setCambioManual } from 'Store/actions';
 

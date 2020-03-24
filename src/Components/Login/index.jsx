@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Input } from 'react-bootstrap/input';
 import { Button } from '../Estado/node_modules/react-bootstrap/button';
 
-import isPlainClick from 'Utils/isPlainClick';
+import { isPlainClick } from 'Utils';
 
 import styles from './styles.module.css';
 

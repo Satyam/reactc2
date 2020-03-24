@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import without from 'lodash/without';
-import isPlainClick from 'Utils/isPlainClick';
+import { isPlainClick } from 'Utils';
 import { Helmet } from 'react-helmet';
 
 import {

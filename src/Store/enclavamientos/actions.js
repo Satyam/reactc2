@@ -1,4 +1,4 @@
-import { buildId } from 'Utils/buildKeys';
+import { buildId } from 'Utils';
 
 import {
   selCelda,
@@ -23,13 +23,13 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
       const enclavamientos = selEnclavamientos(getState(), idSector);
       return solvePromises(enclavamientos, encl => {
         const { x, y, dir, tipo, dependencias } = encl;
-        const idTarget = buildId(idSector, x, y, dir);
+        const idTarget = buildId({ idSector, x, y, dir });
         if (!force && idTarget === idOrigen) return false;
         switch (tipo) {
           case CAMBIO: {
             const celdaTarget = selCelda(getState(), idTarget);
             return solvePromises(dependencias, dep => {
-              const idSource = buildId(idSector, dep.x, dep.y);
+              const idSource = buildId({ idSector, x: dep.x, y: dep.y });
               const celdaSource = selCelda(getState(), idSource);
               const posicionEsperada =
                 dep[celdaSource.posicion] || celdaTarget.posicionInicial;
@@ -48,7 +48,12 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
               der: VERDE,
             };
             dependencias.forEach(dep => {
-              const idSource = buildId(idSector, dep.x, dep.y, dep.dir);
+              const idSource = buildId({
+                idSector,
+                x: dep.x,
+                y: dep.y,
+                dir: dep.dir,
+              });
               switch (dep.tipo) {
                 case CAMBIO:
                   const celdaSource = selCelda(getState(), idSource);
