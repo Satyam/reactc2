@@ -30,7 +30,7 @@ export default createReducer(
       state.showEstado = { show: false };
     },
     [enableJson]: (state, action) => {
-      state.enableJson = action.payload;
+      state.jsonEnabled = action.payload;
     },
   }
 );

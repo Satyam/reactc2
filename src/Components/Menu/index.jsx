@@ -7,6 +7,7 @@ import {
   showTeletipo as showTeletipoAction,
   enclavamientosActive,
   showCoords as showCoordsAction,
+  enableJson,
 } from 'Store/actions';
 import {
   selSectores,
@@ -14,6 +15,7 @@ import {
   selShowTeletipo,
   selEnclavamientosActive,
   selShowCoords,
+  selJsonEnabled,
 } from 'Store/selectors';
 import { hideEstado as hideEstadoAction } from 'Store/actions';
 
@@ -44,6 +46,7 @@ export default function Menu() {
   const isEnclavamientoActive = useSelector(selEnclavamientosActive);
   const showTeletipo = useSelector(selShowTeletipo);
   const showCoords = useSelector(selShowCoords);
+  const jsonEnabled = useSelector(selJsonEnabled);
   const dispatch = useDispatch();
 
   const hideEstado = idSector => () => {
@@ -54,6 +57,7 @@ export default function Menu() {
   const toggleEnclavamientos = () =>
     dispatch(enclavamientosActive(!isEnclavamientoActive));
   const toggleShowCoords = () => dispatch(showCoordsAction(!showCoords));
+  const toggleShowJson = () => dispatch(enableJson(!jsonEnabled));
 
   return (
     <div>
@@ -112,6 +116,9 @@ export default function Menu() {
                 </DropdownItem>
                 <DropdownItem onClick={toggleShowCoords} active={showCoords}>
                   Coordenadas
+                </DropdownItem>
+                <DropdownItem onClick={toggleShowJson} active={jsonEnabled}>
+                  Mostrar Config.
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
