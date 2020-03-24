@@ -7,4 +7,7 @@ export const isPlainClick = ev => {
 };
 
 export const buildId = ({ idSector, x, y, dir }) =>
-  dir ? [idSector, x, y, dir].join('_') : [idSector, x, y].join('_');
+  (dir
+    ? [undefined, idSector, x, y, dir].join('_')
+    : [undefined, idSector, x, y].join('_')
+  ).replace(/\W/g, '_');
