@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { ButtonGroup, Button, PopoverBody } from 'reactstrap';
 
@@ -9,23 +8,22 @@ import {
   Locked,
   Unlocked,
 } from 'Components/Icons';
+
 import { isPlainClick } from 'Utils';
-import { setCambio } from 'Store/actions';
-import { useCeldaManual } from 'Store';
+import { useCeldaManual, useSetCambio } from 'Store';
 
 import { NORMAL, DESVIADO } from 'Store/data';
 import styles from './styles.module.css';
 
 export default function EstadoCambio({ celda }) {
   const { posicion, idCelda } = celda;
-  const dispatch = useDispatch();
-
-  const onSetCambioNormal = ev =>
-    isPlainClick(ev) && dispatch(setCambio(idCelda, NORMAL));
-  const onSetCambioDesviado = ev =>
-    isPlainClick(ev) && dispatch(setCambio(idCelda, DESVIADO));
+  const setCambio = useSetCambio(idCelda);
   const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
+
+  const onSetCambioNormal = ev => isPlainClick(ev) && setCambio(NORMAL);
+  const onSetCambioDesviado = ev => isPlainClick(ev) && setCambio(DESVIADO);
   const onSetManual = ev => isPlainClick(ev) && toggleCeldaManual();
+
   return (
     <PopoverBody>
       <ButtonGroup className={styles.cambio}>

@@ -19,7 +19,7 @@ export const useCeldaManual = idCelda => {
   return [celdaIsManual, toggleCeldaManual];
 };
 
-export const useSetCambio = () => {
+export const useSetCambio = idCelda => {
   const dispatch = useDispatch();
-  return (idCelda, posicion) => dispatch(setCambio(idCelda, posicion));
+  return posicion => dispatch(setCambio(idCelda, posicion));
 };

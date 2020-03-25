@@ -19,6 +19,7 @@ export default configureStore({
 });
 
 export * from './celdas/hooks';
+export * from './enclavamientos/hooks';
 export * from './options/hooks';
 export * from './sectores/hooks';
 export * from './senales/hooks';

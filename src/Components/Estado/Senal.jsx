@@ -1,11 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
 import { VERDE, AMARILLO, ROJO, SENAL } from 'Store/data';
 import { isPlainClick } from 'Utils';
 
-import { setLuzEstado, setSenalManual, setEnclavamientos } from 'Store/actions';
+import { useSetLuz, useSenalManual, useSetEnclavamientos } from 'Store';
 
 import {
   ButtonGroup,
@@ -53,20 +52,22 @@ export function EstadoLuz({ luz, estado, onSetEstado }) {
 }
 
 export default function EstadoSenal({ senal }) {
-  const { izq, manual, soloManual, centro, der, idSenal } = senal;
+  const { izq, soloManual, centro, der, idSenal } = senal;
+  const setLuzEstado = useSetLuz(idSenal);
+  const [senalIsManual, toggleSenalManual] = useSenalManual(idSenal);
+  const setEnclavamientos = useSetEnclavamientos(idSenal, SENAL);
 
-  const dispatch = useDispatch();
   const onSetEstado = async (luz, estado) => {
-    if (manual || soloManual) {
-      await dispatch(setLuzEstado(idSenal, luz, estado));
+    if (senalIsManual || soloManual) {
+      await setLuzEstado(luz, estado);
     }
     if (soloManual) {
-      await dispatch(setEnclavamientos(idSenal, SENAL, true));
+      await setEnclavamientos(true);
     }
   };
   const onSetManual = async () => {
-    await dispatch(setSenalManual(idSenal, !manual));
-    if (manual) await dispatch(setEnclavamientos(idSenal, SENAL, true));
+    await toggleSenalManual();
+    if (senalIsManual) await setEnclavamientos(true);
   };
 
   return (
@@ -74,7 +75,7 @@ export default function EstadoSenal({ senal }) {
       <Container>
         <div
           className={classNames({
-            [styles.disabled]: !soloManual && !manual,
+            [styles.disabled]: !soloManual && !senalIsManual,
           })}
         >
           <Row>
@@ -116,10 +117,10 @@ export default function EstadoSenal({ senal }) {
             <Button
               className={styles.manual}
               size="sm"
-              color={manual ? 'danger' : 'outline-info'}
+              color={senalIsManual ? 'danger' : 'outline-info'}
               onClick={onSetManual}
             >
-              {manual ? <Unlocked /> : <Locked />}
+              {senalIsManual ? <Unlocked /> : <Locked />}
             </Button>
           </Row>
         )}

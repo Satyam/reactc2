@@ -5,6 +5,8 @@ import {
   enclavamientosActive,
   showCoords,
   showConfig,
+  showEstado as showEstadoAction,
+  hideEstado as hideEstadoAction,
 } from './actions';
 
 import {
@@ -12,6 +14,7 @@ import {
   selEnclavamientosActive,
   selShowCoords,
   selShowConfig,
+  selShowEstado,
 } from './selectors';
 
 export const useShowTeletipo = () => {
@@ -52,4 +55,12 @@ export const useShowConfig = () => {
     [dispatch, configShown]
   );
   return [configShown, toggleShowConfig];
+};
+
+export const useEstado = () => {
+  const estado = useSelector(selShowEstado);
+  const dispatch = useDispatch();
+  const hideEstado = () => dispatch(hideEstadoAction());
+  const showEstado = args => dispatch(showEstadoAction(args));
+  return { estado, hideEstado, showEstado };
 };

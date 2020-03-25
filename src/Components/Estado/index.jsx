@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 
 import {
@@ -14,9 +13,13 @@ import {
   NavLink,
 } from 'reactstrap';
 
-import { useCelda, useSenal, useShowConfig } from 'Store';
-
-import { selEnclavamiento, selShowEstado } from 'Store/selectors';
+import {
+  useCelda,
+  useSenal,
+  useShowConfig,
+  useEstado,
+  useSelEnclavamiento,
+} from 'Store';
 
 import { CAMBIO, TRIPLE } from 'Store/data';
 
@@ -26,7 +29,6 @@ import EstadoSenal from './Senal';
 
 import styles from './styles.module.css';
 import { isPlainClick } from 'Utils';
-import { hideEstado } from 'Store/actions';
 
 const TAB_SENAL = 'Señal';
 const TAB_CELDA = 'Celda';
@@ -34,11 +36,13 @@ const TAB_ENCL = 'Encl.';
 const TAB_COMANDO = 'Cmd.';
 
 export default function Estado() {
-  const { show, ...estado } = useSelector(selShowEstado);
+  const {
+    estado: { show, ...more },
+  } = useEstado();
   // Had to break it in two because selectors don't work with invalid ids
   // so, if no show, no Popover.
   // I can't call useSelector conditionally so I render the component conditionally
-  return show && <EstadoPopover {...estado} />;
+  return show && <EstadoPopover {...more} />;
 }
 
 function EstadoPopover({ idCelda, idSenal, placement }) {
@@ -46,10 +50,9 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
   const celda = useCelda(idCelda);
   const senal = useSenal(idSenal);
   const [showConfig] = useShowConfig();
-  const enclavamiento = useSelector(state =>
-    selEnclavamiento(state, senal || celda)
-  );
-  const dispatch = useDispatch();
+  const { hideEstado } = useEstado();
+  const enclavamiento = useSelEnclavamiento(senal || celda);
+
   const [activeTab, setActiveTab] = useState();
 
   const activeElement = senal || celda.tipo === CAMBIO || celda.tipo === TRIPLE;
@@ -63,7 +66,7 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const onClose = ev => isPlainClick(ev) && dispatch(hideEstado());
+  const onClose = ev => isPlainClick(ev) && hideEstado();
 
   const Command = () => (
     <>

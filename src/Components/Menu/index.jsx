@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 import './styles.module.css';
 
@@ -12,7 +11,7 @@ import {
   useShowConfig,
 } from 'Store';
 
-import { hideEstado as hideEstadoAction } from 'Store/actions';
+import { useEstado } from 'Store';
 
 import {
   Collapse,
@@ -33,9 +32,9 @@ import { GitHub } from 'Components/Icons';
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const match = useRouteMatch('/sector/:idSector');
-
+  const idSector = match && match.params.idSector;
   const sectores = useSectores();
-  const sector = useSector(match && match.params.idSector);
+  const sector = useSector(idSector);
   const [
     enclavamientosActive,
     toggleEnclavamientos,
@@ -43,10 +42,14 @@ export default function Menu() {
   const [showTeletipo, toggleTeletipo] = useShowTeletipo();
   const [showCoords, toggleShowCoords] = useShowCoords();
   const [showConfig, toggleShowConfig] = useShowConfig();
-  const dispatch = useDispatch();
+  const { hideEstado } = useEstado();
+  const [oldIdSector, setOldIdSector] = useState();
 
-  const hideEstado = idSector => () => {
-    if (sector && sector.idSector !== idSector) dispatch(hideEstadoAction());
+  const onClickSector = () => {
+    if (idSector !== oldIdSector) {
+      hideEstado();
+      setOldIdSector(idSector);
+    }
   };
   const toggleOpen = () => setIsOpen(!isOpen);
 
@@ -83,8 +86,8 @@ export default function Menu() {
                     to={`/sector/${sect.idSector}`}
                     key={sect.idSector}
                     title={sect.descr}
-                    active={sector && sector.idSector === sect.idSector}
-                    onClick={hideEstado(sect.idSector)}
+                    active={oldIdSector === sect.idSector}
+                    onClick={onClickSector}
                   >
                     {sect.descrCorta}
                   </DropdownItem>

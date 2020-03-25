@@ -1,27 +1,24 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import { isPlainClick, buildId } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { SENAL } from 'Store/data';
-import { showEstado } from 'Store/actions';
+import { useEstado } from 'Store';
 import styles from './styles.module.css';
 
 export default function Senal({ senal, placement }) {
-  const dispatch = useDispatch();
+  const { showEstado } = useEstado();
   if (!senal) return null;
 
   const onClick = ev =>
     isPlainClick(ev) &&
-    dispatch(
-      showEstado({
-        tipo: SENAL,
-        idCelda: buildId({ idSector: senal.idSector, x: senal.x, y: senal.y }),
-        idSenal: buildId(senal),
-        placement,
-      })
-    );
+    showEstado({
+      tipo: SENAL,
+      idCelda: buildId({ idSector: senal.idSector, x: senal.x, y: senal.y }),
+      idSenal: buildId(senal),
+      placement,
+    });
 
   const { dir, centro, izq, der } = senal;
   /*

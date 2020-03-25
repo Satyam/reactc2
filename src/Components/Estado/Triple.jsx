@@ -18,11 +18,11 @@ import { IZQ, CENTRO, DER } from 'Store/data';
 
 export default function EstadoTriple({ celda }) {
   const { posicion, idCelda } = celda;
-  const setCambio = useSetCambio();
+  const setCambio = useSetCambio(idCelda);
   const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
-  const onSetNormal = ev => isPlainClick(ev) && setCambio(idCelda, CENTRO);
-  const onSetIzq = ev => isPlainClick(ev) && setCambio(idCelda, IZQ);
-  const onSetDer = ev => isPlainClick(ev) && setCambio(idCelda, DER);
+  const onSetNormal = ev => isPlainClick(ev) && setCambio(CENTRO);
+  const onSetIzq = ev => isPlainClick(ev) && setCambio(IZQ);
+  const onSetDer = ev => isPlainClick(ev) && setCambio(DER);
   const onSetManual = ev => isPlainClick(ev) && toggleCeldaManual();
 
   return (
