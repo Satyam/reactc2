@@ -9,10 +9,6 @@ export default createReducer(
     [loadData]: state =>
       celdas.reduce((cs, c) => {
         const idCelda = buildId(c);
-        if (cs[idCelda])
-          throw new Error(
-            `Definición de celda en [${c.x},${c.y}] de ${c.idSector} repetida.`
-          );
         return {
           ...cs,
           [idCelda]: {

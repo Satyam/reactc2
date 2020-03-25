@@ -17,10 +17,6 @@ export default createReducer(
     [loadData]: state =>
       senales.reduce((ss, s) => {
         const idSenal = buildId(s);
-        if (ss[idSenal])
-          throw new Error(
-            `Definición de señal en [${s.x},${s.y}] de ${s.idSector} repetida.`
-          );
         return {
           ...ss,
           [idSenal]: {

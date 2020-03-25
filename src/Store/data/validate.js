@@ -103,28 +103,33 @@ console.log('**** Sectores ****');
 
 validate(
   sectores,
-  j.array().items(
-    j.object({
-      idSector,
-      descr: j.string().required(),
-      descrCorta: j
-        .string()
-        .max(30)
-        .required(),
-      ancho: j
-        .number()
-        .positive()
-        .integer()
-        .required()
-        .min(1),
-      alto: j
-        .number()
-        .positive()
-        .integer()
-        .required()
-        .min(1),
-    })
-  )
+  j
+    .array()
+    .items(
+      j.object({
+        idSector,
+        descr: j.string().required(),
+        descrCorta: j
+          .string()
+          .max(30)
+          .required(),
+        ancho: j
+          .number()
+          .positive()
+          .integer()
+          .required()
+          .min(1),
+        alto: j
+          .number()
+          .positive()
+          .integer()
+          .required()
+          .min(1),
+      })
+    )
+    .unique(
+      (a, b) => a.idSector === b.idSector || a.descrCorta === b.descrCorta
+    )
 );
 
 // ---- Celdas
@@ -139,6 +144,7 @@ const puntas = j
   .array()
   .items(dir)
   .length(2)
+  .unique()
   .required();
 
 const celdaLinea = baseCelda.append({
@@ -194,6 +200,7 @@ validate(
         .alternatives()
         .try(celdaLinea, celdaCambio, celdaParagolpe, celdaTriple, celdaCruce)
     )
+    .unique((a, b) => a.idSector === b.idSector && a.x === b.x && a.y === b.y)
 );
 
 // ---- Señales
@@ -209,7 +216,19 @@ const baseSenales = baseCelda
   .or(IZQ, CENTRO, DER);
 
 console.log('*** Senales ****');
-validate(senales, j.array().items(baseSenales));
+validate(
+  senales,
+  j
+    .array()
+    .items(baseSenales)
+    .unique(
+      (a, b) =>
+        a.idSector === b.idSector &&
+        a.x === b.x &&
+        a.y === b.y &&
+        a.dir === b.dir
+    )
+);
 
 // ---- Enclavamientos
 
@@ -298,7 +317,17 @@ console.log('*** Enclavamientos ****');
 
 validate(
   enclavamientos,
-  j.array().items(j.alternatives().try(enclCambio, enclSenal))
+  j
+    .array()
+    .items(j.alternatives().try(enclCambio, enclSenal))
+    .unique(
+      (a, b) =>
+        a.idSector === b.idSector &&
+        a.x === b.x &&
+        a.y === b.y &&
+        a.tipo === b.tipo &&
+        a.dir === b.dir
+    )
 );
 
 console.log('********* done **************');
