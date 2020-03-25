@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import ReactResizeDetector from 'react-resize-detector';
 
-import { useSector, useCeldas } from 'Store/selectors';
+import { useSector, useCeldas } from 'Store';
 
 import Celda from 'Components/Celda';
 import styles from './styles.module.css';

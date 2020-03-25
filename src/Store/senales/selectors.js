@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 
 export const selSenal = (state, idSenal) => state.senales[idSenal];
 export const selSenalIsManual = (state, idSenal) =>
@@ -15,9 +14,3 @@ export const selSenales = createSelector(
     ),
   senales => senales
 );
-
-export const useSenal = idSenal =>
-  useSelector(state => selSenal(state, idSenal));
-
-export const useSenales = celda =>
-  useSelector(state => selSenales(state, celda));

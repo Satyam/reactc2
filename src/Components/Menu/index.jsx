@@ -10,7 +10,7 @@ import {
   useEnclavamientosActive,
   useShowCoords,
   useShowConfig,
-} from 'Store/selectors';
+} from 'Store';
 
 import { hideEstado as hideEstadoAction } from 'Store/actions';
 

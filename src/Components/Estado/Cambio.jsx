@@ -11,7 +11,7 @@ import {
 } from 'Components/Icons';
 import { isPlainClick } from 'Utils';
 import { setCambio } from 'Store/actions';
-import { useCeldaManual } from 'Store/selectors';
+import { useCeldaManual } from 'Store';
 
 import { NORMAL, DESVIADO } from 'Store/data';
 import styles from './styles.module.css';

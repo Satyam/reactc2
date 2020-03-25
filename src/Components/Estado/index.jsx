@@ -14,13 +14,10 @@ import {
   NavLink,
 } from 'reactstrap';
 
-import {
-  useCelda,
-  useSenal,
-  selEnclavamiento,
-  selShowEstado,
-  useShowConfig,
-} from 'Store/selectors';
+import { useCelda, useSenal, useShowConfig } from 'Store';
+
+import { selEnclavamiento, selShowEstado } from 'Store/selectors';
+
 import { CAMBIO, TRIPLE } from 'Store/data';
 
 import EstadoCambio from './Cambio';

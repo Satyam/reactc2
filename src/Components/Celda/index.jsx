@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import { isPlainClick } from 'Utils';
 
-import { useCelda, useShowCoords, useSenales } from 'Store/selectors';
+import { useCelda, useShowCoords, useSenales } from 'Store';
 import { showEstado } from 'Store/actions';
 import Senal from 'Components/Senal';
 

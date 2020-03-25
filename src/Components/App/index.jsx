@@ -8,7 +8,7 @@ import Menu from 'Components/Menu';
 
 import loading from 'Components/Icons/loading.gif';
 
-import { useShowTeletipo, useSectores } from 'Store/selectors';
+import { useShowTeletipo, useSectores } from 'Store';
 // import Errors from 'Components/Errors';
 
 // import styles from './styles.module.css';

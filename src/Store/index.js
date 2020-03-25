@@ -17,3 +17,8 @@ export default configureStore({
     senales,
   },
 });
+
+export * from './celdas/hooks';
+export * from './options/hooks';
+export * from './sectores/hooks';
+export * from './senales/hooks';

@@ -1,8 +1,7 @@
 import React from 'react';
 import { isPlainClick } from 'Utils';
 
-import { useSetCambio } from 'Store/actions';
-import { useCeldaManual } from 'Store/selectors';
+import { useSetCambio, useCeldaManual } from 'Store';
 import { Button, ButtonGroup, PopoverBody } from 'reactstrap';
 
 import {
