@@ -3,4 +3,4 @@ export const selEnclavamientosActive = state =>
   state.options.enclavamientosActive;
 export const selShowCoords = state => state.options.showCoords;
 export const selShowEstado = state => state.options.showEstado;
-export const selJsonEnabled = state => state.options.jsonEnabled;
+export const selShowConfig = state => state.options.showConfig;

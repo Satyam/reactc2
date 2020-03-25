@@ -42,7 +42,7 @@ export default function Menu() {
   ] = useEnclavamientosActive();
   const [showTeletipo, toggleTeletipo] = useShowTeletipo();
   const [showCoords, toggleShowCoords] = useShowCoords();
-  const [jsonEnabled, toggleShowJson] = useShowConfig();
+  const [showConfig, toggleShowConfig] = useShowConfig();
   const dispatch = useDispatch();
 
   const hideEstado = idSector => () => {
@@ -108,7 +108,7 @@ export default function Menu() {
                 <DropdownItem onClick={toggleShowCoords} active={showCoords}>
                   Coordenadas
                 </DropdownItem>
-                <DropdownItem onClick={toggleShowJson} active={jsonEnabled}>
+                <DropdownItem onClick={toggleShowConfig} active={showConfig}>
                   Mostrar Config.
                 </DropdownItem>
               </DropdownMenu>

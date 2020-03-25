@@ -4,14 +4,14 @@ import {
   showTeletipo,
   enclavamientosActive,
   showCoords,
-  enableJson,
+  showConfig,
 } from './actions';
 
 import {
   selShowTeletipo,
   selEnclavamientosActive,
   selShowCoords,
-  selJsonEnabled,
+  selShowConfig,
 } from './selectors';
 
 export const useShowTeletipo = () => {
@@ -45,10 +45,10 @@ export const useShowCoords = () => {
 };
 
 export const useShowConfig = () => {
-  const configShown = useSelector(selJsonEnabled);
+  const configShown = useSelector(selShowConfig);
   const dispatch = useDispatch();
   const toggleShowConfig = useCallback(
-    () => dispatch(enableJson(!configShown)),
+    () => dispatch(showConfig(!configShown)),
     [dispatch, configShown]
   );
   return [configShown, toggleShowConfig];

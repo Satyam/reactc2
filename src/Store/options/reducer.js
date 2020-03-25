@@ -5,7 +5,7 @@ import {
   showCoords,
   showEstado,
   hideEstado,
-  enableJson,
+  showConfig,
 } from './actions';
 
 export default createReducer(
@@ -29,8 +29,8 @@ export default createReducer(
     [hideEstado]: state => {
       state.showEstado = { show: false };
     },
-    [enableJson]: (state, action) => {
-      state.jsonEnabled = action.payload;
+    [showConfig]: (state, action) => {
+      state.showConfig = action.payload;
     },
   }
 );

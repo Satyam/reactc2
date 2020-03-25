@@ -5,4 +5,4 @@ export const enclavamientosActive = createAction('enclavamientosActive');
 export const showCoords = createAction('showCoords');
 export const showEstado = createAction('showEstado');
 export const hideEstado = createAction('hideEstado');
-export const enableJson = createAction('enableJson');
+export const showConfig = createAction('showConfig');

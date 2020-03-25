@@ -45,7 +45,7 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
   const [oldId, setOldId] = useState();
   const celda = useCelda(idCelda);
   const senal = useSenal(idSenal);
-  const [jsonEnabled] = useShowConfig();
+  const [showConfig] = useShowConfig();
   const enclavamiento = useSelector(state =>
     selEnclavamiento(state, senal || celda)
   );
@@ -76,7 +76,7 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
   // I am using a patched Popover.
   return (
     <Popover
-      isOpen={!!(jsonEnabled || activeElement)}
+      isOpen={!!(showConfig || activeElement)}
       target={idCelda}
       placement={placement}
     >
@@ -85,7 +85,7 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>
-        {jsonEnabled ? (
+        {showConfig ? (
           <>
             <Nav pills className={styles.solapas}>
               {activeElement && (
