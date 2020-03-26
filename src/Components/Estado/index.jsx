@@ -51,7 +51,7 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
   const senal = useSenal(idSenal);
   const [showConfig] = useShowConfig();
   const { hideEstado } = useEstado();
-  const enclavamiento = useSelEnclavamiento(senal || celda);
+  const enclavamiento = useSelEnclavamiento(idSenal || idCelda);
 
   const [activeTab, setActiveTab] = useState();
 
