@@ -26,3 +26,7 @@
   stroke: silver;
   stroke-width: 3;
 }
+.tramo-ocupado {
+  stroke: yellow;
+  stroke-width: 4;
+}

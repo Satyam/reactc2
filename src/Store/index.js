@@ -6,6 +6,7 @@ import options from './options/reducer';
 import pendientes from './pendientes/reducer';
 import sectores from './sectores/reducer';
 import senales from './senales/reducer';
+import trenes from './trenes/reducer';
 
 export default configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export default configureStore({
     pendientes,
     sectores,
     senales,
+    trenes,
   },
 });
 
@@ -23,3 +25,4 @@ export * from './enclavamientos/hooks';
 export * from './options/hooks';
 export * from './sectores/hooks';
 export * from './senales/hooks';
+export * from './trenes/hooks';

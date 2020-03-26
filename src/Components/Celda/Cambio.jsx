@@ -10,7 +10,13 @@ export default function Cambio({ celda }) {
         <Tramo
           key={nombre}
           dir={celda.ramas[nombre]}
-          estilo={celda.posicion === nombre ? 'tramo-normal' : 'tramo-muerto'}
+          estilo={
+            celda.idTren
+              ? 'tramo-ocupado'
+              : celda.posicion === nombre
+              ? 'tramo-normal'
+              : 'tramo-muerto'
+          }
         />
       ))}
     </g>

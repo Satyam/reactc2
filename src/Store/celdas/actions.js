@@ -52,3 +52,13 @@ export const setCambioManual = createAction(
     },
   })
 );
+
+export const setTrenInCelda = createAction(
+  'setTrenInCelda',
+  (idCelda, idTren) => ({
+    payload: {
+      idCelda,
+      idTren,
+    },
+  })
+);

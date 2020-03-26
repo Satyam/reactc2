@@ -15,6 +15,7 @@ import Cambio from './Cambio';
 import Triple from './Triple';
 import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
+import { Despachador } from 'Components/Trenes';
 
 export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const celda = useCelda(idCelda);
@@ -67,6 +68,11 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
         {senales
           ? senales.map(senal => (
               <Senal senal={senal} key={senal.dir} placement={placement} />
+            ))
+          : null}
+        {Array.isArray(celda.despachador)
+          ? celda.despachador.map(dir => (
+              <Despachador dir={dir} celda={celda} key={`d${dir}`} />
             ))
           : null}
       </svg>

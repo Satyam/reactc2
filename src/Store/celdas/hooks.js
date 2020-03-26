@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
-import { setCambioManual, setCambio } from './actions';
+import { setCambioManual, setCambio, setTrenInCelda } from './actions';
 import { selCelda, selCeldas, selCeldaIsManual } from './selectors';
 
 export const useCelda = idCelda =>
@@ -22,4 +22,9 @@ export const useCeldaManual = idCelda => {
 export const useSetCambio = idCelda => {
   const dispatch = useDispatch();
   return posicion => dispatch(setCambio(idCelda, posicion));
+};
+
+export const useSetTrenInCelda = idCelda => {
+  const dispatch = useDispatch();
+  return idTren => dispatch(setTrenInCelda(idCelda, idTren));
 };

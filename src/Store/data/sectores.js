@@ -2,6 +2,7 @@ export const CONSTITUCION = 'constitucion';
 export const SIMPLE_DESVIO = 'simpleDesvio';
 export const CRUCE_DOBLE_CAMBIO = 'cruceDobleCambio';
 export const SENALES_ENCADENADAS = 'senalesEncadenadas';
+export const DOS_VIAS = 'dosVias';
 
 export const sectores = [
   {
@@ -31,5 +32,12 @@ export const sectores = [
     descr: 'Señal en amarillo cuando la siguiente está en rojo',
     ancho: 4,
     alto: 1,
+  },
+  {
+    idSector: DOS_VIAS,
+    descrCorta: '4- Dos vías paralelas',
+    descr: 'Dos vías paralelas con despacho de trenes',
+    ancho: 10,
+    alto: 2,
   },
 ];

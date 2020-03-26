@@ -1,6 +1,7 @@
 .senal {
   stroke-width: 2;
   stroke: black;
+  pointer-events: bounding-box;
 }
 .senal:hover {
   stroke: lightblue;

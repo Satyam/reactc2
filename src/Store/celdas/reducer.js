@@ -1,6 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { celdas } from 'Store/data';
-import { loadData, plainSetCambio, setCambioManual } from 'Store/actions';
+import {
+  loadData,
+  plainSetCambio,
+  setCambioManual,
+  setTrenInCelda,
+} from 'Store/actions';
 import { buildId } from 'Utils';
 
 export default createReducer(
@@ -25,6 +30,10 @@ export default createReducer(
     [setCambioManual]: (state, action) => {
       const { idCelda, manual } = action.payload;
       state[idCelda].manual = manual;
+    },
+    [setTrenInCelda]: (state, action) => {
+      const { idCelda, idTren } = action.payload;
+      state[idCelda].idTren = idTren;
     },
   }
 );
