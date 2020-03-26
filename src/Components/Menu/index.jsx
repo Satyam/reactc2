@@ -76,10 +76,6 @@ export default function Menu() {
                 {sector ? sector.descrCorta : 'Sectores'}
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem tag={Link} to="/adminSectores/">
-                  Admin. Sectores
-                </DropdownItem>
-                <DropdownItem divider />
                 {sectores.map(sect => (
                   <DropdownItem
                     tag={Link}
