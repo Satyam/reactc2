@@ -69,9 +69,9 @@ Los archivos de configuración contienen listas de propiedades para los distinto
 
 ### Sectores
 
-Los varios sectores están descriptos en el archivo [sectores.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/sectores.js#L6). Este exporta una lista (`Array`) de definición de sectores en lo que en JavaScript se denomina _objeto literal_ (Object Literal). Los sectores pueden declararse en cualquier orden.
+Los varios sectores están descriptos en el archivo [sectores.js](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/sectores.js#L6). Este exporta una lista (`Array`) de definición de sectores en lo que en JavaScript se denomina _objeto literal_ (Object Literal). Los sectores pueden declararse en cualquier orden.
 
-El archivo de definición de sectores comienza con una serie de [declaraciones de constantes](https://github.com/Satyam/reactc2/blob/master/src/Store/data/sectores.js#L1-L4) que se exportan. Como es habitual en JavaScript y otros lenguajes, las constantes suelen escribirse todas en mayúsculas, con guiones bajos para separar las palabras. La finalidad de estas constantes es, principalmente, reducir errores tipográficos y usualmente también reducir el tamaño del código. Dondequiera que se use la constante `CONSTITUCION` podría también escribirse `'constitucion'`, que es el valor que representa. La diferencia está en que un error tipográfico podría resultar en escribir, por ejemplo, `'constutucion'`, que pasaría totalmente inadvertido en cualquier chequeo de sintaxis pues un _string_ es libre de contener lo que se quiera. Esto no ocurre si se escribe `CONSTUTUCION` dado que esa constante no existe.
+El archivo de definición de sectores comienza con una serie de [declaraciones de constantes](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/sectores.js#L1-L4) que se exportan. Como es habitual en JavaScript y otros lenguajes, las constantes suelen escribirse todas en mayúsculas, con guiones bajos para separar las palabras. La finalidad de estas constantes es, principalmente, reducir errores tipográficos y usualmente también reducir el tamaño del código. Dondequiera que se use la constante `CONSTITUCION` podría también escribirse `'constitucion'`, que es el valor que representa. La diferencia está en que un error tipográfico podría resultar en escribir, por ejemplo, `'constutucion'`, que pasaría totalmente inadvertido en cualquier chequeo de sintaxis pues un _string_ es libre de contener lo que se quiera. Esto no ocurre si se escribe `CONSTUTUCION` dado que esa constante no existe.
 
 La definición de cada sector debe indicar:
 
@@ -85,7 +85,7 @@ El mímico que muestra el sector se ajustará el tamaño de las celdas para que 
 
 #### Celdas
 
-Las celdas se declaran en el archivo [celdas.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L26). Todas las celdas de todos los sectores están contenidas en este archivo.
+Las celdas se declaran en el archivo [celdas.js](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/celdas.js#L26). Todas las celdas de todos los sectores están contenidas en este archivo.
 
 No es necesario declarar las celdas vacías. Un sector declarado de 4 \* 3 celdas, no necesita 12 declaraciones. Las que no contengan ningún tramo de riel pueden omitirse.
 
@@ -116,7 +116,7 @@ celdas: [
 ]
 ```
 
-Para conveniencia del programador, varios de los literales como `linea`, `N` y demás que se verán más adelante, se han definido como [constantes literales](https://github.com/Satyam/reactc2/blob/master/src/Store/data/constantes.js), de tal manera que en lugar de escribir `tipo: 'linea'` se puede escribir `tipo: LINEA` y `puntas: ['N', 'S']` como `puntas: [N, S]`. Nótese que en Javascript, las mayúsculas y minúsculas son diferentes y la convención habitual en programación es que las constantes llevan nombres en mayúscula. En conjunto con las constantes para los identificadores de los sectores, la definición previa quedaría así:
+Para conveniencia del programador, varios de los literales como `linea`, `N` y demás que se verán más adelante, se han definido como [constantes literales](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/constantes.js), de tal manera que en lugar de escribir `tipo: 'linea'` se puede escribir `tipo: LINEA` y `puntas: ['N', 'S']` como `puntas: [N, S]`. Nótese que en Javascript, las mayúsculas y minúsculas son diferentes y la convención habitual en programación es que las constantes llevan nombres en mayúscula. En conjunto con las constantes para los identificadores de los sectores, la definición previa quedaría así:
 
 ```js
 celdas: [
@@ -260,7 +260,7 @@ Adicionalmente, al mostrar la configuración en el *pop-up* se podrán ver las s
 
 #### Señales
 
-Las señales son parte opcional de las celdas y se declaran en un archivo [senales.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/senales.js#L27).
+Las señales son parte opcional de las celdas y se declaran en un archivo [senales.js](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/senales.js#L27).
 
 Cada celda puede tener tantas señales como segmentos de vía, esto es 8. Ninguna celda tiene 8 segmentos, sólo las celdas de tipo `CRUCE` y `TRIPLE` tienen 4 segmentos, las demás no llegan a eso por lo que no tiene sentido que hubiera más señales que segmentos aunque nada impide poner una señal en medio del campo, donde nadie pueda verla.
 
@@ -285,7 +285,7 @@ Ej.:
   },
 ```
 
-En este ejemplo, en la celda `4,4` del sector `CONSTITUCION` habrá una señal en el lado izquierdo (`W`), apuntando hacia el centro. Esta celda se corresponde a un [CAMBIO](https://github.com/Satyam/reactc2/blob/master/src/Store/data/celdas.js#L156-L166) donde la punta que permite dar paso a cualquiera de los dos ramales, está hacia el lado izquierdo (`W`) al igual que lo está la única señal. Esta está compuesta de dos luces, la `centro` y la `der`, inicialmente en VERDE y ROJO dado que la `posicionInicial` de ese cambio es `NORMAL`. Los enclavamientos cambiarán estos colores según corresponda.
+En este ejemplo, en la celda `4,4` del sector `CONSTITUCION` habrá una señal en el lado izquierdo (`W`), apuntando hacia el centro. Esta celda se corresponde a un [CAMBIO](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/celdas.js#L155-L166) donde la punta que permite dar paso a cualquiera de los dos ramales, está hacia el lado izquierdo (`W`) al igual que lo está la única señal. Esta está compuesta de dos luces, la `centro` y la `der`, inicialmente en VERDE y ROJO dado que la `posicionInicial` de ese cambio es `NORMAL`. Los enclavamientos cambiarán estos colores según corresponda.
 
 Adicionalmente, se puede agregar la propiedad `soloManual: true`, (una propiedad que no existe es equivalente a tener valor `false`). Esta propiedad indica que la señal no es dependiente, por enclavamiento, de ningún otro elemento del sector y que, por ende, puede moverse libremente. Las señales que no tienen esta propiedad o, lo que es lo mismo, tienen `soloManual: false`, no pueden manipularse libremente sin antes ponerlas en modo manual, lo que las excluye de los enclavamientos.
 
@@ -302,7 +302,7 @@ El estado inicial de una señal está dado por el archivo de configuración. Pos
 
 Llamamos enclavamientos a los automatismos que relacionan las acciones de los diversos elementos del tablero, por ejemplo, cambios que actúan en consonancia o que afectan señales.
 
-Los enclavamientos están definidos en el archivo [enclavamientos.js](https://github.com/Satyam/reactc2/blob/master/src/Store/data/enclavamientos.js#L31)
+Los enclavamientos están definidos en el archivo [enclavamientos.js](https://github.com/Satyam/reactc2/blob/07ff4aea832109d27d280801b2c76bfe26fbd079/src/Store/data/enclavamientos.js#L31)
 
 Todos los enclavamientos tienen al menos dos partes, el elemento que es **afectado** por el enclavamiento y el o los elementos que lo afectan, contenidos en la lista de `dependencias`, que denominaremos **origen**.
 
