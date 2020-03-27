@@ -53,8 +53,18 @@ export const setCambioManual = createAction(
   })
 );
 
-export const setTrenInCelda = createAction(
-  'setTrenInCelda',
+export const removeTrenFromCelda = createAction(
+  'removeTrenFromCelda',
+  (idCelda, idTren) => ({
+    payload: {
+      idCelda,
+      idTren,
+    },
+  })
+);
+
+export const addTrenToCelda = createAction(
+  'addTrenToCelda',
   (idCelda, idTren) => ({
     payload: {
       idCelda,

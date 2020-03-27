@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { isPlainClick } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 
-import { useAddTren, useSetTrenInCelda } from 'Store';
+import { useAddTren } from 'Store';
 
 import styles from './styles.module.css';
 
@@ -34,17 +34,11 @@ import styles from './styles.module.css';
 // };
 
 export default function Despachador({ celda, dir }) {
-  const addTren = useAddTren();
-  const setTrenInCelda = useSetTrenInCelda(celda.idCelda);
+  const addTren = useAddTren(celda, dir);
   const onClick = ev => {
     if (isPlainClick(ev)) {
       if (celda.idTren) return;
-      const tren = addTren({ x: celda.x, y: celda.y, dir, speed: 1 });
-      const {
-        payload: { idTren },
-      } = tren;
-      console.log(idTren, tren);
-      setTrenInCelda(idTren);
+      addTren(1);
     }
   };
   return (

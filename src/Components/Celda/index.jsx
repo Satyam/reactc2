@@ -15,7 +15,7 @@ import Cambio from './Cambio';
 import Triple from './Triple';
 import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
-import { Despachador } from 'Components/Trenes';
+import { Despachador, Tren } from 'Components/Trenes';
 
 export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const celda = useCelda(idCelda);
@@ -75,6 +75,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
               <Despachador dir={dir} celda={celda} key={`d${dir}`} />
             ))
           : null}
+        {celda.idTren ? <Tren celda={celda} /> : null}
       </svg>
     </div>
   );

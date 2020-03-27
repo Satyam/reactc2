@@ -4,7 +4,9 @@ import {
   loadData,
   plainSetCambio,
   setCambioManual,
-  setTrenInCelda,
+  addTren,
+  removeTrenFromCelda,
+  addTrenToCelda,
 } from 'Store/actions';
 import { buildId } from 'Utils';
 
@@ -31,7 +33,14 @@ export default createReducer(
       const { idCelda, manual } = action.payload;
       state[idCelda].manual = manual;
     },
-    [setTrenInCelda]: (state, action) => {
+    [addTren]: (state, action) => {
+      const { idCelda, idTren } = action.payload;
+      state[idCelda].idTren = idTren;
+    },
+    [removeTrenFromCelda]: (state, action) => {
+      state[action.payload.idCelda].idTren = undefined;
+    },
+    [addTrenToCelda]: (state, action) => {
       const { idCelda, idTren } = action.payload;
       state[idCelda].idTren = idTren;
     },

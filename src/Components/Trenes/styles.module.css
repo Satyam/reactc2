@@ -1,11 +1,12 @@
 .train {
   pointer-events: bounding-box;
 }
-.background {
-  fill: none;
-  stroke: none;
-}
 
 .disabled {
   opacity: 0.5;
+}
+
+.tren {
+  fill: yellow;
+  stroke: black;
 }

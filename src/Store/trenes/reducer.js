@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addTren, setTren, delTren } from './actions';
+import { addTren, doSetTren, delTren } from './actions';
 
 export default createReducer(
   {},
@@ -7,7 +7,7 @@ export default createReducer(
     [addTren]: (state, { payload }) => {
       state[payload.idTren] = payload;
     },
-    [setTren]: (state, { payload }) => {
+    [doSetTren]: (state, { payload }) => {
       state[payload.idTren] = {
         ...state[payload.idTren],
         ...payload,

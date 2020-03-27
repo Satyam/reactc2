@@ -137,6 +137,7 @@ validate(
 const baseCelda = j
   .object({
     idSector,
+    despachador: j.array().items(dir),
   })
   .append(coords);
 

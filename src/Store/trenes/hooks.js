@@ -3,8 +3,9 @@ import { selTrenes, selTren } from './selectors';
 import { addTren, setTren, delTren } from './actions';
 
 export const useSelTrenes = () => useSelector(state => selTrenes(state));
+
 export const useTren = idTren => {
-  const tren = useSelector(selTren(idTren));
+  const tren = useSelector(state => selTren(state, idTren));
   const dispatch = useDispatch();
   return [
     tren,
@@ -18,9 +19,9 @@ export const useTren = idTren => {
   ];
 };
 
-export const useAddTren = () => {
+export const useAddTren = (celda, dir) => {
   const dispatch = useDispatch();
-  return props => dispatch(addTren(props));
+  return maxSpeed => dispatch(addTren(celda, dir, maxSpeed));
 };
 
 export const useDelTren = () => {

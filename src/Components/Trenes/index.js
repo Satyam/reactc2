@@ -1,3 +1,3 @@
 import Despachador from './Despachador';
-
-export { Despachador };
+import Tren from './Tren';
+export { Despachador, Tren };
