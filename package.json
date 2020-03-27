@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "prebuild": "npm run validate",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
