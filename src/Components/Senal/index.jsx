@@ -7,6 +7,8 @@ import { SENAL } from 'Store/data';
 import { useEstado } from 'Store';
 import styles from './styles.module.css';
 
+const colores = ['', 'verde', 'amarillo', 'rojo'];
+
 export default function Senal({ senal, placement }) {
   const { showEstado } = useEstado();
   if (!senal) return null;
@@ -45,13 +47,17 @@ export default function Senal({ senal, placement }) {
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
       <circle
-        className={styles[centro]}
+        className={styles[colores[centro]]}
         cx={izq || der ? x2 : x1}
         cy={y}
         r={r}
       />
-      {izq && <circle className={styles[izq]} cx={x1} cy={y + r} r={r} />}
-      {der && <circle className={styles[der]} cx={x1} cy={y - r} r={r} />}
+      {izq && (
+        <circle className={styles[colores[izq]]} cx={x1} cy={y + r} r={r} />
+      )}
+      {der && (
+        <circle className={styles[colores[der]]} cx={x1} cy={y - r} r={r} />
+      )}
     </g>
   );
 }

@@ -59,17 +59,10 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                   const celdaSource = selCelda(getState(), idSource);
                   const estadoBuscado = dep[celdaSource.posicion] || {};
                   Object.keys(estadoBuscado).forEach(luz => {
-                    switch (estadoBuscado[luz]) {
-                      case ROJO:
-                        nuevoEstado[luz] = ROJO;
-                        break;
-                      case AMARILLO:
-                        if (nuevoEstado[luz] === VERDE)
-                          nuevoEstado[luz] = AMARILLO;
-                        break;
-                      default:
-                        break;
-                    }
+                    nuevoEstado[luz] = Math.max(
+                      nuevoEstado[luz],
+                      estadoBuscado[luz]
+                    );
                   });
                   break;
                 case SENAL:

@@ -6,9 +6,9 @@ export const CRUCE = 'cruce';
 export const PARAGOLPE = 'paragolpe';
 export const SENAL = 'senal';
 // Luces:
-export const VERDE = 'verde';
-export const AMARILLO = 'amarillo';
-export const ROJO = 'rojo';
+export const VERDE = 1;
+export const AMARILLO = 2;
+export const ROJO = 3;
 // Cambio:
 export const NORMAL = 'normal';
 export const DESVIADO = 'desviado';
