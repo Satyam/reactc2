@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
-import './styles.module.css';
+import styles from './styles.module.css';
 
 import {
   useSectores,
@@ -9,9 +9,9 @@ import {
   useEnclavamientosActive,
   useShowCoords,
   useShowConfig,
+  usePlay,
+  useEstado,
 } from 'Store';
-
-import { useEstado } from 'Store';
 
 import {
   Collapse,
@@ -27,7 +27,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-import { GitHub } from 'Components/Icons';
+import { GitHub, Play } from 'Components/Icons';
 
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +44,7 @@ export default function Menu() {
   const [showConfig, toggleShowConfig] = useShowConfig();
   const { hideEstado } = useEstado();
   const [oldIdSector, setOldIdSector] = useState();
+  const [play, setPlay] = usePlay();
 
   const onClickSector = () => {
     if (idSector !== oldIdSector) {
@@ -52,7 +53,7 @@ export default function Menu() {
     }
   };
   const toggleOpen = () => setIsOpen(!isOpen);
-
+  const togglePlay = () => setPlay(!play);
   return (
     <div>
       <Navbar color="light" light expand="md">
@@ -112,6 +113,14 @@ export default function Menu() {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+            <NavItem>
+              <NavLink
+                className={play ? styles.pressed : styles.raised}
+                onClick={togglePlay}
+              >
+                <Play />
+              </NavLink>
+            </NavItem>
             <NavItem>
               <NavLink
                 href="https://github.com/Satyam/reactc2"

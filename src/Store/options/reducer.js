@@ -6,10 +6,16 @@ import {
   showEstado,
   hideEstado,
   showConfig,
+  play,
 } from './actions';
 
 export default createReducer(
-  { enclavamientosActive: true, showCoords: true, showEstado: { show: false } },
+  {
+    enclavamientosActive: true,
+    showCoords: true,
+    showEstado: { show: false },
+    isPlaying: true,
+  },
   {
     [enclavamientosActive]: (state, action) => {
       state.enclavamientosActive = action.payload;
@@ -31,6 +37,9 @@ export default createReducer(
     },
     [showConfig]: (state, action) => {
       state.showConfig = action.payload;
+    },
+    [play]: (state, action) => {
+      state.isPlaying = action.payload;
     },
   }
 );
