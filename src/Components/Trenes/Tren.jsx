@@ -4,6 +4,7 @@ import { useTren } from 'Store';
 
 import { CENTRO_CELDA } from 'Components/common';
 import styles from './styles.module.css';
+import { nextCoords } from 'Utils';
 
 const FACTOR_VEL = 1000;
 
@@ -17,7 +18,8 @@ export default function Tren({ celda }) {
     if (timer) clearTimeout(timer);
     setTimer(
       setTimeout(() => {
-        setTren({ speed, x: tren.dir === 'E' ? tren.x + 1 : tren.x - 1 });
+        const [x, y] = nextCoords(tren.x, tren.y, tren.dir);
+        setTren({ speed, x, y });
       }, t)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
