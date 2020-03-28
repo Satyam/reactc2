@@ -31,8 +31,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             return solvePromises(dependencias, dep => {
               const idSource = buildId({ idSector, x: dep.x, y: dep.y });
               const celdaSource = selCelda(getState(), idSource);
-              const posicionEsperada =
-                dep[celdaSource.posicion] || celdaTarget.posicionInicial;
+              const posicionEsperada = dep[celdaSource.posicion];
 
               if (posicionEsperada === celdaTarget.posicion) return false;
               if (selCeldaIsManual(getState(), idTarget)) return false;

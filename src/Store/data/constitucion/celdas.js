@@ -1,0 +1,242 @@
+/* eslint-disable no-unused-vars*/
+import {
+  LINEA,
+  CAMBIO,
+  PARAGOLPE,
+  TRIPLE,
+  CRUCE,
+  NORMAL,
+  CENTRO,
+  N,
+  NE,
+  E,
+  SE,
+  S,
+  SW,
+  W,
+  NW,
+} from '../constantes';
+/* eslint-enable no-unused-vars*/
+
+export const celdas = [
+  {
+    tipo: LINEA,
+    puntas: [N, S],
+    x: 5,
+    y: 0,
+  },
+  {
+    tipo: LINEA,
+    puntas: [N, S],
+    x: 6,
+    y: 0,
+  },
+  {
+    tipo: LINEA,
+    puntas: [N, SW],
+    x: 5,
+    y: 1,
+  },
+  {
+    tipo: LINEA,
+    puntas: [N, SE],
+    x: 6,
+    y: 1,
+  },
+  {
+    tipo: LINEA,
+    puntas: [NE, SW],
+    x: 4,
+    y: 2,
+  },
+  {
+    tipo: LINEA,
+    puntas: [NW, SE],
+    x: 7,
+    y: 2,
+  },
+  {
+    tipo: LINEA,
+    puntas: [NE, SW],
+    x: 3,
+    y: 3,
+  },
+  {
+    tipo: LINEA,
+    puntas: [SW, E],
+    x: 4,
+    y: 3,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, E],
+    x: 5,
+    y: 3,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, E],
+    x: 6,
+    y: 3,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, E],
+    x: 7,
+    y: 3,
+  },
+  {
+    tipo: CAMBIO,
+    posicion: NORMAL,
+    punta: SE,
+    ramas: {
+      normal: NW,
+      desviado: W,
+    },
+    x: 8,
+    y: 3,
+  },
+  {
+    tipo: PARAGOLPE,
+    punta: E,
+    x: 0,
+    y: 4,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, E],
+    x: 1,
+    y: 4,
+  },
+  {
+    tipo: TRIPLE,
+    posicion: CENTRO,
+    punta: W,
+    ramas: {
+      centro: E,
+      izq: NE,
+      der: SE,
+    },
+    x: 2,
+    y: 4,
+  },
+  {
+    tipo: CRUCE,
+    linea1: {
+      puntas: [SW, NE],
+    },
+    linea2: {
+      puntas: [W, E],
+    },
+    x: 3,
+    y: 4,
+  },
+  {
+    tipo: CAMBIO,
+    posicion: NORMAL,
+    punta: W,
+    ramas: {
+      normal: E,
+      desviado: SE,
+    },
+    x: 4,
+    y: 4,
+  },
+  {
+    tipo: CAMBIO,
+    posicion: NORMAL,
+    punta: E,
+    ramas: {
+      normal: W,
+      desviado: SW,
+    },
+    x: 5,
+    y: 4,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, SE],
+    x: 6,
+    y: 4,
+  },
+  {
+    tipo: LINEA,
+    puntas: [NW, SE],
+    x: 9,
+    y: 4,
+  },
+  {
+    tipo: PARAGOLPE,
+    punta: E,
+    x: 0,
+    y: 5,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, E],
+    x: 1,
+    y: 5,
+  },
+  {
+    tipo: CAMBIO,
+    posicion: NORMAL,
+    punta: W,
+    ramas: {
+      normal: E,
+      desviado: NE,
+    },
+    x: 2,
+    y: 5,
+  },
+  {
+    tipo: CRUCE,
+    linea1: {
+      puntas: [NW, SE],
+    },
+    linea2: {
+      puntas: [W, E],
+    },
+    x: 3,
+    y: 5,
+  },
+  {
+    tipo: CAMBIO,
+    posicion: NORMAL,
+    punta: W,
+    ramas: {
+      normal: E,
+      desviado: NE,
+    },
+    x: 4,
+    y: 5,
+  },
+  {
+    tipo: CAMBIO,
+    posicion: NORMAL,
+    punta: E,
+    ramas: {
+      normal: W,
+      desviado: NW,
+    },
+    x: 5,
+    y: 5,
+  },
+  {
+    tipo: LINEA,
+    puntas: [W, SE],
+    x: 6,
+    y: 5,
+  },
+  {
+    tipo: LINEA,
+    puntas: [NW, SE],
+    x: 7,
+    y: 5,
+  },
+  {
+    tipo: LINEA,
+    puntas: [NW, SE],
+    x: 10,
+    y: 5,
+  },
+];
