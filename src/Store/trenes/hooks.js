@@ -19,9 +19,9 @@ export const useTren = idTren => {
   ];
 };
 
-export const useAddTren = (celda, dir) => {
+export const useAddTren = celda => {
   const dispatch = useDispatch();
-  return maxSpeed => dispatch(addTren(celda, dir, maxSpeed));
+  return (dir, maxSpeed = 1) => dispatch(addTren(celda, dir, maxSpeed));
 };
 
 export const useDelTren = () => {

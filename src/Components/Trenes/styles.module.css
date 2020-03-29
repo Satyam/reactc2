@@ -1,7 +1,15 @@
-.train {
+.flechaDespachador {
   pointer-events: bounding-box;
+  fill: blue;
+  stroke: white;
+  stroke-width: 1px;
+  cursor: pointer;
 }
-
+.trenDespachador {
+  fill: yellow;
+  stroke: black;
+  stroke-width: 1;
+}
 .disabled {
   opacity: 0.5;
 }

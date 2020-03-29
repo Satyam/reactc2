@@ -70,11 +70,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
               <Senal senal={senal} key={senal.dir} placement={placement} />
             ))
           : null}
-        {Array.isArray(celda.despachador)
-          ? celda.despachador.map(dir => (
-              <Despachador dir={dir} celda={celda} key={`d${dir}`} />
-            ))
-          : null}
+        {Array.isArray(celda.despachador) && <Despachador celda={celda} />}
         {celda.idTren ? <Tren celda={celda} /> : null}
       </svg>
     </div>

@@ -1,10 +1,8 @@
 import React from 'react';
-import { Train } from 'Components/Icons';
-import classNames from 'classnames';
 
 import { isPlainClick } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
-
+import { CAMBIO, TRIPLE } from 'Store/data';
 import { useAddTren } from 'Store';
 
 import styles from './styles.module.css';
@@ -33,22 +31,56 @@ import styles from './styles.module.css';
 //   NW: ANCHO_CELDA - WIDTH,
 // };
 
-export default function Despachador({ celda, dir }) {
-  const addTren = useAddTren(celda, dir);
-  const onClick = ev => {
+export default function Despachador({ celda }) {
+  const addTren = useAddTren(celda);
+  const despacha = dir => ev => {
     if (isPlainClick(ev)) {
       if (celda.idTren) return;
-      addTren(1);
+      addTren(dir);
     }
   };
+
+  let dirs = [];
+
+  if (!celda.idTren) {
+    switch (celda.tipo) {
+      case TRIPLE:
+      case CAMBIO:
+        celda.despachador.forEach(dir => {
+          if (dir === celda.punta) dirs.push(dir);
+          if (dir === celda.ramas[celda.posicion]) dirs.push(dir);
+        });
+        break;
+      default:
+        dirs = celda.despachador;
+        break;
+    }
+  }
   return (
-    <g
-      className={classNames(styles.train, { [styles.disabled]: celda.idTren })}
-      onClick={onClick}
-      transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA}) translate(3,30)`}
-    >
-      <Train size="16px" />
-      <path d="M 16,3 L 22,8 16,13 z" />
-    </g>
+    !celda.idTren && (
+      <>
+        <circle
+          cx={CENTRO_CELDA}
+          cy={CENTRO_CELDA}
+          r={9}
+          className={styles.trenDespachador}
+        />
+        {dirs.map(dir => {
+          return (
+            <g
+              className={styles.flechaDespachador}
+              onClick={despacha(dir)}
+              key={dir}
+              transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
+            >
+              <path
+                d="M 15,-8 L 23,0 15,8 z"
+                transform={`translate(${CENTRO_CELDA},${CENTRO_CELDA})`}
+              />
+            </g>
+          );
+        })}
+      </>
+    )
   );
 }

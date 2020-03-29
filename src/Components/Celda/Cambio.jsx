@@ -5,16 +5,20 @@ import Tramo from './Tramo';
 export default function Cambio({ celda }) {
   return (
     <g>
-      <Tramo key="punta" dir={celda.punta} />
+      <Tramo
+        key="punta"
+        dir={celda.punta}
+        estilo={celda.idTren ? 'tramo-ocupado' : 'tramo-normal'}
+      />
       {Object.keys(celda.ramas).map(nombre => (
         <Tramo
           key={nombre}
           dir={celda.ramas[nombre]}
           estilo={
-            celda.idTren
-              ? 'tramo-ocupado'
-              : celda.posicion === nombre
-              ? 'tramo-normal'
+            celda.posicion === nombre
+              ? celda.idTren
+                ? 'tramo-ocupado'
+                : 'tramo-normal'
               : 'tramo-muerto'
           }
         />

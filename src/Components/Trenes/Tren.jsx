@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Train } from 'Components/Icons';
 
 import { useTren, usePlay } from 'Store';
 
@@ -21,8 +22,8 @@ export default function Tren({ celda }) {
       if (timer) clearTimeout(timer);
       setTimer(
         setTimeout(() => {
-          const [x, y] = nextCoords(tren.x, tren.y, tren.dir);
-          setTren({ speed, x, y });
+          const [x, y, dir] = nextCoords(tren.x, tren.y, tren.dir);
+          setTren({ speed, x, y, dir });
         }, t)
       );
     } else {
@@ -32,10 +33,11 @@ export default function Tren({ celda }) {
   }, [celda, tren, isPlaying]);
 
   return (
-    <g className={styles.tren}>
-      <circle cx={CENTRO_CELDA} cy={CENTRO_CELDA} r={5}>
+    <g transform={`translate(${CENTRO_CELDA - 8}, ${CENTRO_CELDA - 8})`}>
+      <circle cx={8} cy={8} r={9} className={styles.tren}>
         <title>{celda.idTren}</title>
       </circle>
+      <Train size="16px" />
     </g>
   );
 }
