@@ -21,7 +21,7 @@ export const doDelTren = createAction('doDelTren');
 
 export function delTren(tren) {
   return (dispatch, getState) => {
-    dispatch(removeTrenFromCelda(tren.idCelda, tren.idTren));
+    if (tren.idCelda) dispatch(removeTrenFromCelda(tren.idCelda, tren.idTren));
     dispatch(doDelTren(tren.idTren));
   };
 }
@@ -32,7 +32,6 @@ export function setTren(tren) {
   return async (dispatch, getState) => {
     const oldCelda = selCelda(getState(), tren.idCelda);
     if (oldCelda.x !== tren.x || oldCelda.y !== tren.y) {
-      dispatch(removeTrenFromCelda(oldCelda.idCelda, tren.idTren));
       const newIdCelda = buildId({
         idSector: oldCelda.idSector,
         x: tren.x,
@@ -102,6 +101,7 @@ export function setTren(tren) {
           default:
             break;
         }
+        dispatch(removeTrenFromCelda(oldCelda.idCelda, tren.idTren));
         dispatch(addTrenToCelda(newIdCelda, tren.idTren));
         dispatch(
           doSetTren({
