@@ -26,5 +26,5 @@ export const useAddTren = celda => {
 
 export const useDelTren = () => {
   const dispatch = useDispatch();
-  return idTren => dispatch(delTren(idTren));
+  return tren => dispatch(delTren(tren));
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Train } from 'Components/Icons';
 
-import { useTren, usePlay } from 'Store';
+import { useTren, usePlay, useDelTren } from 'Store';
 
 import { CENTRO_CELDA } from 'Components/common';
 import styles from './styles.module.css';
@@ -11,10 +11,12 @@ const FACTOR_VEL = 1000;
 
 export default function Tren({ celda }) {
   const [tren, setTren] = useTren(celda.idTren);
+  const delTren = useDelTren();
   const [timer, setTimer] = useState();
   const [isPlaying] = usePlay();
 
   useEffect(() => {
+    if (!tren) return;
     if (isPlaying) {
       const speed = tren.speed || tren.maxSpeed || 1;
       const long = celda.longitud || 1;
@@ -22,8 +24,10 @@ export default function Tren({ celda }) {
       if (timer) clearTimeout(timer);
       setTimer(
         setTimeout(() => {
-          const [x, y, dir] = nextCoords(tren.x, tren.y, tren.dir);
-          setTren({ speed, x, y, dir });
+          if (tren.dir) {
+            const [x, y, dir] = nextCoords(tren.x, tren.y, tren.dir);
+            setTren({ speed, x, y, dir });
+          } else delTren(tren);
         }, t)
       );
     } else {

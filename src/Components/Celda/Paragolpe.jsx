@@ -10,7 +10,12 @@ export default function Paragolpe({ celda }) {
         dir={celda.punta}
         estilo={celda.idTren ? 'tramo-ocupado' : 'tramo-normal'}
       />
-      <circle cx={CENTRO_CELDA} cy={CENTRO_CELDA} r={ANCHO_CELDA / 10} />
+      <circle
+        cx={CENTRO_CELDA}
+        cy={CENTRO_CELDA}
+        r={ANCHO_CELDA / 10}
+        fill={celda.idTren ? 'yellow' : 'black'}
+      />
     </g>
   );
 }
