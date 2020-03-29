@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { selTrenes, selTren } from './selectors';
-import { addTren, setTren, delTren } from './actions';
+import { addTren, setTren, delTren, delTrenes } from './actions';
 
 export const useSelTrenes = () => useSelector(state => selTrenes(state));
 
@@ -27,4 +27,9 @@ export const useAddTren = celda => {
 export const useDelTren = () => {
   const dispatch = useDispatch();
   return tren => dispatch(delTren(tren));
+};
+
+export const useDelTrenes = () => {
+  const dispatch = useDispatch();
+  return () => dispatch(delTrenes());
 };

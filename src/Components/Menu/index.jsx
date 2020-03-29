@@ -83,7 +83,7 @@ export default function Menu() {
                     to={`/sector/${sect.idSector}`}
                     key={sect.idSector}
                     title={sect.descr}
-                    active={oldIdSector === sect.idSector}
+                    active={idSector === sect.idSector}
                     onClick={onClickSector}
                   >
                     {sect.descrCorta}

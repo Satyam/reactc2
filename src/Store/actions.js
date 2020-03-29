@@ -1,3 +1,4 @@
+export * from './alertas/actions';
 export * from './celdas/actions';
 export * from './enclavamientos/actions';
 export * from './options/actions';

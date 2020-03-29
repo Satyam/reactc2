@@ -1,0 +1,9 @@
+.alarma {
+  background-color: var(--danger) !important;
+}
+.close {
+  margin-left: 0.5em;
+}
+.close button {
+  color: white;
+}

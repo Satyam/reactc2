@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import alertas from './alertas/reducer';
 import celdas from './celdas/reducer';
 import enclavamientos from './enclavamientos/reducer';
 import options from './options/reducer';
@@ -10,6 +11,7 @@ import trenes from './trenes/reducer';
 
 export default configureStore({
   reducer: {
+    alertas,
     celdas,
     enclavamientos,
     options,
@@ -20,6 +22,7 @@ export default configureStore({
   },
 });
 
+export * from './alertas/hooks';
 export * from './celdas/hooks';
 export * from './enclavamientos/hooks';
 export * from './options/hooks';
