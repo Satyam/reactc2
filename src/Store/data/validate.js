@@ -156,6 +156,7 @@ function validateCeldas(name) {
   const baseCelda = j
     .object({
       despachador: j.array().items(dir),
+      descr: j.string(),
     })
     .append(coords);
 
