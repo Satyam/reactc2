@@ -9,7 +9,7 @@ import {
   selCeldaIsManual,
 } from 'Store/selectors';
 
-import { VERDE, AMARILLO, ROJO, CAMBIO, SENAL } from 'Store/data';
+import { VERDE, CAMBIO, SENAL } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
@@ -69,17 +69,10 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                   dep.luces.forEach(
                     ({ luzOrigen, cuando, luzAfectada, estado }) => {
                       if (senalSource[luzOrigen] === cuando) {
-                        switch (estado) {
-                          case ROJO:
-                            nuevoEstado[luzAfectada] = ROJO;
-                            break;
-                          case AMARILLO:
-                            if (nuevoEstado[luzAfectada] === VERDE)
-                              nuevoEstado[luzAfectada] = AMARILLO;
-                            break;
-                          default:
-                            break;
-                        }
+                        nuevoEstado[luzAfectada] = Math.max(
+                          nuevoEstado[luzAfectada],
+                          estado
+                        );
                       }
                     }
                   );
