@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import { N, NE, E, SE, S, SW, W, NW } from 'Store/data';
 
 export const isPlainClick = ev => {
@@ -34,4 +36,27 @@ export function nextCoords(x, y, dir) {
       return [x - 1, y - 1, SE];
     default:
   }
+}
+
+export function useResize() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () =>
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return size;
 }
