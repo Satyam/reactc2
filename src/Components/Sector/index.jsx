@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
+import React, { useEffect } from 'react';
 import { useResize } from 'Utils';
 
 import { useSector, useCeldas } from 'Store';
@@ -17,12 +16,11 @@ export default function Sector({ idSector }) {
     ancho > 8 ? 100 : 200
   );
   const padLeft = (size.width - ancho * cellWidth) / 2;
-
+  useEffect(() => {
+    document.title = `CTC - ${descrCorta}`;
+  });
   return (
     <div>
-      <Helmet>
-        <title>{descrCorta}</title>
-      </Helmet>
       <div className={styles.sector}>
         {celdas.map(c => (
           <Celda

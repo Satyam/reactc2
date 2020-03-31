@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Teletipo from 'Components/Teletipo';
@@ -23,7 +22,6 @@ export default function App({ username = '', sector, photoURL }) {
     <Router
       basename={process.env.NODE_ENV === 'production' ? '/CTC' : undefined}
     >
-      <Helmet titleTemplate="CTC - %s" />
       <Menu />
       <Route path="/sector/:idSector">
         <Mimico idSector="constitucion" />
