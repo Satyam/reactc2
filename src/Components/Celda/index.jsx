@@ -77,4 +77,4 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   );
 }
 
-Celda.whyDidYouRender = true;
+Celda.whyDidYouRender = false;

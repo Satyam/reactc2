@@ -2,7 +2,7 @@ import React from 'react';
 import { useCelda } from 'Store';
 import Tramo from './Tramo';
 
-const Cambio = ({ idCelda }) => {
+export default function Cambio({ idCelda }) {
   const celda = useCelda(idCelda);
   return (
     <g>
@@ -26,7 +26,5 @@ const Cambio = ({ idCelda }) => {
       ))}
     </g>
   );
-};
-Cambio.whyDidYouRender = true;
-
-export default Cambio;
+}
+Cambio.whyDidYouRender = false;

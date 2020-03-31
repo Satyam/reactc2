@@ -17,4 +17,4 @@ export default function Linea({ idCelda }) {
   );
 }
 
-Linea.whyDidYouRender = true;
+Linea.whyDidYouRender = false;
