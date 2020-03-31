@@ -9,7 +9,7 @@ import {
   selCeldaIsManual,
 } from 'Store/selectors';
 
-import { VERDE, CAMBIO, SENAL } from 'Store/data';
+import { VERDE, CAMBIO, SENAL, NORMAL } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
@@ -28,7 +28,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             return dependencias.some(dep => {
               const idSource = buildId({ idSector, x: dep.x, y: dep.y });
               const celdaSource = selCelda(getState(), idSource);
-              const posicionEsperada = dep[celdaSource.posicion];
+              const posicionEsperada = dep[celdaSource.posicion] || NORMAL;
 
               if (posicionEsperada === celdaTarget.posicion) return false;
               if (selCeldaIsManual(getState(), idTarget)) return false;
@@ -50,7 +50,6 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 y: dep.y,
                 dir: dep.dir,
               });
-              debugger;
               switch (dep.tipo) {
                 case CAMBIO:
                   const celdaSource = selCelda(getState(), idSource);
@@ -107,7 +106,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
         ? selCelda(getState(), idOrigen)
         : selSenal(getState(), idOrigen);
     if (entity.manual) return;
-    let countDown = 99;
+    let countDown = 20;
     do {
       countDown--;
     } while (countDown && browseEnclavamientos(entity));
