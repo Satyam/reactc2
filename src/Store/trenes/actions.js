@@ -133,7 +133,7 @@ export function setTren(tren) {
           })
         );
       } else {
-        dispatch(doDelTren(tren.idTren));
+        dispatch(delTren(tren));
       }
     } else dispatch(doSetTren(tren));
   };
