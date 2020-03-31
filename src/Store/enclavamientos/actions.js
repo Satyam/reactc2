@@ -13,29 +13,26 @@ import { VERDE, CAMBIO, SENAL } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
-const solvePromises = (arr, fn) =>
-  Promise.all(arr.map(fn)).then(results => results.find(result => !!result));
-
 export function setEnclavamientos(idOrigen, tipoOrigen, force) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const browseEnclavamientos = origen => {
       const idSector = origen.idSector;
       const enclavamientos = selEnclavamientos(getState(), idSector);
-      return solvePromises(enclavamientos, encl => {
+      return enclavamientos.some(encl => {
         const { x, y, dir, tipo, dependencias } = encl;
         const idTarget = buildId({ idSector, x, y, dir });
         if (!force && idTarget === idOrigen) return false;
         switch (tipo) {
           case CAMBIO: {
             const celdaTarget = selCelda(getState(), idTarget);
-            return solvePromises(dependencias, dep => {
+            return dependencias.some(dep => {
               const idSource = buildId({ idSector, x: dep.x, y: dep.y });
               const celdaSource = selCelda(getState(), idSource);
               const posicionEsperada = dep[celdaSource.posicion];
 
               if (posicionEsperada === celdaTarget.posicion) return false;
               if (selCeldaIsManual(getState(), idTarget)) return false;
-              return dispatch(doSetCambio(idTarget, posicionEsperada));
+              return !!dispatch(doSetCambio(idTarget, posicionEsperada));
             });
           }
           case SENAL: {
@@ -53,6 +50,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 y: dep.y,
                 dir: dep.dir,
               });
+              debugger;
               switch (dep.tipo) {
                 case CAMBIO:
                   const celdaSource = selCelda(getState(), idSource);
@@ -83,18 +81,16 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                   );
               }
             });
-            return Promise.all(
-              Object.keys(nuevoEstado).map(luz => {
-                if (luz in senalTarget) {
-                  if (senalTarget[luz] === nuevoEstado[luz]) return false;
+            return Object.keys(nuevoEstado).some(luz => {
+              if (luz in senalTarget) {
+                if (senalTarget[luz] === nuevoEstado[luz]) return false;
 
-                  return dispatch(
-                    doSetLuzEstado(idTarget, luz, nuevoEstado[luz])
-                  );
-                }
-                return false;
-              })
-            ).then(results => results.find(result => !!result));
+                return !!dispatch(
+                  doSetLuzEstado(idTarget, luz, nuevoEstado[luz])
+                );
+              }
+              return false;
+            });
           }
 
           default:
@@ -111,10 +107,11 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
         ? selCelda(getState(), idOrigen)
         : selSenal(getState(), idOrigen);
     if (entity.manual) return;
-    let countDown = 4;
+    let countDown = 99;
     do {
       countDown--;
-    } while (countDown && (await browseEnclavamientos(entity)));
+    } while (countDown && browseEnclavamientos(entity));
+    console.log({ countDown });
     if (!countDown) throw new Error(`Enclavamiento en loop por ${idOrigen}`);
     return !!countDown;
   };

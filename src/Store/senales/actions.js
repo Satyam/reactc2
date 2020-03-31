@@ -21,7 +21,7 @@ export const plainSetLuzEstado = createAction(
 );
 
 export function doSetLuzEstado(idSenal, luz, estado) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const senal = selSenal(getState(), idSenal);
     if (!senal[luz]) {
       throw new Error(`Señal ${idSenal} no tiene luz ${luz}`);
@@ -29,18 +29,18 @@ export function doSetLuzEstado(idSenal, luz, estado) {
     if (senal[luz] === estado) return false;
     const idLuz = `${idSenal}:${luz}`;
     if (selPendiente(getState(), idLuz)) return false;
-    await dispatch(setPendiente(idLuz));
-    return await dispatch(plainSetLuzEstado(idSenal, luz, estado));
+    dispatch(setPendiente(idLuz));
+    return dispatch(plainSetLuzEstado(idSenal, luz, estado));
   };
 }
 
 export function setLuzEstado(idSenal, luz, estado) {
-  return async (dispatch, getState) => {
-    await dispatch(doSetLuzEstado(idSenal, luz, estado));
+  return (dispatch, getState) => {
+    dispatch(doSetLuzEstado(idSenal, luz, estado));
     if (!selSenalIsManual(getState(), idSenal)) {
-      await dispatch(setEnclavamientos(idSenal, SENAL));
+      dispatch(setEnclavamientos(idSenal, SENAL));
     }
-    return await dispatch(clearPendientes());
+    return dispatch(clearPendientes());
   };
 }
 

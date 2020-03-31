@@ -57,17 +57,17 @@ export default function EstadoSenal({ senal }) {
   const [senalIsManual, toggleSenalManual] = useSenalManual(idSenal);
   const setEnclavamientos = useSetEnclavamientos(idSenal, SENAL);
 
-  const onSetEstado = async (luz, estado) => {
+  const onSetEstado = (luz, estado) => {
     if (senalIsManual || soloManual) {
-      await setLuzEstado(luz, estado);
+      setLuzEstado(luz, estado);
     }
     if (soloManual) {
-      await setEnclavamientos(true);
+      setEnclavamientos(true);
     }
   };
-  const onSetManual = async () => {
-    await toggleSenalManual();
-    if (senalIsManual) await setEnclavamientos(true);
+  const onSetManual = () => {
+    toggleSenalManual();
+    if (senalIsManual) setEnclavamientos(true);
   };
 
   return (

@@ -13,7 +13,7 @@ export const doSetAlarma = createAction(
   })
 );
 export function setAlarma(...props) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     dispatch(doSetAlarma(...props));
     dispatch(play(false));
   };

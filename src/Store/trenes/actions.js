@@ -36,7 +36,7 @@ export function delTrenes() {
 export const doSetTren = createAction('doSetTren');
 
 export function setTren(tren) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const oldCelda = selCelda(getState(), tren.idCelda);
     if (oldCelda.x !== tren.x || oldCelda.y !== tren.y) {
       const newIdCelda = buildId({

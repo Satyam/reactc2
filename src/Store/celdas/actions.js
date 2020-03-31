@@ -19,7 +19,7 @@ export const plainSetCambio = createAction(
 );
 
 export function doSetCambio(idCelda, posicion) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
     if (celda.tipo !== CAMBIO && celda.tipo !== TRIPLE) {
       throw new Error(`Celda ${idCelda}  no es un cambio`);
@@ -28,18 +28,18 @@ export function doSetCambio(idCelda, posicion) {
       return false;
     }
     if (selPendiente(getState(), idCelda)) return false;
-    await dispatch(setPendiente(idCelda));
-    return await dispatch(plainSetCambio(idCelda, posicion));
+    dispatch(setPendiente(idCelda));
+    return dispatch(plainSetCambio(idCelda, posicion));
   };
 }
 
 export function setCambio(idCelda, posicion) {
-  return async (dispatch, getState) => {
-    await dispatch(doSetCambio(idCelda, posicion));
+  return (dispatch, getState) => {
+    dispatch(doSetCambio(idCelda, posicion));
     if (!selCeldaIsManual(getState(), idCelda)) {
-      await dispatch(setEnclavamientos(idCelda, CAMBIO));
+      dispatch(setEnclavamientos(idCelda, CAMBIO));
     }
-    return await dispatch(clearPendientes());
+    return dispatch(clearPendientes());
   };
 }
 
