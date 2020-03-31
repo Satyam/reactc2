@@ -9,7 +9,7 @@ import {
   selCeldaIsManual,
 } from 'Store/selectors';
 
-import { VERDE, CAMBIO, SENAL, NORMAL } from 'Store/data';
+import { VERDE, CAMBIO, SENAL, NORMAL, CENTRO } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
@@ -28,7 +28,10 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             return dependencias.some(dep => {
               const idSource = buildId({ idSector, x: dep.x, y: dep.y });
               const celdaSource = selCelda(getState(), idSource);
-              const posicionEsperada = dep[celdaSource.posicion] || NORMAL;
+              const posicionEsperada =
+                dep[celdaSource.posicion] || celdaTarget.tipo === CAMBIO
+                  ? NORMAL
+                  : CENTRO;
 
               if (posicionEsperada === celdaTarget.posicion) return false;
               if (selCeldaIsManual(getState(), idTarget)) return false;
