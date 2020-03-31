@@ -1,8 +1,9 @@
 import React from 'react';
-
+import { useCelda } from 'Store';
 import Tramo from './Tramo';
 
-export default function Cambio({ celda }) {
+const Cambio = ({ idCelda }) => {
+  const celda = useCelda(idCelda);
   return (
     <g>
       <Tramo
@@ -25,4 +26,7 @@ export default function Cambio({ celda }) {
       ))}
     </g>
   );
-}
+};
+Cambio.whyDidYouRender = true;
+
+export default Cambio;

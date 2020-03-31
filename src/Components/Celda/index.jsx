@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { isPlainClick } from 'Utils';
 
-import { useCelda, useShowCoords, useSenales, useEstado } from 'Store';
+import { useCelda, useShowCoords, useEstado } from 'Store';
 import Senal from 'Components/Senal';
 
-import { ANCHO_CELDA } from 'Components/common';
+import { ANCHO_CELDA, DIR } from 'Components/common';
 import styles from './styles.module.css';
 
 import Linea from './Linea';
@@ -20,7 +19,6 @@ import { Despachador, Tren } from 'Components/Trenes';
 export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const celda = useCelda(idCelda);
   const [showCoords] = useShowCoords();
-  const senales = useSenales(celda);
   const { showEstado } = useEstado();
   if (!cellWidth || !celda) return null;
   const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
@@ -64,12 +62,14 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
         <text x="0" y="95" className={styles.text}>
           {label}
         </text>
-        <Renderer celda={celda} />
-        {senales
-          ? senales.map(senal => (
-              <Senal senal={senal} key={senal.dir} placement={placement} />
-            ))
-          : null}
+        <Renderer idCelda={idCelda} />
+        {DIR.map(dir => (
+          <Senal
+            key={dir}
+            idSenal={`${idCelda}_${dir}`}
+            placement={placement}
+          />
+        ))}
         {Array.isArray(celda.despachador) && <Despachador celda={celda} />}
         {celda.idTren ? <Tren celda={celda} /> : null}
       </svg>
@@ -77,6 +77,4 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   );
 }
 
-Celda.propTypes = {
-  idCelda: PropTypes.string,
-};
+Celda.whyDidYouRender = true;

@@ -4,12 +4,13 @@ import classNames from 'classnames';
 import { isPlainClick, buildId } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { SENAL } from 'Store/data';
-import { useEstado } from 'Store';
+import { useEstado, useSenal } from 'Store';
 import styles from './styles.module.css';
 
 const colores = ['', 'verde', 'amarillo', 'rojo'];
 
-export default function Senal({ senal, placement }) {
+export default function Senal({ idSenal, placement }) {
+  const senal = useSenal(idSenal);
   const { showEstado } = useEstado();
   if (!senal) return null;
 

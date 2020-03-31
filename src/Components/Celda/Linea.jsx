@@ -1,8 +1,9 @@
 import React from 'react';
-
+import { useCelda } from 'Store';
 import Tramo from './Tramo';
 
-export default function Linea({ celda }) {
+export default function Linea({ idCelda }) {
+  const celda = useCelda(idCelda);
   return (
     <g>
       {celda.puntas.map((dir, index) => (
@@ -15,3 +16,5 @@ export default function Linea({ celda }) {
     </g>
   );
 }
+
+Linea.whyDidYouRender = true;

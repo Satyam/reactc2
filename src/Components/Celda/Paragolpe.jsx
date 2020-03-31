@@ -1,9 +1,10 @@
 import React from 'react';
-
+import { useCelda } from 'Store';
 import Tramo from './Tramo';
 import { CENTRO_CELDA, ANCHO_CELDA } from 'Components/common';
 
-export default function Paragolpe({ celda }) {
+export default function Paragolpe({ idCelda }) {
+  const celda = useCelda(idCelda);
   return (
     <g>
       <Tramo
