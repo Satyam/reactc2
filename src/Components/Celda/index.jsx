@@ -32,9 +32,10 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
       placement,
     });
 
-  const label =
-    (celda.descr || (showCoords ? `[${celda.x},${celda.y}]` : '')) +
-    (bloque ? ' - ' + bloque.descr : '');
+  const label = [];
+  if (celda.descr) label.push(celda.descr);
+  else if (showCoords) label.push(`[${celda.x},${celda.y}]`);
+  if (bloque) label.push(bloque.descr);
   const Renderer = {
     linea: Linea,
     cambio: Cambio,
@@ -63,7 +64,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
         className={styles.svg}
       >
         <text x="0" y="95" className={styles.text}>
-          {label}
+          {label.join(' - ')}
         </text>
         <Renderer idCelda={idCelda} />
         {DIR.map(dir => (
