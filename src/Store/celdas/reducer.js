@@ -3,9 +3,8 @@ import { celdas } from 'Store/data';
 import {
   plainSetCambio,
   setCambioManual,
-  addTren,
-  removeTrenFromCelda,
-  addTrenToCelda,
+  doRemoveTrenFromCelda,
+  doAddTrenToCelda,
 } from 'Store/actions';
 
 export default createReducer(celdas, {
@@ -17,14 +16,10 @@ export default createReducer(celdas, {
     const { idCelda, manual } = action.payload;
     state[idCelda].manual = manual;
   },
-  [addTren]: (state, action) => {
-    const { idCelda, idTren } = action.payload;
-    state[idCelda].idTren = idTren;
-  },
-  [removeTrenFromCelda]: (state, action) => {
+  [doRemoveTrenFromCelda]: (state, action) => {
     state[action.payload.idCelda].idTren = undefined;
   },
-  [addTrenToCelda]: (state, action) => {
+  [doAddTrenToCelda]: (state, action) => {
     const { idCelda, idTren } = action.payload;
     state[idCelda].idTren = idTren;
   },

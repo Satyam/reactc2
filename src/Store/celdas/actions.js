@@ -4,6 +4,7 @@ import {
   setPendiente,
   setEnclavamientos,
   clearPendientes,
+  setBloqueOcupado,
 } from 'Store/actions';
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 import { CAMBIO, TRIPLE } from 'Store/data';
@@ -53,7 +54,7 @@ export const setCambioManual = createAction(
   })
 );
 
-export const removeTrenFromCelda = createAction(
+export const doRemoveTrenFromCelda = createAction(
   'removeTrenFromCelda',
   (idCelda, idTren) => ({
     payload: {
@@ -62,8 +63,17 @@ export const removeTrenFromCelda = createAction(
     },
   })
 );
+export function removeTrenFromCelda(idCelda, idTren) {
+  return (dispatch, getState) => {
+    dispatch(doRemoveTrenFromCelda(idCelda, idTren));
+    const celda = selCelda(getState(), idCelda);
+    if (celda.idBloque) {
+      dispatch(setBloqueOcupado(celda.idBloque, false));
+    }
+  };
+}
 
-export const addTrenToCelda = createAction(
+export const doAddTrenToCelda = createAction(
   'addTrenToCelda',
   (idCelda, idTren) => ({
     payload: {
@@ -72,3 +82,13 @@ export const addTrenToCelda = createAction(
     },
   })
 );
+
+export function addTrenToCelda(idCelda, idTren) {
+  return (dispatch, getState) => {
+    dispatch(doAddTrenToCelda(idCelda, idTren));
+    const celda = selCelda(getState(), idCelda);
+    if (celda.idBloque) {
+      dispatch(setBloqueOcupado(celda.idBloque, true));
+    }
+  };
+}

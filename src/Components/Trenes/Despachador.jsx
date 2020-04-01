@@ -7,30 +7,6 @@ import { useAddTren } from 'Store';
 
 import styles from './styles.module.css';
 
-// const WIDTH = 16;
-
-// const X = {
-//   N: CENTRO_CELDA - WIDTH,
-//   NE: 0,
-//   E: 0,
-//   SE: 0,
-//   S: CENTRO_CELDA,
-//   SW: ANCHO_CELDA - WIDTH,
-//   W: ANCHO_CELDA - WIDTH,
-//   NW: ANCHO_CELDA - WIDTH,
-// };
-
-// const Y = {
-//   N: ANCHO_CELDA - WIDTH,
-//   NE: ANCHO_CELDA - WIDTH,
-//   E: CENTRO_CELDA,
-//   SE: 0,
-//   S: 0,
-//   SW: 0,
-//   W: CENTRO_CELDA,
-//   NW: ANCHO_CELDA - WIDTH,
-// };
-
 export default function Despachador({ celda }) {
   const addTren = useAddTren(celda);
   const despacha = dir => ev => {

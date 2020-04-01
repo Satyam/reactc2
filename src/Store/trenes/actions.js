@@ -7,16 +7,27 @@ import { LINEA, CAMBIO, TRIPLE, CRUCE, PARAGOLPE } from 'Store/data';
 import { selTrenes } from './selectors';
 
 let id = 0;
-export const addTren = createAction('addTren', (celda, dir, maxSpeed) => ({
-  payload: {
-    idCelda: celda.idCelda,
-    x: celda.x,
-    y: celda.y,
-    dir,
-    maxSpeed,
-    idTren: `_tren_${id++}`,
-  },
-}));
+export const doAddTren = createAction(
+  'addTren',
+  (celda, dir, maxSpeed, idTren) => ({
+    payload: {
+      idCelda: celda.idCelda,
+      x: celda.x,
+      y: celda.y,
+      dir,
+      maxSpeed,
+      idTren,
+    },
+  })
+);
+
+export function addTren(celda, dir, maxSpeed) {
+  return dispatch => {
+    const idTren = `_tren_${id++}`;
+    dispatch(doAddTren(celda, dir, maxSpeed, idTren));
+    dispatch(addTrenToCelda(celda.idCelda, idTren));
+  };
+}
 
 export const doDelTren = createAction('doDelTren');
 
@@ -45,6 +56,7 @@ export function setTren(tren) {
         y: tren.y,
       });
       const newCelda = selCelda(getState(), newIdCelda);
+
       if (newCelda) {
         if (newCelda.idTren) {
           dispatch(

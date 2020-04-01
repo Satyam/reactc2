@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { isPlainClick } from 'Utils';
+import { isPlainClick, buildId } from 'Utils';
 
-import { useCelda, useShowCoords, useEstado } from 'Store';
+import { useCelda, useShowCoords, useEstado, useBloque } from 'Store';
 import Senal from 'Components/Senal';
 
 import { ANCHO_CELDA, DIR } from 'Components/common';
@@ -18,6 +18,7 @@ import { Despachador, Tren } from 'Components/Trenes';
 
 export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   const celda = useCelda(idCelda);
+  const bloque = useBloque(celda.idBloque);
   const [showCoords] = useShowCoords();
   const { showEstado } = useEstado();
   if (!cellWidth || !celda) return null;
@@ -31,7 +32,9 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
       placement,
     });
 
-  const label = celda.descr || (showCoords ? `[${celda.x},${celda.y}]` : '');
+  const label =
+    (celda.descr || (showCoords ? `[${celda.x},${celda.y}]` : '')) +
+    (bloque ? ' - ' + bloque.descr : '');
   const Renderer = {
     linea: Linea,
     cambio: Cambio,
@@ -66,7 +69,10 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
         {DIR.map(dir => (
           <Senal
             key={dir}
-            idSenal={`${idCelda}_${dir}`}
+            idSenal={buildId({
+              ...celda,
+              dir,
+            })}
             placement={placement}
           />
         ))}
