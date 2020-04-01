@@ -21,141 +21,129 @@ import {
 export const celdas = [
   {
     tipo: LINEA,
-
     x: 0,
     y: 0,
     puntas: [E, W],
     despachador: [E],
+    bloque: 'uno',
   },
   {
     tipo: LINEA,
-
     x: 1,
     y: 0,
     puntas: [E, W],
+    bloque: 'uno',
   },
   {
     tipo: LINEA,
-
     x: 2,
     y: 0,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 3,
     y: 0,
     puntas: [E, W],
+    bloque: 'dos',
   },
   {
     tipo: LINEA,
-
     x: 4,
     y: 0,
     puntas: [E, W],
+    bloque: 'dos',
   },
   {
     tipo: LINEA,
-
     x: 5,
     y: 0,
     puntas: [E, W],
+    bloque: 'dos',
   },
   {
     tipo: LINEA,
-
     x: 6,
     y: 0,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 7,
     y: 0,
     puntas: [E, W],
+    bloque: 'tres',
   },
   {
     tipo: LINEA,
-
     x: 8,
     y: 0,
     puntas: [E, W],
+    bloque: 'tres',
   },
   {
     tipo: LINEA,
-
     x: 9,
     y: 0,
     puntas: [E, W],
+    bloque: 'tres',
   },
   {
     tipo: LINEA,
-
     x: 0,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 1,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 2,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 3,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 4,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 5,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 6,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 7,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 8,
     y: 1,
     puntas: [E, W],
   },
   {
     tipo: LINEA,
-
     x: 9,
     y: 1,
     puntas: [E, W],

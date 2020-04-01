@@ -57,13 +57,18 @@ const salida = {
   celdas: {},
   enclavamientos: {},
   senales: {},
+  bloques: {},
 };
 
+// Ids should be valid DOM id attributes.
+// Ids starting with a digit are prefixed with an underscore
 const buildId = (idSector, { x, y, dir }) =>
-  (dir
-    ? [undefined, idSector, x, y, dir].join('_')
-    : [undefined, idSector, x, y].join('_')
-  ).replace(/\W/g, '_');
+  (dir ? [idSector, x, y, dir].join('_') : [idSector, x, y].join('_'))
+    .replace(/\W/g, '_')
+    .replace(/(^\d)/, '_$1');
+
+const buildIdBloque = (idSector, bloque) =>
+  `${idSector}__${bloque}`.replace(/\W/g, '_').replace(/(^\d)/, '_$1');
 
 // various standard types
 const dir = j.valid(N, NE, E, SE, S, SW, W, NW).required();
@@ -157,6 +162,7 @@ function validateCeldas(name) {
     .object({
       despachador: j.array().items(dir),
       descr: j.string(),
+      bloque: j.string(),
     })
     .append(coords);
 
@@ -229,7 +235,26 @@ function processCeldas(idSector, celdas) {
   salida.celdas = celdas.reduce((cs, c) => {
     const idCelda = buildId(idSector, c);
     if (cs[idCelda]) throw new Error(`Clave duplicada en Celdas: ${idCelda}`);
+    if (c.bloque) {
+      const idBloque = buildIdBloque(idSector, c.bloque);
 
+      if (!salida.bloques[idBloque]) {
+        salida.bloques[idBloque] = {
+          celdas: [],
+          descr: c.bloque,
+        };
+      }
+      salida.bloques[idBloque].celdas.push(idCelda);
+      return {
+        ...cs,
+        [idCelda]: {
+          ...c,
+          idCelda,
+          idSector,
+          idBloque,
+        },
+      };
+    }
     return {
       ...cs,
       [idCelda]: {
@@ -431,26 +456,17 @@ fs.writeFileSync(
   './index.js',
   `
 export * from './constantes.js'
-export const sectores =  ${util.inspect(salida.sectores, {
-    depth: null,
-    maxArrayLength: null,
-    // breakLength: Infinity,
-  })}
-  export const celdas =  ${util.inspect(salida.celdas, {
-    depth: null,
-    maxArrayLength: null,
-    // breakLength: Infinity,
-  })}
-  export const enclavamientos =  ${util.inspect(salida.enclavamientos, {
-    depth: null,
-    maxArrayLength: null,
-    // breakLength: Infinity,
-  })}
-  export const senales =  ${util.inspect(salida.senales, {
-    depth: null,
-    maxArrayLength: null,
-    // breakLength: Infinity,
-  })}
+${Object.keys(salida)
+  .map(
+    el =>
+      `export const ${el} =  ${util.inspect(salida[el], {
+        depth: null,
+        maxArrayLength: null,
+        // breakLength: Infinity,
+      })}
+  `
+  )
+  .join('\n')}
     `
 );
 
