@@ -8,5 +8,5 @@ export const useBloqueOcupado = idBloque =>
   useSelector(state => selBloqueOcupado(state, idBloque));
 export const useSetBloqueOcupado = () => {
   const dispatch = useDispatch();
-  return (idBloque, ocupado) => dispatch(setBloqueOcupado(idBloque, ocupado));
+  return (idBloque, idTren) => dispatch(setBloqueOcupado(idBloque, idTren));
 };

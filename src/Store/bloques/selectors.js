@@ -6,6 +6,6 @@ export const selBloqueOcupado = createSelector(
   (state, idBloque) => idBloque,
   (bloques, idBloque) => {
     const bloque = bloques[idBloque];
-    return bloque && bloque.ocupado;
+    return bloque && bloque.idTren;
   }
 );

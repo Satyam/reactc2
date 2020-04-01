@@ -2,10 +2,10 @@ import { createAction } from '@reduxjs/toolkit';
 
 export const setBloqueOcupado = createAction(
   'setBloqueOcupado',
-  (idBloque, ocupado) => ({
+  (idBloque, idTren) => ({
     payload: {
       idBloque,
-      ocupado,
+      idTren,
     },
   })
 );

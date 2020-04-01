@@ -5,7 +5,7 @@ import { setBloqueOcupado } from './actions';
 
 export default createReducer(bloques, {
   [setBloqueOcupado]: (state, action) => {
-    const { idBloque, ocupado } = action.payload;
-    state[idBloque].ocupado = ocupado;
+    const { idBloque, idTren } = action.payload;
+    state[idBloque].idTren = idTren;
   },
 });

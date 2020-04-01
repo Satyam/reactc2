@@ -88,7 +88,7 @@ export function addTrenToCelda(idCelda, idTren) {
     dispatch(doAddTrenToCelda(idCelda, idTren));
     const celda = selCelda(getState(), idCelda);
     if (celda.idBloque) {
-      dispatch(setBloqueOcupado(celda.idBloque, true));
+      dispatch(setBloqueOcupado(celda.idBloque, idTren));
     }
   };
 }
