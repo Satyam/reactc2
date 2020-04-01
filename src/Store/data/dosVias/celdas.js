@@ -87,12 +87,14 @@ export const celdas = [
     y: 0,
     puntas: [E, W],
     bloque: 'tres',
+    despachador: [W],
   },
   {
     tipo: LINEA,
     x: 0,
     y: 1,
     puntas: [E, W],
+    despachador: [E],
   },
   {
     tipo: LINEA,

@@ -4,7 +4,7 @@ import { removeTrenFromCelda, addTrenToCelda, setAlarma } from 'Store/actions';
 import { buildId } from 'Utils';
 
 import { LINEA, CAMBIO, TRIPLE, CRUCE, PARAGOLPE } from 'Store/data';
-import { selTrenes } from './selectors';
+import { selTrenes, selBloqueOcupado } from 'Store/selectors';
 
 let id = 0;
 export const doAddTren = createAction(
@@ -58,7 +58,8 @@ export function setTren(tren) {
       const newCelda = selCelda(getState(), newIdCelda);
 
       if (newCelda) {
-        if (newCelda.idTren) {
+        const trenEnBloque = selBloqueOcupado(getState(), newCelda.idBloque);
+        if (newCelda.idTren || (trenEnBloque && trenEnBloque !== tren.idTren)) {
           dispatch(
             setAlarma(
               newIdCelda,
