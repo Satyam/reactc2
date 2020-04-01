@@ -10,11 +10,12 @@ export const isPlainClick = ev => {
   return true;
 };
 
+// Ids should be valid DOM id attributes.
+// Ids starting with a digit are prefixed with an underscore
 export const buildId = ({ idSector, x, y, dir }) =>
-  (dir
-    ? [undefined, idSector, x, y, dir].join('_')
-    : [undefined, idSector, x, y].join('_')
-  ).replace(/\W/g, '_');
+  (dir ? [idSector, x, y, dir].join('_') : [idSector, x, y].join('_'))
+    .replace(/\W/g, '_')
+    .replace(/(^\d)/, '_$1');
 
 export function nextCoords(x, y, dir) {
   switch (dir) {
