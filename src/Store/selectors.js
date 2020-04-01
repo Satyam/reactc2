@@ -1,4 +1,5 @@
 export * from './alertas/selectors';
+export * from './bloques/selectors';
 export * from './celdas/selectors';
 export * from './enclavamientos/selectors';
 export * from './options/selectors';
