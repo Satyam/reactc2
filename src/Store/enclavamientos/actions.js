@@ -1,4 +1,4 @@
-import { buildId } from 'Utils';
+import { buildId, buildIdBloque } from 'Utils';
 
 import {
   selCelda,
@@ -7,16 +7,16 @@ import {
   selEnclavamientosActive,
   selSenalIsManual,
   selCeldaIsManual,
+  selBloqueOcupado,
 } from 'Store/selectors';
 
-import { VERDE, CAMBIO, SENAL, NORMAL, CENTRO } from 'Store/data';
+import { VERDE, ROJO, CAMBIO, SENAL, BLOQUE, NORMAL, CENTRO } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
 export function setEnclavamientos(idOrigen, tipoOrigen, force) {
   return (dispatch, getState) => {
-    const browseEnclavamientos = origen => {
-      const idSector = origen.idSector;
+    const browseEnclavamientos = idSector => {
       const enclavamientos = selEnclavamientos(getState(), idSector);
       return enclavamientos.reduce((r, encl) => {
         const { x, y, dir, tipo, dependencias } = encl;
@@ -33,7 +33,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 (celdaTarget.tipo === CAMBIO ? NORMAL : CENTRO);
               if (posicionEsperada === celdaTarget.posicion) return r1;
               if (selCeldaIsManual(getState(), idTarget)) return r1;
-              return r1 || !!dispatch(doSetCambio(idTarget, posicionEsperada));
+              return !!dispatch(doSetCambio(idTarget, posicionEsperada)) || r1;
             }, r);
           }
           case SENAL: {
@@ -75,6 +75,15 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                     }
                   );
                   break;
+                case BLOQUE:
+                  const ocupado = !!selBloqueOcupado(
+                    getState(),
+                    buildIdBloque(idSector, dep.bloque)
+                  );
+                  if (ocupado) {
+                    nuevoEstado[dep.luzAfectada] = ROJO;
+                  }
+                  break;
                 default:
                   throw new Error(
                     `Dependencia ${dep.idSource} de ${idTarget} tiene tipo desconocido: ${dep.tipo}`
@@ -86,8 +95,8 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
               if (senalTarget[luz] === nuevoEstado[luz]) return r2;
 
               return (
-                r2 ||
-                !!dispatch(doSetLuzEstado(idTarget, luz, nuevoEstado[luz]))
+                !!dispatch(doSetLuzEstado(idTarget, luz, nuevoEstado[luz])) ||
+                r2
               );
             }, r);
           }
@@ -101,13 +110,33 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
     };
 
     if (!selEnclavamientosActive(getState())) return;
-    const entity =
-      tipoOrigen === CAMBIO
-        ? selCelda(getState(), idOrigen)
-        : selSenal(getState(), idOrigen);
-    if (entity.manual) return;
+    let idSector;
+    switch (tipoOrigen) {
+      case CAMBIO:
+        {
+          const entity = selCelda(getState(), idOrigen);
+          if (entity.manual) return;
+          idSector = entity.idSector;
+        }
+        break;
+      case SENAL:
+        {
+          const entity = selSenal(getState(), idOrigen);
+          if (entity.manual) return;
+          idSector = entity.idSector;
+        }
+        break;
+      case BLOQUE:
+        {
+          const entity = selCelda(getState(), idOrigen);
+          idSector = entity.idSector;
+        }
+        break;
+      default:
+        break;
+    }
     let countDown = 9;
-    while (countDown && browseEnclavamientos(entity)) countDown--;
+    while (countDown && browseEnclavamientos(idSector)) countDown--;
     console.log({ countDown });
     if (!countDown) throw new Error(`Enclavamiento en loop por ${idOrigen}`);
     return !!countDown;
