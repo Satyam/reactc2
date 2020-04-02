@@ -1,10 +1,16 @@
 import { createAction } from '@reduxjs/toolkit';
 import { selCelda } from 'Store/selectors';
-import { removeTrenFromCelda, addTrenToCelda, setAlarma } from 'Store/actions';
+import {
+  removeTrenFromCelda,
+  addTrenToCelda,
+  setAlarma,
+  setEnclavamientos,
+} from 'Store/actions';
 import { buildId } from 'Utils';
 
 import { LINEA, CAMBIO, TRIPLE, CRUCE, PARAGOLPE } from 'Store/data';
 import { selTrenes, selBloqueOcupado } from 'Store/selectors';
+import { BLOQUE } from '../data/constantes';
 
 let id = 0;
 export const doAddTren = createAction(
@@ -26,6 +32,7 @@ export function addTren(celda, dir, maxSpeed) {
     const idTren = `_tren_${id++}`;
     dispatch(doAddTren(celda, dir, maxSpeed, idTren));
     dispatch(addTrenToCelda(celda.idCelda, idTren));
+    dispatch(setEnclavamientos(celda.idCelda, BLOQUE));
   };
 }
 
@@ -158,5 +165,6 @@ export function setTren(tren) {
         dispatch(delTren(tren));
       }
     } else dispatch(doSetTren(tren));
+    dispatch(setEnclavamientos(tren.idCelda, BLOQUE));
   };
 }
