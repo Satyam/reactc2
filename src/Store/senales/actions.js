@@ -1,11 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import {
-  setPendiente,
-  clearPendientes,
-  setEnclavamientos,
-} from 'Store/actions';
-import { selPendiente, selSenal } from 'Store/selectors';
+import { clearPendientes, setEnclavamientos } from 'Store/actions';
+import { selSenal } from 'Store/selectors';
 import { selSenalIsManual } from './selectors';
 import { SENAL } from 'Store/data';
 
@@ -27,9 +23,6 @@ export function doSetLuzEstado(idSenal, luz, estado) {
       throw new Error(`Señal ${idSenal} no tiene luz ${luz}`);
     }
     if (senal[luz] === estado) return false;
-    const idLuz = `${idSenal}:${luz}`;
-    if (selPendiente(getState(), idLuz)) return false;
-    dispatch(setPendiente(idLuz));
     return dispatch(plainSetLuzEstado(idSenal, luz, estado));
   };
 }
