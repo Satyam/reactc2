@@ -58,13 +58,22 @@ export function setTren(tren) {
       const newCelda = selCelda(getState(), newIdCelda);
 
       if (newCelda) {
-        const trenEnBloque = selBloqueOcupado(getState(), newCelda.idBloque);
-        if (newCelda.idTren || (trenEnBloque && trenEnBloque !== tren.idTren)) {
+        if (newCelda.idTren) {
           dispatch(
             setAlarma(
               newIdCelda,
               tren.idTren,
               `Colisión en ${newCelda.idCelda} entre ${tren.idTren} y ${newCelda.idTren}`
+            )
+          );
+        }
+        const trenEnBloque = selBloqueOcupado(getState(), newCelda.idBloque);
+        if (trenEnBloque && trenEnBloque !== tren.idTren) {
+          dispatch(
+            setAlarma(
+              newIdCelda,
+              tren.idTren,
+              `Tren ${tren.idTren} invade el bloque ${newCelda.idCelda} ocupado por ${trenEnBloque}`
             )
           );
         }
