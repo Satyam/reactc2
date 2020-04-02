@@ -17,6 +17,9 @@ export const buildId = ({ idSector, x, y, dir }) =>
     .replace(/\W/g, '_')
     .replace(/(^\d)/, '_$1');
 
+export const buildIdBloque = (idSector, bloque) =>
+  `${idSector}__${bloque}`.replace(/\W/g, '_').replace(/(^\d)/, '_$1');
+
 export function nextCoords(x, y, dir) {
   switch (dir) {
     case N:

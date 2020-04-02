@@ -38,6 +38,7 @@ const {
   SW,
   W,
   NW,
+  BLOQUE,
 } = require('./constantes');
 
 const validate = (what, schema) => {
@@ -114,6 +115,7 @@ function validateConstants() {
   validateConst(SW, 'SW');
   validateConst(W, 'W');
   validateConst(NW, 'NW');
+  validateConst(BLOQUE, 'bloque');
 }
 
 function validateSector(name) {
@@ -382,8 +384,16 @@ function validateEnclavamientos(name) {
     })
     .append(coords);
 
+  const depSenalBloque = j.object({
+    tipo: j.valid(BLOQUE),
+    bloque: j.string().required(),
+    luzAfectada: icd,
+  });
+
   const depsCambio = depCambioCambio;
-  const depsSenal = j.alternatives().try(depSenalSenal, depSenalCambio);
+  const depsSenal = j
+    .alternatives()
+    .try(depSenalSenal, depSenalCambio, depSenalBloque);
 
   const baseEncl = j.object({}).append(coords);
 

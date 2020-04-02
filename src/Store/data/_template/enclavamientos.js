@@ -18,6 +18,7 @@ import {
   SW,
   W,
   NW,
+  BLOQUE,
 } from '../constantes';
 /* eslint-enable no-unused-vars*/
 

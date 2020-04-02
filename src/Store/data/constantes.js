@@ -25,3 +25,6 @@ export const S = 'S';
 export const SW = 'SW';
 export const W = 'W';
 export const NW = 'NW';
+// para tipo de enclavamiento
+// se reutilizan CAMBIO y SENAL de anges
+export const BLOQUE = 'bloque';
