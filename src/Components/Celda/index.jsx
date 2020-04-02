@@ -32,10 +32,20 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
       placement,
     });
 
-  const label = [];
-  if (celda.descr) label.push(celda.descr);
-  else if (showCoords) label.push(`[${celda.x},${celda.y}]`);
-  if (bloque) label.push(bloque.descr);
+  const label = celda.desc || (showCoords ? `[${celda.x},${celda.y}]` : '');
+  const title = [];
+  if (celda.descr) {
+    title.push(`Celda: ${celda.descr}`);
+  }
+  title.push(`Coordenadas: [${celda.x},${celda.y}]`);
+
+  if (bloque) {
+    title.push(`Bloque: ${bloque.descr}`);
+  }
+  if (celda.idTren) {
+    title.push(`Con tren ${celda.idTren}`);
+  }
+
   const Renderer = {
     linea: Linea,
     cambio: Cambio,
@@ -56,6 +66,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
         height: cellWidth,
       }}
       onClick={onClick(celda.tipo)}
+      title={title.join('\n')}
     >
       <svg
         viewBox={`0 0 ${ANCHO_CELDA} ${ANCHO_CELDA}`}
@@ -64,8 +75,13 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
         className={styles.svg}
       >
         <text x="0" y="95" className={styles.text}>
-          {label.join(' - ')}
+          {label}
         </text>
+        {bloque && (
+          <text textAnchor="end" x={95} y={95} className={styles.text}>
+            {bloque.descr}
+          </text>
+        )}
         <Renderer idCelda={idCelda} />
         {DIR.map(dir => (
           <Senal
