@@ -1,33 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Train } from 'Components/Icons';
 
-import { useTren, usePlay, useDelTren } from 'Store';
+import { useTren, usePlay } from 'Store';
 
 import { CENTRO_CELDA } from 'Components/common';
 import styles from './styles.module.css';
-import { nextCoords } from 'Utils';
 
 const FACTOR_VEL = 1000;
 
 export default function Tren({ celda }) {
-  const [tren, setTren] = useTren(celda.idTren);
-  const delTren = useDelTren();
+  const [tren, moveTren] = useTren(celda.idTren);
   const [timer, setTimer] = useState();
   const [isPlaying] = usePlay();
 
   useEffect(() => {
     if (!tren) return;
     if (isPlaying) {
-      const speed = tren.speed || tren.maxSpeed || 1;
+      const speed = tren.speed;
+      if (speed === 0) return;
       const long = celda.longitud || 1;
-      const t = (long / speed) * FACTOR_VEL;
+      const t = (speed ? long / speed : 5) * FACTOR_VEL;
       if (timer) clearTimeout(timer);
       setTimer(
         setTimeout(() => {
-          if (tren.dir) {
-            const [x, y, dir] = nextCoords(tren.x, tren.y, tren.dir);
-            setTren({ speed, x, y, dir });
-          } else delTren(tren);
+          console.log('move', t, tren.x);
+          moveTren();
         }, t)
       );
     } else {
