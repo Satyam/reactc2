@@ -16,7 +16,7 @@ import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
 export function setEnclavamientos(idOrigen, tipoOrigen, force) {
   return (dispatch, getState) => {
-    const browseEnclavamientos = idSector => {
+    const browseEnclavamientos = (idSector) => {
       const enclavamientos = selEnclavamientos(getState(), idSector);
       return enclavamientos.reduce((r, encl) => {
         const { x, y, dir, tipo, dependencias } = encl;
@@ -44,7 +44,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
               centro: VERDE,
               der: VERDE,
             };
-            dependencias.forEach(dep => {
+            dependencias.forEach((dep) => {
               const idSource = buildId({
                 idSector,
                 x: dep.x,
@@ -55,7 +55,7 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
                 case CAMBIO:
                   const celdaSource = selCelda(getState(), idSource);
                   const estadoBuscado = dep[celdaSource.posicion] || {};
-                  Object.keys(estadoBuscado).forEach(luz => {
+                  Object.keys(estadoBuscado).forEach((luz) => {
                     nuevoEstado[luz] = Math.max(
                       nuevoEstado[luz],
                       estadoBuscado[luz]
@@ -137,7 +137,6 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
     }
     let countDown = 9;
     while (countDown && browseEnclavamientos(idSector)) countDown--;
-    console.log({ countDown });
     if (!countDown) throw new Error(`Enclavamiento en loop por ${idOrigen}`);
     return !!countDown;
   };

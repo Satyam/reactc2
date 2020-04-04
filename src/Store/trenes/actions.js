@@ -41,7 +41,7 @@ export const doAddTren = createAction(
 );
 
 export function addTren(celda, dir, maxSpeed = 1) {
-  return dispatch => {
+  return (dispatch) => {
     const idTren = `_tren_${id++}`;
     dispatch(doAddTren(celda, dir, maxSpeed, idTren));
     dispatch(addTrenToCelda(celda.idCelda, idTren));
@@ -52,7 +52,7 @@ export function addTren(celda, dir, maxSpeed = 1) {
 export const doDelTren = createAction('doDelTren');
 
 export function delTren(tren) {
-  return dispatch => {
+  return (dispatch) => {
     if (tren.idCelda) dispatch(removeTrenFromCelda(tren.idCelda, tren.idTren));
     dispatch(doDelTren(tren.idTren));
   };
@@ -60,7 +60,7 @@ export function delTren(tren) {
 
 export function delTrenes() {
   return (dispatch, getState) => {
-    selTrenes(getState()).forEach(tren => dispatch(delTren(tren)));
+    selTrenes(getState()).forEach((tren) => dispatch(delTren(tren)));
   };
 }
 
@@ -94,12 +94,10 @@ export function moveTren(idTren) {
 
       if (newCelda) {
         const newSenal = selSenal(getState(), newIdSenal);
-        debugger;
         if (newSenal) {
           const newPermiso = [IZQ, CENTRO, DER].reduce((permiso, luz) => {
             return luz in newSenal ? Math.min(permiso, newSenal[luz]) : permiso;
           }, ROJO);
-          debugger;
           switch (newPermiso) {
             case ROJO:
               dispatch(setTren({ ...tren, speed: 0 }));
@@ -222,4 +220,11 @@ export function moveTren(idTren) {
     } else dispatch(setTren(tren));
     dispatch(setEnclavamientos(tren.idCelda, BLOQUE));
   };
+}
+
+export function moveTrenes() {
+  return (dispatch, getState) =>
+    selTrenes(getState()).forEach((tren) => {
+      window.requestAnimationFrame(() => dispatch(moveTren(tren.idTren)));
+    });
 }
