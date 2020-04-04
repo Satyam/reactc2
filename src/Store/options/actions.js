@@ -6,4 +6,4 @@ export const showCoords = createAction('showCoords');
 export const showEstado = createAction('showEstado');
 export const hideEstado = createAction('hideEstado');
 export const showConfig = createAction('showConfig');
-export const play = createAction('play');
+export const setPlayRate = createAction('setPlayRate');

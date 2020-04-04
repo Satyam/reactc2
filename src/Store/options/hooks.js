@@ -7,7 +7,7 @@ import {
   showConfig,
   showEstado as showEstadoAction,
   hideEstado as hideEstadoAction,
-  play,
+  setPlayRate,
 } from './actions';
 
 import {
@@ -16,7 +16,7 @@ import {
   selShowCoords,
   selShowConfig,
   selShowEstado,
-  selPlay,
+  selPlayRate,
 } from './selectors';
 
 export const useShowTeletipo = () => {
@@ -63,16 +63,15 @@ export const useEstado = () => {
   const estado = useSelector(selShowEstado);
   const dispatch = useDispatch();
   const hideEstado = () => dispatch(hideEstadoAction());
-  const showEstado = args => dispatch(showEstadoAction(args));
+  const showEstado = (args) => dispatch(showEstadoAction(args));
   return { estado, hideEstado, showEstado };
 };
 
-export const usePlay = () => {
-  const isPlaying = useSelector(selPlay);
+export const usePlayRate = () => {
+  const playRate = useSelector(selPlayRate);
   const dispatch = useDispatch();
-  const togglePlay = useCallback(() => dispatch(play(!isPlaying)), [
-    dispatch,
-    isPlaying,
-  ]);
-  return [isPlaying, togglePlay];
+  return [
+    playRate,
+    useCallback((rate) => dispatch(setPlayRate(rate)), [dispatch]),
+  ];
 };

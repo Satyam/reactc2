@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { play } from 'Store/actions';
+import { setPlayRate } from 'Store/actions';
 
 export const doSetAlarma = createAction(
   'doSetAlarma',
@@ -15,6 +15,6 @@ export const doSetAlarma = createAction(
 export function setAlarma(...props) {
   return (dispatch, getState) => {
     dispatch(doSetAlarma(...props));
-    dispatch(play(false));
+    dispatch(setPlayRate(0));
   };
 }

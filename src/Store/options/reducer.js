@@ -6,7 +6,7 @@ import {
   showEstado,
   hideEstado,
   showConfig,
-  play,
+  setPlayRate,
 } from './actions';
 
 export default createReducer(
@@ -14,7 +14,7 @@ export default createReducer(
     enclavamientosActive: true,
     showCoords: true,
     showEstado: { show: false },
-    isPlaying: true,
+    playRate: 1,
   },
   {
     [enclavamientosActive]: (state, action) => {
@@ -32,14 +32,14 @@ export default createReducer(
         show: true,
       };
     },
-    [hideEstado]: state => {
+    [hideEstado]: (state) => {
       state.showEstado = { show: false };
     },
     [showConfig]: (state, action) => {
       state.showConfig = action.payload;
     },
-    [play]: (state, action) => {
-      state.isPlaying = action.payload;
+    [setPlayRate]: (state, action) => {
+      state.playRate = action.payload;
     },
   }
 );
