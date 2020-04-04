@@ -24,7 +24,7 @@ import {
 
 export const enclavamientos = [
   {
-    x: 3,
+    x: 2,
     y: 0,
     dir: W,
     tipo: SENAL,
@@ -32,6 +32,33 @@ export const enclavamientos = [
       {
         tipo: BLOQUE,
         bloque: 'dos',
+        luzAfectada: CENTRO,
+      },
+      {
+        x: 5,
+        y: 0,
+        dir: W,
+        tipo: SENAL,
+        luces: [
+          {
+            luzOrigen: CENTRO,
+            cuando: ROJO,
+            luzAfectada: CENTRO,
+            estado: AMARILLO,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    x: 5,
+    y: 0,
+    dir: W,
+    tipo: SENAL,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: 'tres',
         luzAfectada: CENTRO,
       },
       {
@@ -58,13 +85,26 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: 'tres',
+        bloque: 'cuatro',
         luzAfectada: CENTRO,
       },
     ],
   },
   {
-    x: 5,
+    x: 1,
+    y: 0,
+    dir: E,
+    tipo: SENAL,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: 'uno',
+        luzAfectada: CENTRO,
+      },
+    ],
+  },
+  {
+    x: 4,
     y: 0,
     dir: E,
     tipo: SENAL,
@@ -91,15 +131,56 @@ export const enclavamientos = [
     ],
   },
   {
-    x: 1,
+    x: 6,
     y: 0,
     dir: E,
     tipo: SENAL,
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: 'uno',
+        bloque: 'tres',
         luzAfectada: CENTRO,
+      },
+      {
+        x: 4,
+        y: 0,
+        dir: E,
+        tipo: SENAL,
+        luces: [
+          {
+            luzOrigen: CENTRO,
+            cuando: ROJO,
+            luzAfectada: CENTRO,
+            estado: AMARILLO,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    x: 8,
+    y: 0,
+    dir: E,
+    tipo: SENAL,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: 'cuatro',
+        luzAfectada: CENTRO,
+      },
+      {
+        x: 6,
+        y: 0,
+        dir: E,
+        tipo: SENAL,
+        luces: [
+          {
+            luzOrigen: CENTRO,
+            cuando: ROJO,
+            luzAfectada: CENTRO,
+            estado: AMARILLO,
+          },
+        ],
       },
     ],
   },

@@ -21,7 +21,13 @@ export const senales = [
   {
     dir: W,
     centro: VERDE,
-    x: 3,
+    x: 2,
+    y: 0,
+  },
+  {
+    dir: W,
+    centro: VERDE,
+    x: 5,
     y: 0,
   },
   {
@@ -33,13 +39,25 @@ export const senales = [
   {
     dir: E,
     centro: VERDE,
-    x: 5,
+    x: 1,
     y: 0,
   },
   {
     dir: E,
     centro: VERDE,
-    x: 1,
+    x: 4,
+    y: 0,
+  },
+  {
+    dir: E,
+    centro: VERDE,
+    x: 6,
+    y: 0,
+  },
+  {
+    dir: E,
+    centro: VERDE,
+    x: 8,
     y: 0,
   },
 ];
