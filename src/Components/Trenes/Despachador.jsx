@@ -8,12 +8,12 @@ import { useAddTren, useBloqueOcupado } from 'Store';
 import styles from './styles.module.css';
 
 export default function Despachador({ celda }) {
-  const addTren = useAddTren(celda);
+  const addTren = useAddTren();
   const bloqueOcupado = useBloqueOcupado(celda.idBloque);
   const despacha = (dir) => (ev) => {
     if (isPlainClick(ev)) {
       if (celda.idTren) return;
-      addTren(dir);
+      addTren(celda, dir);
     }
   };
 

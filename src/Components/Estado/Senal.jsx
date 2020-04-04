@@ -18,9 +18,10 @@ import {
 import styles from './styles.module.css';
 
 export function EstadoLuz({ luz, estado, onSetEstado }) {
-  const onSetAlto = ev => isPlainClick(ev) && onSetEstado(luz, ROJO);
-  const onSetPrecaucion = ev => isPlainClick(ev) && onSetEstado(luz, AMARILLO);
-  const onSetLibre = ev => isPlainClick(ev) && onSetEstado(luz, VERDE);
+  const onSetAlto = (ev) => isPlainClick(ev) && onSetEstado(luz, ROJO);
+  const onSetPrecaucion = (ev) =>
+    isPlainClick(ev) && onSetEstado(luz, AMARILLO);
+  const onSetLibre = (ev) => isPlainClick(ev) && onSetEstado(luz, VERDE);
 
   return (
     <>
@@ -53,21 +54,21 @@ export function EstadoLuz({ luz, estado, onSetEstado }) {
 
 export default function EstadoSenal({ senal }) {
   const { izq, soloManual, centro, der, idSenal } = senal;
-  const setLuzEstado = useSetLuz(idSenal);
+  const setLuzEstado = useSetLuz();
   const [senalIsManual, toggleSenalManual] = useSenalManual(idSenal);
-  const setEnclavamientos = useSetEnclavamientos(idSenal, SENAL);
+  const setEnclavamientos = useSetEnclavamientos();
 
   const onSetEstado = (luz, estado) => {
     if (senalIsManual || soloManual) {
-      setLuzEstado(luz, estado);
+      setLuzEstado(idSenal, luz, estado);
     }
     if (soloManual) {
-      setEnclavamientos(true);
+      setEnclavamientos(idSenal, SENAL, true);
     }
   };
   const onSetManual = () => {
     toggleSenalManual();
-    if (senalIsManual) setEnclavamientos(true);
+    if (senalIsManual) setEnclavamientos(idSenal, SENAL, true);
   };
 
   return (

@@ -11,9 +11,9 @@ export const useMoveTrenes = () => {
 export const useTren = (idTren) =>
   useSelector((state) => selTren(state, idTren));
 
-export const useAddTren = (celda) => {
+export const useAddTren = () => {
   const dispatch = useDispatch();
-  return (dir, maxSpeed = 1) => dispatch(addTren(celda, dir, maxSpeed));
+  return (celda, dir, maxSpeed = 1) => dispatch(addTren(celda, dir, maxSpeed));
 };
 
 export const useDelTren = () => {

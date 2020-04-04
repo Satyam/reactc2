@@ -15,13 +15,13 @@ export default function Alarma() {
   const { idCelda, idTren, msg, time } = useAlarma();
   const setAlarma = useSetAlarma();
   const delTrenes = useDelTrenes();
-  const setEnclavamientos = useSetEnclavamientos(idCelda, CAMBIO);
+  const setEnclavamientos = useSetEnclavamientos();
 
   const onClose = (ev) => {
     if (isPlainClick(ev)) {
       setAlarma();
       delTrenes();
-      setEnclavamientos();
+      setEnclavamientos(idCelda, CAMBIO);
     }
   };
 
