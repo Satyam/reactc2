@@ -23,7 +23,10 @@ export default function Animador() {
   }, [moveTrenes, timer, playRate]);
 
   return (
-    <ButtonGroup title="Velocidad (ciclos por segundo)" className={styles.rate}>
+    <ButtonGroup
+      title={'Velocidad de la animación\n(ciclos por segundo)'}
+      className={styles.rate}
+    >
       <Button
         outline={playRate !== 0}
         color={playRate ? 'secondary' : 'danger'}
