@@ -15,6 +15,7 @@
 }
 
 .tren {
+  pointer-events: bounding-box;
   fill: yellow;
   stroke: black;
 }
