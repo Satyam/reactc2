@@ -76,7 +76,12 @@ export function moveTren(idTren) {
 
     const oldCelda = selCelda(getState(), tren.idCelda);
     if (tren.falta) {
-      dispatch(setTren({ idTren, falta: tren.falta - tren.speed }));
+      dispatch(
+        setTren({
+          idTren,
+          falta: tren.speed > tren.falta ? 0 : tren.falta - tren.speed,
+        })
+      );
       return;
     }
     const [newX, newY, newDir] = nextCoords(tren.x, tren.y, tren.dir);
