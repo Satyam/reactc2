@@ -75,8 +75,13 @@ export function moveTren(idTren) {
     }
 
     const oldCelda = selCelda(getState(), tren.idCelda);
+    if (tren.falta) {
+      dispatch(setTren({ idTren, falta: tren.falta - tren.speed }));
+      return;
+    }
     const [newX, newY, newDir] = nextCoords(tren.x, tren.y, tren.dir);
     let nextDir = newDir;
+    let nextSpeed = tren.speed;
 
     if (oldCelda.x !== newX || oldCelda.y !== newY) {
       const newIdCelda = buildId({
@@ -95,18 +100,19 @@ export function moveTren(idTren) {
       if (newCelda) {
         const newSenal = selSenal(getState(), newIdSenal);
         if (newSenal) {
+          debugger;
           const newPermiso = [IZQ, CENTRO, DER].reduce((permiso, luz) => {
             return luz in newSenal ? Math.min(permiso, newSenal[luz]) : permiso;
           }, ROJO);
           switch (newPermiso) {
             case ROJO:
-              dispatch(setTren({ ...tren, speed: 0 }));
-              break;
+              dispatch(setTren({ idTren, speed: 0 }));
+              return;
             case AMARILLO:
-              dispatch(setTren({ ...tren, speed: tren.maxSpeed / 2 }));
+              nextSpeed = tren.maxSpeed / 4;
               break;
             case VERDE:
-              dispatch(setTren({ ...tren, speed: tren.maxSpeed }));
+              nextSpeed = tren.maxSpeed;
               break;
             default:
               throw new Error(
@@ -207,11 +213,13 @@ export function moveTren(idTren) {
         dispatch(addTrenToCelda(newIdCelda, idTren));
         dispatch(
           setTren({
-            ...tren,
+            idTren,
             dir: nextDir,
             x: newX,
             y: newY,
+            speed: nextSpeed,
             idCelda: newIdCelda,
+            falta: newCelda.longitud || 1,
           })
         );
       } else {
