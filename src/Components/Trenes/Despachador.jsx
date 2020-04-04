@@ -3,13 +3,14 @@ import React from 'react';
 import { isPlainClick } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { CAMBIO, TRIPLE } from 'Store/data';
-import { useAddTren } from 'Store';
+import { useAddTren, useBloqueOcupado } from 'Store';
 
 import styles from './styles.module.css';
 
 export default function Despachador({ celda }) {
   const addTren = useAddTren(celda);
-  const despacha = dir => ev => {
+  const bloqueOcupado = useBloqueOcupado(celda.idBloque);
+  const despacha = (dir) => (ev) => {
     if (isPlainClick(ev)) {
       if (celda.idTren) return;
       addTren(dir);
@@ -18,11 +19,11 @@ export default function Despachador({ celda }) {
 
   let dirs = [];
 
-  if (!celda.idTren) {
+  if (!(celda.idTren || bloqueOcupado)) {
     switch (celda.tipo) {
       case TRIPLE:
       case CAMBIO:
-        celda.despachador.forEach(dir => {
+        celda.despachador.forEach((dir) => {
           if (dir === celda.punta) dirs.push(dir);
           if (dir === celda.ramas[celda.posicion]) dirs.push(dir);
         });
@@ -41,7 +42,7 @@ export default function Despachador({ celda }) {
           r={9}
           className={styles.trenDespachador}
         />
-        {dirs.map(dir => {
+        {dirs.map((dir) => {
           return (
             <g
               className={styles.flechaDespachador}
