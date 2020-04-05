@@ -114,9 +114,17 @@ export function moveTren(idTren) {
               dispatch(setTren({ idTren, speed: 0 }));
               return;
             case AMARILLO:
-              nextSpeed = tren.maxSpeed / 4;
+              if (tren.speed === 0) {
+                dispatch(setTren({ idTren, speed: tren.maxSpeed / 2 }));
+                return;
+              }
+              nextSpeed = tren.maxSpeed / 2;
               break;
             case VERDE:
+              if (tren.speed === 0) {
+                dispatch(setTren({ idTren, speed: tren.maxSpeed }));
+                return;
+              }
               nextSpeed = tren.maxSpeed;
               break;
             default:
