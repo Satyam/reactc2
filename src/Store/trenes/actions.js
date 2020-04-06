@@ -66,11 +66,36 @@ export function delTrenes() {
 
 export const setTren = createAction('setTren');
 
+function solveNewDir(newDir, newCelda) {
+  function other({ puntas }) {
+    if (puntas.includes(newDir)) {
+      return puntas[0] === newDir ? puntas[1] : puntas[0];
+    } else return;
+  }
+  switch (newCelda.tipo) {
+    case LINEA:
+      return other(newCelda);
+    case CAMBIO:
+    case TRIPLE:
+      if (newCelda.punta === newDir) return newCelda.ramas[newCelda.posicion];
+      else if (newCelda.ramas[newCelda.posicion] === newDir)
+        return newCelda.punta;
+      else return;
+    case PARAGOLPE:
+      if (newCelda.punta === newDir) return 'X';
+      else return;
+    case CRUCE:
+      return other(newCelda.linea1) || other(newCelda.linea2);
+    default:
+      break;
+  }
+}
+
 export function moveTren(idTren) {
   return (dispatch, getState) => {
     const tren = selTren(getState(), idTren);
     if (!tren) return;
-    if (!tren.dir) {
+    if (tren.dir === 'X') {
       return dispatch(delTren(tren));
     }
 
@@ -85,7 +110,6 @@ export function moveTren(idTren) {
       return;
     }
     const [newX, newY, newDir] = nextCoords(tren.x, tren.y, tren.dir);
-    let nextDir = newDir;
     let nextSpeed = tren.speed;
 
     if (oldCelda.x !== newX || oldCelda.y !== newY) {
@@ -105,7 +129,6 @@ export function moveTren(idTren) {
       if (newCelda) {
         const newSenal = selSenal(getState(), newIdSenal);
         if (newSenal) {
-          debugger;
           const newPermiso = [IZQ, CENTRO, DER].reduce((permiso, luz) => {
             return luz in newSenal ? Math.min(permiso, newSenal[luz]) : permiso;
           }, ROJO);
@@ -142,6 +165,7 @@ export function moveTren(idTren) {
               `Colisión en ${newCelda.idCelda} entre ${idTren} y ${newCelda.idTren}`
             )
           );
+          return;
         }
         const trenEnBloque = selBloqueOcupado(getState(), newCelda.idBloque);
         if (trenEnBloque && trenEnBloque !== idTren) {
@@ -152,75 +176,18 @@ export function moveTren(idTren) {
               `Tren ${idTren} invade el bloque ${newCelda.idBloque} ocupado por ${trenEnBloque}`
             )
           );
+          return;
         }
-        switch (newCelda.tipo) {
-          case LINEA:
-            if (newCelda.puntas.includes(newDir)) {
-              nextDir =
-                newCelda.puntas[0] === newDir
-                  ? newCelda.puntas[1]
-                  : newCelda.puntas[0];
-            } else {
-              dispatch(
-                setAlarma(
-                  newIdCelda,
-                  idTren,
-                  `Tren ${idTren} no encuentra vía correspondiente en celda ${newIdCelda}`
-                )
-              );
-            }
-            break;
-          case CAMBIO:
-          case TRIPLE:
-            if (newCelda.punta === newDir)
-              nextDir = newCelda.ramas[newCelda.posicion];
-            else if (newCelda.ramas[newCelda.posicion] === newDir)
-              nextDir = newCelda.punta;
-            else {
-              dispatch(
-                setAlarma(
-                  newIdCelda,
-                  idTren,
-                  `Tren ${idTren} no encuentra vía correspondiente en celda ${newIdCelda}`
-                )
-              );
-            }
-            break;
-          case PARAGOLPE:
-            if (newCelda.punta === newDir) nextDir = null;
-            else {
-              dispatch(
-                setAlarma(
-                  newIdCelda,
-                  idTren,
-                  `Tren ${idTren} no encuentra vía correspondiente en celda ${newIdCelda}`
-                )
-              );
-            }
-            break;
-          case CRUCE:
-            if (newCelda.linea1.puntas.includes(newDir)) {
-              nextDir =
-                newCelda.linea1.puntas[0] === newDir
-                  ? newCelda.linea1.puntas[1]
-                  : newCelda.linea1.puntas[0];
-            } else if (newCelda.linea2.puntas.includes(newDir)) {
-              nextDir =
-                newCelda.linea2.puntas[0] === newDir
-                  ? newCelda.linea2.puntas[1]
-                  : newCelda.linea2.puntas[0];
-            } else {
-              dispatch(
-                setAlarma(
-                  newIdCelda,
-                  idTren,
-                  `Tren ${idTren} no encuentra vía correspondiente en celda ${newIdCelda}`
-                )
-              );
-            }
-            break;
-          default:
-            break;
+        const nextDir = solveNewDir(newDir, newCelda);
+        if (!nextDir) {
+          dispatch(
+            setAlarma(
+              newCelda.idCelda,
+              idTren,
+              `Tren ${idTren} no encuentra vía correspondiente en celda ${newCelda.idCelda}`
+            )
+          );
+          return;
         }
         dispatch(removeTrenFromCelda(oldCelda.idCelda, idTren));
         dispatch(addTrenToCelda(newIdCelda, idTren));
