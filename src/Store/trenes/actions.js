@@ -6,7 +6,7 @@ import {
   setAlarma,
   setEnclavamientos,
 } from 'Store/actions';
-import { buildId, nextCoords } from 'Utils';
+import { buildId } from 'Utils';
 
 import {
   LINEA,
@@ -20,6 +20,14 @@ import {
   ROJO,
   AMARILLO,
   VERDE,
+  N,
+  NE,
+  E,
+  SE,
+  S,
+  SW,
+  W,
+  NW,
 } from 'Store/data';
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
 import { BLOQUE } from '../data/constantes';
@@ -65,6 +73,28 @@ export function delTrenes() {
 }
 
 export const setTren = createAction('setTren');
+
+function nextCoords(x, y, dir) {
+  switch (dir) {
+    case N:
+      return [x, y - 1, S];
+    case NE:
+      return [x + 1, y - 1, SW];
+    case E:
+      return [x + 1, y, W];
+    case SE:
+      return [x + 1, y + 1, NW];
+    case S:
+      return [x, y + 1, N];
+    case SW:
+      return [x - 1, y + 1, NE];
+    case W:
+      return [x - 1, y, E];
+    case NW:
+      return [x - 1, y - 1, SE];
+    default:
+  }
+}
 
 function solveNewDir(newDir, newCelda) {
   function other({ puntas }) {
