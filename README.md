@@ -9,6 +9,7 @@ Esta aplicación simula el tablero mímico de una central de Control de Tráfico
     - [Comandos](#comandos)
       - [Ver configuración](#ver-configuración)
     - [Despachar trenes](#despachar-trenes)
+    - [Bloques](#bloques)
   - [Configuración](#configuración)
     - [Sectores](#sectores)
       - [Sector](#sector)
@@ -24,6 +25,7 @@ Esta aplicación simula el tablero mímico de una central de Control de Tráfico
       - [CAMBIO dependiendo de SENAL](#cambio-dependiendo-de-senal)
       - [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
       - [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
+      - [SENAL dependiendo de BLOQUE](#senal-dependiendo-de-bloque)
 
 ## Uso
 
@@ -38,7 +40,7 @@ Un segundo item de la barra de menú permite:
 
 Al seleccionar cualquier sector se mostrará el mímico correspondiente en el panel central.
 
-Un botón de reproducción permite pausar/reanudar la circulación de trenes en los sectores.
+Un grupo de botones permite ajustar la velocidad de simulación, desde 0 (pausado) a 5 ciclos por segundo.
 
 Finalmente, se dispone de un enlace a GitHub, donde se encuentra el código fuente de este programa.
 
@@ -73,7 +75,7 @@ Algunas celdas mostrarán un círculo amarillo en su centro. Esto indica que esa
 
 Las celdas que tienen un tren mostrarán sus vías en color amarillo y un círculo amarillo con un tren en su centro. Si se deja el cursor sobre el ícono del tren, aparecerá el identificador del tren (puede ser necesario poner la simulación en pausa para que darle tiempo a que aparezca).
 
-Por el momento, la velocidad de simulación es fija a una celda por segundo, y todos los trenes van a esa misma velocidad.
+Por el momento, todos los trenes tienen la misma velocidad máxima y, teniendo la vía libre, circulan a esa velocidad.  Si se encuentran una señal en amarillo, reducirán su velocidad a la mitad.  Su ícono pasará a un color gris.  Si el tren se encuentra una señal en rojo, su ícono aparecerá rojo.
 
 Los trenes desaparecen cuando llegan a un tramo de vía que no tiene una celda contigua, presumiblemente porque habría de continuar en un sector contiguo, o porque se ha encontrado con un paragolpe. Normalmente, un tren que llega a un paragolpe se detiene allí para luego, si corresponde, salir en el sentido inverso. En este caso se ha decidido hacerlo desvanecer pues el objetivo de la simulación es visualizar el efecto de los enclavamientos y no el tráfico de trenes, por lo que una vez que un tren ha hecho su recorrido, simplemente desaparece.
 
@@ -83,6 +85,13 @@ Los errores pueden ser:
 
 - Colisión: un tren ha entrado en una celda actualmente ocupada por otro tren.
 - Cambio mal puesto: el cambio en un desvío no está pasado hacia el tramo de vía por la que llega.
+
+### Bloques
+
+Las celdas podrán pertenecer a bloques.  Un bloque abarcará varias celdas. Cada celda podrá pertenecer a sólo un bloque.  Los bloques se identifican por nombres que han de ser únicos para cada sector.  Si un tren se encuentra en un bloque, todo el bloque se marcará como ocupado. Visualmente, todas las vías del bloque se vuelven amarillas, aunque el ícono del tren se marcará en la celda en la que efectivamente se encuentra.  El nombre del bloque se mostrará en el ángulo inferior derecho de las celdas que abarca.
+
+Un tren no puede entrar a un bloque que esté ocupado por otro tren.  Si lo hiciera, generará un error, similar a una colisión con otro tren.
+Se pueden definir enclavamientos entre señales y bloques, tal que impidan el acceso a un bloque ocupado.
 
 ## Configuración
 
@@ -117,12 +126,14 @@ El archivo de definición de celdas comienza importando una serie de [constantes
 
 No es necesario declarar las celdas vacías. Un sector declarado de 4 \* 3 celdas, no necesita 12 declaraciones. Las que no contengan ningún tramo de riel pueden omitirse.
 
-Cada celda debe tener al menos las siguiente propiedades:
+Todas las celdas comparten las siguiente propiedades:
 
 - `x` e `y`: las coordenadas de la celda dentro del sector contando desde cero siendo la celda `x:0, y:0` la ubicada arriba a la izquierda.
 - `tipo`: indica el tipo de celda. El resto de las propiedades de la celda depende del tipo, según se verá a continuación.
 - `descr`: _(opcional)_ El mímico mostrará este texto en el ángulo inferior izquierdo de cada celda en la grilla. Si no estuviera presente y la opción correspondiente del menú habilitada, mostrará las coordenadas.
-- `despachador`: Esta celda podrá despachar trenes. Contendrá una lista de direcciones hacia las cuales esta celda podrá despachar trenes. Se corresponderán a las direcciones a que apuntan los tramos de vía de esa celda (según se verá más adelante), pero pueden omitirse algunos. Esta propiedad hará aparecer el círculo amarillo en el centro de la celda, y las flechas azules en las direcciones que se indiquen.
+- `despachador`: _(opcional)_ Esta celda podrá despachar trenes. Contendrá una lista de direcciones hacia las cuales esta celda podrá despachar trenes. Se corresponderán a las direcciones a que apuntan los tramos de vía de esa celda (según se verá más adelante), pero pueden omitirse algunos. Esta propiedad hará aparecer el círculo amarillo en el centro de la celda, y las flechas azules en las direcciones que se indiquen.
+- `longitud`: _(opcional)_ la longitud de la celda en unidades arbitrarias.
+- `bloque`: _(opcional)_ el nombre de un bloque al que esta celda pertenece. Varias celdas pueden formar un bloque, usualmente delimitado por señales que controlan el acceso al mismo.  Si un tren se encuentra en un bloque, todas las celdas de ese bloque se encuentran ocupadas.
 
 Adicionalmente, el programa generará estas propiedades, que se podrán ver en el _pop-up_ de configuración.
 
@@ -502,3 +513,25 @@ Podrían agregarse más líneas de configuración para los varios posibles color
 ```
 
 Igualmente, podrían sumarse entradas para las otras luces de `luzOrigen` (`izq` y `der`) si existieran o tuvieran alguna relación con las luces de esta señal.
+
+#### SENAL dependiendo de BLOQUE
+
+Los bloques son la unidad de ocupación de la vía. Varias celdas pueden pertenecer a un bloque.  El acceso a ese bloque está controlado por señales.  La relación entre las señales y los bloques está indicada en este tipo de enclavamiento.
+
+```js
+{
+  x: 2,
+  y: 0,
+  dir: W,
+  tipo: SENAL,
+  dependencias: [
+    {
+      tipo: BLOQUE,
+      bloque: 'dos',
+      luzAfectada: CENTRO,
+    },
+  ]
+}
+```
+
+Este ejemplo nos dice que la señal en [2,0], lado oeste, depende del bloque `'dos'` tal que si este estuviera ocupado, la luz `CENTRO` se pondrá en rojo.  En este caso, no se necesita indicar el color de la señal, siempre pasará a rojo cuando esté ocupado. Al desocuparse el bloque, el color de la señal sera el más restrictivo que le corresponda según lo indiquen otras dependencias.  En este caso, al no tener otras dependencias, la señal volverá a verde.
