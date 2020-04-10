@@ -10,7 +10,7 @@ export default function Sector({ idSector }) {
   const sector = useSector(idSector);
   const celdas = useCeldas(idSector);
   const size = useResize();
-  const { ancho, descrCorta } = sector;
+  const { ancho, descrCorta, alto } = sector;
   const cellWidth = Math.min(
     Math.floor(size.width / ancho),
     ancho > 8 ? 100 : 200
@@ -20,18 +20,20 @@ export default function Sector({ idSector }) {
     document.title = `CTC - ${descrCorta}`;
   });
   return (
-    <div>
+    <>
       <div className={styles.sector}>
-        {celdas.map(c => (
+        {celdas.map((c) => (
           <Celda
             key={c.idCelda}
             idCelda={c.idCelda}
             cellsAcross={ancho}
             cellWidth={cellWidth}
             padLeft={padLeft}
+            padTop={48}
           />
         ))}
       </div>
-    </div>
+      <div style={{ height: (alto + 2) * cellWidth }}></div>
+    </>
   );
 }

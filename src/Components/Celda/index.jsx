@@ -16,7 +16,13 @@ import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 import { Despachador, Tren } from 'Components/Trenes';
 
-export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
+export default function Celda({
+  idCelda,
+  cellsAcross,
+  cellWidth,
+  padLeft,
+  padTop,
+}) {
   const celda = useCelda(idCelda);
   const bloque = useBloque(celda.idBloque);
   const [showCoords] = useShowCoords();
@@ -24,7 +30,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
   if (!cellWidth || !celda) return null;
   const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
 
-  const onClick = tipo => ev =>
+  const onClick = (tipo) => (ev) =>
     isPlainClick(ev) &&
     showEstado({
       tipo,
@@ -61,7 +67,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
       })}
       style={{
         left: padLeft + celda.x * cellWidth,
-        top: celda.y * cellWidth,
+        top: celda.y * cellWidth + padTop,
         width: cellWidth,
         height: cellWidth,
       }}
@@ -83,7 +89,7 @@ export default function Celda({ idCelda, cellsAcross, cellWidth, padLeft }) {
           </text>
         )}
         <Renderer idCelda={idCelda} />
-        {DIR.map(dir => (
+        {DIR.map((dir) => (
           <Senal
             key={dir}
             idSenal={buildId({

@@ -53,3 +53,4 @@ export { GiPlainCircle as Circle } from 'react-icons/gi';
 export { GoMarkGithub as GitHub } from 'react-icons/go';
 export { MdTrain as Train } from 'react-icons/md';
 export { GoPlay as Play } from 'react-icons/go';
+export { GoTrashcan as Trash } from 'react-icons/go';

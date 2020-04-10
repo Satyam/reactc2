@@ -2,19 +2,6 @@
   content: ' √';
 }
 
-.pressed {
-  border-radius: 2px;
-  border: inset 2px;
-}
-
-.raised {
-  border-radius: 2px;
-  border: solid 2px silver;
-}
-
-.pressed svg {
-  color: limegreen;
-}
-.raised svg {
-  color: gray;
+.spacer {
+  height: 48px;
 }

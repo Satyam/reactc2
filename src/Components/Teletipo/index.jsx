@@ -1,32 +1,54 @@
 import React from 'react';
 
-import { Table } from 'reactstrap';
-
+import { Table, Button } from 'reactstrap';
+import { useAvisos, useShowTeletipo } from 'Store';
+import { isPlainClick } from 'Utils';
+import { Trash } from 'Components/Icons';
 import styles from './styles.module.css';
 
-const colores = ['normal', 'warning', 'danger'];
+export default function Teletipo() {
+  const [mensajes, clearAvisos, clearAviso] = useAvisos();
+  const [, toggleTeletipo] = useShowTeletipo();
 
-export default function Teletipo({ mensajes }) {
-  return mensajes ? (
-    <Table selectable={false}>
+  const clearAll = (ev) => isPlainClick(ev) && clearAvisos();
+  const close = (ev) => isPlainClick(ev) && toggleTeletipo();
+  const clear = (fecha) => (ev) => isPlainClick(ev) && clearAviso(fecha);
+  return mensajes.length ? (
+    <Table className={styles.fixed} size="sm">
       <thead>
-        <th>Fecha</th>
-        <th>Sector</th>
-        <th>Celda</th>
-        <th>Mensaje</th>
+        <tr>
+          <th>Fecha</th>
+          <th>Celda</th>
+          <th>Tren</th>
+          <th>Mensaje</th>
+          <th className={styles.buttons}>
+            <Button
+              className={styles.close}
+              title="Borrar todas las notificaciones"
+              onClick={clearAll}
+              size="sm"
+            >
+              <Trash />
+            </Button>
+            <Button close onClick={close} title="Cerrar Teletipo" size="sm" />
+          </th>
+        </tr>
       </thead>
       <tbody>
-        {mensajes.map(row => (
-          <tr className={styles[colores[row.nivel]]} key={row.fecha.getTime()}>
-            <td>{row.fecha.toLocaleString()}</td>
-            <td>{row.sector}</td>
-            <td>{row.coords}</td>
+        {mensajes.map((row) => (
+          <tr className={styles[row.nivel]} key={row.fecha}>
+            <td>{new Date(row.fecha).toLocaleString()}</td>
+            <td>{row.idCelda}</td>
+            <td>{row.idTren}</td>
             <td>{row.msg}</td>
+            <td>
+              <Trash onClick={clear(row.fecha)} />
+            </td>
           </tr>
         ))}
       </tbody>
     </Table>
   ) : (
-    <p>No hay mensajes</p>
+    <p className={styles.fixed}>No hay mensajes</p>
   );
 }

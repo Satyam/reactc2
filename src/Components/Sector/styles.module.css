@@ -1,4 +1,4 @@
 .sector {
   width: 100%;
-  position: relative;
+  overflow-y: scroll;
 }

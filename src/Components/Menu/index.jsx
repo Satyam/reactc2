@@ -28,6 +28,8 @@ import {
 import Animador from 'Components/Animador';
 import { GitHub } from 'Components/Icons';
 
+import styles from './styles.module.css';
+
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const match = useRouteMatch('/sector/:idSector');
@@ -52,8 +54,8 @@ export default function Menu() {
   };
   const toggleOpen = () => setIsOpen(!isOpen);
   return (
-    <div>
-      <Navbar color="light" light expand="md">
+    <>
+      <Navbar color="light" light expand="md" fixed="top">
         <NavbarBrand
           color="default"
           href={process.env.NODE_ENV === 'production' ? '/CTC' : '/'}
@@ -124,6 +126,7 @@ export default function Menu() {
           </Nav>
         </Collapse>
       </Navbar>
-    </div>
+      <div className={styles.spacer}> </div>
+    </>
   );
 }

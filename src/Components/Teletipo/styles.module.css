@@ -1,4 +1,4 @@
-.normal {
+.info {
   background-color: inherit;
 }
 .warning {
@@ -6,4 +6,14 @@
 }
 .danger {
   background-color: orange;
+}
+
+.fixed {
+  position: fixed;
+  bottom: 0;
+  background-color: white;
+  margin-bottom: 0 !important;
+}
+.buttons {
+  width: 5em;
 }
