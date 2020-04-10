@@ -5,6 +5,7 @@ import {
   addTrenToCelda,
   setAlarma,
   setEnclavamientos,
+  setAviso,
 } from 'Store/actions';
 import { buildId } from 'Utils';
 
@@ -28,6 +29,8 @@ import {
   SW,
   W,
   NW,
+  INFO,
+  WARNING,
 } from 'Store/data';
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
 import { BLOQUE } from '../data/constantes';
@@ -51,9 +54,13 @@ export const doAddTren = createAction(
 export function addTren(celda, dir, maxSpeed = 1) {
   return (dispatch) => {
     const idTren = `_tren_${id++}`;
+    const { idCelda } = celda;
+    dispatch(
+      setAviso(INFO, idCelda, idTren, `Parte tren ${idTren} desde ${idCelda}`)
+    );
     dispatch(doAddTren(celda, dir, maxSpeed, idTren));
-    dispatch(addTrenToCelda(celda.idCelda, idTren));
-    dispatch(setEnclavamientos(celda.idCelda, BLOQUE));
+    dispatch(addTrenToCelda(idCelda, idTren));
+    dispatch(setEnclavamientos(idCelda, BLOQUE));
   };
 }
 
@@ -61,7 +68,11 @@ export const doDelTren = createAction('doDelTren');
 
 export function delTren(tren) {
   return (dispatch) => {
-    if (tren.idCelda) dispatch(removeTrenFromCelda(tren.idCelda, tren.idTren));
+    const { idTren, idCelda } = tren;
+    if (idCelda) dispatch(removeTrenFromCelda(idCelda, idTren));
+    dispatch(
+      setAviso(INFO, idCelda, idTren, `Borrado el tren ${idTren} en ${idCelda}`)
+    );
     dispatch(doDelTren(tren.idTren));
   };
 }
@@ -164,10 +175,28 @@ export function moveTren(idTren) {
           }, ROJO);
           switch (newPermiso) {
             case ROJO:
+              if (tren.speed)
+                dispatch(
+                  setAviso(
+                    WARNING,
+                    tren.idCelda,
+                    idTren,
+                    `Tren ${idTren} detenido en ${tren.idCelda}`
+                  )
+                );
               dispatch(setTren({ idTren, speed: 0 }));
+
               return;
             case AMARILLO:
               if (tren.speed === 0) {
+                dispatch(
+                  setAviso(
+                    INFO,
+                    tren.idCelda,
+                    idTren,
+                    `Tren ${idTren} reanuda la marcha en ${tren.idCelda}`
+                  )
+                );
                 dispatch(setTren({ idTren, speed: tren.maxSpeed / 2 }));
                 return;
               }
@@ -175,6 +204,14 @@ export function moveTren(idTren) {
               break;
             case VERDE:
               if (tren.speed === 0) {
+                dispatch(
+                  setAviso(
+                    INFO,
+                    tren.idCelda,
+                    idTren,
+                    `Tren ${idTren} reanuda la marcha en ${tren.idCelda}`
+                  )
+                );
                 dispatch(setTren({ idTren, speed: tren.maxSpeed }));
                 return;
               }
