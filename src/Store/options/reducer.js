@@ -15,6 +15,7 @@ export default createReducer(
     showCoords: true,
     showEstado: { show: false },
     playRate: 1,
+    showTeletipo: true,
   },
   {
     [enclavamientosActive]: (state, action) => {
