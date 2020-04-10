@@ -14,12 +14,9 @@ export default function Tren({ celda }) {
       <circle cx={8} cy={8} r={9} className={styles.tren}>
         <title>{`${celda.idTren}\nVelocidad: ${tren.speed}\nFalta: ${tren.falta}`}</title>
       </circle>
-      <path
-        d="M 8 0 A 8 8 90 1 0 8 16 z"
-        className={
-          relSpeed && relSpeed !== 1 ? styles.halfSpeed : styles.transparent
-        }
-      />
+      {relSpeed && relSpeed !== 1 ? (
+        <path d="M 8 0 A 8 8 90 1 0 8 16 z" fill="orange" />
+      ) : null}
       <Train color={relSpeed ? 'black' : 'red'} size="16px" />
     </g>
   );
