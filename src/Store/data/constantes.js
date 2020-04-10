@@ -30,5 +30,5 @@ export const NW = 'NW';
 export const BLOQUE = 'bloque';
 
 export const INFO = 'info';
-export const WARNNG = 'warning';
+export const WARNING = 'warning';
 export const DANGER = 'danger';
