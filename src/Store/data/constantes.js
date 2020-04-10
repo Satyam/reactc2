@@ -28,3 +28,7 @@ export const NW = 'NW';
 // para tipo de enclavamiento
 // se reutilizan CAMBIO y SENAL de anges
 export const BLOQUE = 'bloque';
+
+export const INFO = 'info';
+export const WARNNG = 'warning';
+export const DANGER = 'danger';
