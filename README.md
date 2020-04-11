@@ -10,6 +10,7 @@ Esta aplicación simula el tablero mímico de una central de Control de Tráfico
       - [Ver configuración](#ver-configuración)
     - [Despachar trenes](#despachar-trenes)
     - [Bloques](#bloques)
+    - [Teletipo](#teletipo)
   - [Configuración](#configuración)
     - [Sectores](#sectores)
       - [Sector](#sector)
@@ -33,7 +34,7 @@ Desde la barra de navegación se puede seleccionar el _sector_ con que se desea 
 
 Un segundo item de la barra de menú permite:
 
-- activar o no el _teletipo_, pero dado que el envío de mensajes no está implementado, indicará que no hay mensajes.
+- activar o no el _teletipo_, para visualizar mensajes operativos.
 - habilitar o no los enclavamientos. Esto permite ver la diferencia en el funcionamiento con y sin enclavamientos.
 - mostrar las coordenadas de cada celda cuando no tienen nombre propio.
 - mostrar los datos de configuración de las celdas y señales al hacer click sobre ellas.
@@ -92,6 +93,10 @@ Las celdas podrán pertenecer a bloques.  Un bloque abarcará varias celdas. Cad
 
 Un tren no puede entrar a un bloque que esté ocupado por otro tren.  Si lo hiciera, generará un error, similar a una colisión con otro tren.
 Se pueden definir enclavamientos entre señales y bloques, tal que impidan el acceso a un bloque ocupado.
+
+### Teletipo
+
+Con el panel de Teletipo abierto, se podrán ver mensajes operativos, partidas de trenes, detenciones, llegada de trenes o colisiones. Los mensajes se encuentran ordenados con el más reciente arriba.  Por defecto sólo se mostrarán las alertas, para no ocupar tanto lugar en la pantalla.  Un botón marcado `Ver Info` permitirá visualizar también los mensajes puramente informativos. Los mensajes se podrán borrar individualmente, mediante el botón con el símbolo del basurero, o la totalidad, con el mismo símbolo en la barra de encabezados.
 
 ## Configuración
 
