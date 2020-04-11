@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Table, Button } from 'reactstrap';
+import { Table, Button, Label, Input } from 'reactstrap';
 import { useAvisos, useShowTeletipo } from 'Store';
 import { isPlainClick } from 'Utils';
 import { Trash } from 'Components/Icons';
 import styles from './styles.module.css';
+import { INFO } from 'Store/data';
 
 export default function Teletipo() {
   const [mensajes, clearAvisos, clearAviso] = useAvisos();
   const [, toggleTeletipo] = useShowTeletipo();
+  const [info, setInfo] = useState(false);
 
   const clearAll = (ev) => isPlainClick(ev) && clearAvisos();
   const close = (ev) => isPlainClick(ev) && toggleTeletipo();
   const clear = (fecha) => (ev) => isPlainClick(ev) && clearAviso(fecha);
+  const toggleInfo = (ev) => setInfo((i) => !i);
+
   return mensajes.length ? (
     <Table className={styles.fixed} size="sm">
       <thead>
@@ -21,6 +25,12 @@ export default function Teletipo() {
           <th>Celda</th>
           <th>Tren</th>
           <th>Mensaje</th>
+          <th>
+            <Label>
+              <Input type="checkbox" checked={info} onChange={toggleInfo} />
+              &nbsp;Ver Info
+            </Label>
+          </th>
           <th className={styles.buttons}>
             <Button
               className={styles.close}
@@ -35,17 +45,19 @@ export default function Teletipo() {
         </tr>
       </thead>
       <tbody>
-        {mensajes.map((row) => (
-          <tr className={styles[row.nivel]} key={row.fecha}>
-            <td>{new Date(row.fecha).toLocaleString()}</td>
-            <td>{row.idCelda}</td>
-            <td>{row.idTren}</td>
-            <td>{row.msg}</td>
-            <td>
-              <Trash onClick={clear(row.fecha)} />
-            </td>
-          </tr>
-        ))}
+        {mensajes
+          .filter((row) => (info ? true : row.nivel !== INFO))
+          .map((row) => (
+            <tr className={styles[row.nivel]} key={row.fecha}>
+              <td>{new Date(row.fecha).toLocaleString()}</td>
+              <td>{row.idCelda}</td>
+              <td>{row.idTren}</td>
+              <td colSpan={2}>{row.msg}</td>
+              <td>
+                <Trash onClick={clear(row.fecha)} />
+              </td>
+            </tr>
+          ))}
       </tbody>
     </Table>
   ) : (
