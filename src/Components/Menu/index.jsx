@@ -58,7 +58,9 @@ export default function Menu() {
       <Navbar color="light" light expand="md" fixed="top">
         <NavbarBrand
           color="default"
-          href={process.env.NODE_ENV === 'production' ? '/CTC' : '/'}
+          href={
+            process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : '/'
+          }
           title="Volver al inicio"
         >
           CTC

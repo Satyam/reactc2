@@ -20,7 +20,11 @@ export default function App({ username = '', sector, photoURL }) {
   }
   return (
     <Router
-      basename={process.env.NODE_ENV === 'production' ? '/CTC' : undefined}
+      basename={
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUBLIC_URL
+          : undefined
+      }
     >
       <Menu />
       <Route path="/sector/:idSector">

@@ -4,6 +4,8 @@
 
 Esta aplicación simula el tablero mímico de una central de Control de Tráfico Centralizado (CTC) con el objetivo de mostrar los efectos de los enclavamientos entre las varias señales y desvíos.
 
+Está disponible en [https://satyam.github.io/reactc2/](https://satyam.github.io/reactc2/) y es instalable localmente.
+
 - [CTC](#ctc)
   - [Uso](#uso)
     - [Comandos](#comandos)
@@ -76,7 +78,7 @@ Algunas celdas mostrarán un círculo amarillo en su centro. Esto indica que esa
 
 Las celdas que tienen un tren mostrarán sus vías en color amarillo y un círculo amarillo con un tren en su centro. Si se deja el cursor sobre el ícono del tren, aparecerá el identificador del tren (puede ser necesario poner la simulación en pausa para que darle tiempo a que aparezca).
 
-Por el momento, todos los trenes tienen la misma velocidad máxima y, teniendo la vía libre, circulan a esa velocidad.  Si se encuentran una señal en amarillo, reducirán su velocidad a la mitad.  Su ícono pasará a un color gris.  Si el tren se encuentra una señal en rojo, su ícono aparecerá rojo.
+Por el momento, todos los trenes tienen la misma velocidad máxima y, teniendo la vía libre, circulan a esa velocidad. Si se encuentran una señal en amarillo, reducirán su velocidad a la mitad. Su ícono pasará a un color gris. Si el tren se encuentra una señal en rojo, su ícono aparecerá rojo.
 
 Los trenes desaparecen cuando llegan a un tramo de vía que no tiene una celda contigua, presumiblemente porque habría de continuar en un sector contiguo, o porque se ha encontrado con un paragolpe. Normalmente, un tren que llega a un paragolpe se detiene allí para luego, si corresponde, salir en el sentido inverso. En este caso se ha decidido hacerlo desvanecer pues el objetivo de la simulación es visualizar el efecto de los enclavamientos y no el tráfico de trenes, por lo que una vez que un tren ha hecho su recorrido, simplemente desaparece.
 
@@ -89,14 +91,14 @@ Los errores pueden ser:
 
 ### Bloques
 
-Las celdas podrán pertenecer a bloques.  Un bloque abarcará varias celdas. Cada celda podrá pertenecer a sólo un bloque.  Los bloques se identifican por nombres que han de ser únicos para cada sector.  Si un tren se encuentra en un bloque, todo el bloque se marcará como ocupado. Visualmente, todas las vías del bloque se vuelven amarillas, aunque el ícono del tren se marcará en la celda en la que efectivamente se encuentra.  El nombre del bloque se mostrará en el ángulo inferior derecho de las celdas que abarca.
+Las celdas podrán pertenecer a bloques. Un bloque abarcará varias celdas. Cada celda podrá pertenecer a sólo un bloque. Los bloques se identifican por nombres que han de ser únicos para cada sector. Si un tren se encuentra en un bloque, todo el bloque se marcará como ocupado. Visualmente, todas las vías del bloque se vuelven amarillas, aunque el ícono del tren se marcará en la celda en la que efectivamente se encuentra. El nombre del bloque se mostrará en el ángulo inferior derecho de las celdas que abarca.
 
-Un tren no puede entrar a un bloque que esté ocupado por otro tren.  Si lo hiciera, generará un error, similar a una colisión con otro tren.
+Un tren no puede entrar a un bloque que esté ocupado por otro tren. Si lo hiciera, generará un error, similar a una colisión con otro tren.
 Se pueden definir enclavamientos entre señales y bloques, tal que impidan el acceso a un bloque ocupado.
 
 ### Teletipo
 
-Con el panel de Teletipo abierto, se podrán ver mensajes operativos, partidas de trenes, detenciones, llegada de trenes o colisiones. Los mensajes se encuentran ordenados con el más reciente arriba.  Por defecto sólo se mostrarán las alertas, para no ocupar tanto lugar en la pantalla.  Un botón marcado `Ver Info` permitirá visualizar también los mensajes puramente informativos. Los mensajes se podrán borrar individualmente, mediante el botón con el símbolo del basurero, o la totalidad, con el mismo símbolo en la barra de encabezados.
+Con el panel de Teletipo abierto, se podrán ver mensajes operativos, partidas de trenes, detenciones, llegada de trenes o colisiones. Los mensajes se encuentran ordenados con el más reciente arriba. Por defecto sólo se mostrarán las alertas, para no ocupar tanto lugar en la pantalla. Un botón marcado `Ver Info` permitirá visualizar también los mensajes puramente informativos. Los mensajes se podrán borrar individualmente, mediante el botón con el símbolo del basurero, o la totalidad, con el mismo símbolo en la barra de encabezados.
 
 ## Configuración
 
@@ -138,7 +140,7 @@ Todas las celdas comparten las siguiente propiedades:
 - `descr`: _(opcional)_ El mímico mostrará este texto en el ángulo inferior izquierdo de cada celda en la grilla. Si no estuviera presente y la opción correspondiente del menú habilitada, mostrará las coordenadas.
 - `despachador`: _(opcional)_ Esta celda podrá despachar trenes. Contendrá una lista de direcciones hacia las cuales esta celda podrá despachar trenes. Se corresponderán a las direcciones a que apuntan los tramos de vía de esa celda (según se verá más adelante), pero pueden omitirse algunos. Esta propiedad hará aparecer el círculo amarillo en el centro de la celda, y las flechas azules en las direcciones que se indiquen.
 - `longitud`: _(opcional)_ la longitud de la celda en unidades arbitrarias.
-- `bloque`: _(opcional)_ el nombre de un bloque al que esta celda pertenece. Varias celdas pueden formar un bloque, usualmente delimitado por señales que controlan el acceso al mismo.  Si un tren se encuentra en un bloque, todas las celdas de ese bloque se encuentran ocupadas.
+- `bloque`: _(opcional)_ el nombre de un bloque al que esta celda pertenece. Varias celdas pueden formar un bloque, usualmente delimitado por señales que controlan el acceso al mismo. Si un tren se encuentra en un bloque, todas las celdas de ese bloque se encuentran ocupadas.
 
 Adicionalmente, el programa generará estas propiedades, que se podrán ver en el _pop-up_ de configuración.
 
@@ -521,7 +523,7 @@ Igualmente, podrían sumarse entradas para las otras luces de `luzOrigen` (`izq`
 
 #### SENAL dependiendo de BLOQUE
 
-Los bloques son la unidad de ocupación de la vía. Varias celdas pueden pertenecer a un bloque.  El acceso a ese bloque está controlado por señales.  La relación entre las señales y los bloques está indicada en este tipo de enclavamiento.
+Los bloques son la unidad de ocupación de la vía. Varias celdas pueden pertenecer a un bloque. El acceso a ese bloque está controlado por señales. La relación entre las señales y los bloques está indicada en este tipo de enclavamiento.
 
 ```js
 {
@@ -539,4 +541,4 @@ Los bloques son la unidad de ocupación de la vía. Varias celdas pueden pertene
 }
 ```
 
-Este ejemplo nos dice que la señal en [2,0], lado oeste, depende del bloque `'dos'` tal que si este estuviera ocupado, la luz `CENTRO` se pondrá en rojo.  En este caso, no se necesita indicar el color de la señal, siempre pasará a rojo cuando esté ocupado. Al desocuparse el bloque, el color de la señal sera el más restrictivo que le corresponda según lo indiquen otras dependencias.  En este caso, al no tener otras dependencias, la señal volverá a verde.
+Este ejemplo nos dice que la señal en [2,0], lado oeste, depende del bloque `'dos'` tal que si este estuviera ocupado, la luz `CENTRO` se pondrá en rojo. En este caso, no se necesita indicar el color de la señal, siempre pasará a rojo cuando esté ocupado. Al desocuparse el bloque, el color de la señal sera el más restrictivo que le corresponda según lo indiquen otras dependencias. En este caso, al no tener otras dependencias, la señal volverá a verde.
