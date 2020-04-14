@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
-
+import { isPlainClick } from 'Utils';
 import {
   useSectores,
   useSector,
@@ -46,10 +46,37 @@ export default function Menu() {
   const { hideEstado } = useEstado();
   const [oldIdSector, setOldIdSector] = useState();
 
-  const onClickSector = () => {
-    if (idSector !== oldIdSector) {
+  const onClickSector = (ev) => {
+    if (isPlainClick(ev) && idSector !== oldIdSector) {
       hideEstado();
       setOldIdSector(idSector);
+      setIsOpen(false);
+    }
+  };
+
+  const onClickShowEnclavamientos = (ev) => {
+    if (isPlainClick(ev)) {
+      toggleEnclavamientos();
+      setIsOpen(false);
+    }
+  };
+
+  const onClickShowTeletipo = (ev) => {
+    if (isPlainClick(ev)) {
+      toggleTeletipo();
+      setIsOpen(false);
+    }
+  };
+  const onClickShowCoords = (ev) => {
+    if (isPlainClick(ev)) {
+      toggleShowCoords();
+      setIsOpen(false);
+    }
+  };
+  const onClickShowConfig = (ev) => {
+    if (isPlainClick(ev)) {
+      toggleShowConfig();
+      setIsOpen(false);
     }
   };
   const toggleOpen = () => setIsOpen(!isOpen);
@@ -65,6 +92,7 @@ export default function Menu() {
         >
           CTC
         </NavbarBrand>
+        <Animador />
 
         <NavbarToggler onClick={toggleOpen} />
         <Collapse isOpen={isOpen} navbar>
@@ -97,26 +125,26 @@ export default function Menu() {
                 Opciones
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem onClick={toggleTeletipo} active={showTeletipo}>
+                <DropdownItem
+                  onClick={onClickShowTeletipo}
+                  active={showTeletipo}
+                >
                   Teletipo
                 </DropdownItem>
                 <DropdownItem
-                  onClick={toggleEnclavamientos}
+                  onClick={onClickShowEnclavamientos}
                   active={enclavamientosActive}
                 >
                   Enclavamientos
                 </DropdownItem>
-                <DropdownItem onClick={toggleShowCoords} active={showCoords}>
+                <DropdownItem onClick={onClickShowCoords} active={showCoords}>
                   Coordenadas
                 </DropdownItem>
-                <DropdownItem onClick={toggleShowConfig} active={showConfig}>
+                <DropdownItem onClick={onClickShowConfig} active={showConfig}>
                   Mostrar Config.
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            <NavItem>
-              <Animador />
-            </NavItem>
             <NavItem>
               <NavLink
                 href="https://github.com/Satyam/reactc2"
