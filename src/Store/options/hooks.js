@@ -8,6 +8,7 @@ import {
   showEstado as showEstadoAction,
   hideEstado as hideEstadoAction,
   setPlayRate,
+  setCurrentSector,
 } from './actions';
 
 import {
@@ -17,6 +18,7 @@ import {
   selShowConfig,
   selShowEstado,
   selPlayRate,
+  selCurrentSector,
 } from './selectors';
 
 export const useShowTeletipo = () => {
@@ -74,4 +76,10 @@ export const usePlayRate = () => {
     playRate,
     useCallback((rate) => dispatch(setPlayRate(rate)), [dispatch]),
   ];
+};
+
+export const useCurrentSector = () => {
+  const currentIdSector = useSelector(selCurrentSector);
+  const dispatch = useDispatch();
+  return [currentIdSector, (idSector) => dispatch(setCurrentSector(idSector))];
 };

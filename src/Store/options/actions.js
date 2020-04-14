@@ -7,3 +7,4 @@ export const showEstado = createAction('showEstado');
 export const hideEstado = createAction('hideEstado');
 export const showConfig = createAction('showConfig');
 export const setPlayRate = createAction('setPlayRate');
+export const setCurrentSector = createAction('setCurrentSector');

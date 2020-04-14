@@ -7,6 +7,7 @@ import {
   hideEstado,
   showConfig,
   setPlayRate,
+  setCurrentSector,
 } from './actions';
 
 export default createReducer(
@@ -41,6 +42,9 @@ export default createReducer(
     },
     [setPlayRate]: (state, action) => {
       state.playRate = action.payload;
+    },
+    [setCurrentSector]: (state, action) => {
+      state.currIdSector = action.payload;
     },
   }
 );
