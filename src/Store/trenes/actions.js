@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { selCelda, selSenal } from 'Store/selectors';
+import { selCelda, selSenal, selCurrentSector } from 'Store/selectors';
 import {
   removeTrenFromCelda,
   addTrenToCelda,
@@ -47,6 +47,7 @@ export const doAddTren = createAction(
       speed: maxSpeed,
       maxSpeed,
       idTren,
+      idSector: celda.idSector,
     },
   })
 );
@@ -278,8 +279,12 @@ export function moveTren(idTren) {
 }
 
 export function moveTrenes() {
-  return (dispatch, getState) =>
-    Promise.all(
-      selTrenes(getState()).map((tren) => dispatch(moveTren(tren.idTren)))
+  return (dispatch, getState) => {
+    const idSector = selCurrentSector(getState());
+    return Promise.all(
+      selTrenes(getState(), idSector).map((tren) =>
+        dispatch(moveTren(tren.idTren))
+      )
     );
+  };
 }
