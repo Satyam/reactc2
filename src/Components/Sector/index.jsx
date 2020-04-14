@@ -29,7 +29,7 @@ export default function Sector({ idSector }) {
             cellsAcross={ancho}
             cellWidth={cellWidth}
             padLeft={padLeft}
-            padTop={48}
+            padTop={60}
           />
         ))}
       </div>

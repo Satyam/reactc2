@@ -28,8 +28,6 @@ import {
 import Animador from 'Components/Animador';
 import { GitHub } from 'Components/Icons';
 
-import styles from './styles.module.css';
-
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const match = useRouteMatch('/sector/:idSector');
@@ -47,7 +45,7 @@ export default function Menu() {
   const [oldIdSector, setOldIdSector] = useState();
 
   const onClickSector = (ev) => {
-    if (isPlainClick(ev) && idSector !== oldIdSector) {
+    if (idSector !== oldIdSector) {
       hideEstado();
       setOldIdSector(idSector);
       setIsOpen(false);
@@ -81,82 +79,77 @@ export default function Menu() {
   };
   const toggleOpen = () => setIsOpen(!isOpen);
   return (
-    <>
-      <Navbar color="light" light expand="md" fixed="top">
-        <NavbarBrand
-          color="default"
-          href={
-            process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : '/'
-          }
-          title="Volver al inicio"
-        >
-          CTC
-        </NavbarBrand>
-        <Animador />
+    <Navbar color="light" light expand="md" fixed="top">
+      <NavbarBrand
+        color="default"
+        href={
+          process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : '/'
+        }
+        title="Volver al inicio"
+      >
+        CTC
+      </NavbarBrand>
+      <Animador />
 
-        <NavbarToggler onClick={toggleOpen} />
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle
-                nav
-                caret
-                title={sector ? sector.descr : 'Seleccione sector a visualizar'}
-              >
-                {sector ? sector.descrCorta : 'Sectores'}
-              </DropdownToggle>
-              <DropdownMenu>
-                {sectores.map((sect) => (
-                  <DropdownItem
-                    tag={Link}
-                    to={`/sector/${sect.idSector}`}
-                    key={sect.idSector}
-                    title={sect.descr}
-                    active={idSector === sect.idSector}
-                    onClick={onClickSector}
-                  >
-                    {sect.descrCorta}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret title="Opciones de visualización">
-                Opciones
-              </DropdownToggle>
-              <DropdownMenu>
+      <NavbarToggler onClick={toggleOpen} />
+      <Collapse isOpen={isOpen} navbar>
+        <Nav className="mr-auto" navbar>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle
+              nav
+              caret
+              title={sector ? sector.descr : 'Seleccione sector a visualizar'}
+            >
+              {sector ? sector.descrCorta : 'Sectores'}
+            </DropdownToggle>
+            <DropdownMenu>
+              {sectores.map((sect) => (
                 <DropdownItem
-                  onClick={onClickShowTeletipo}
-                  active={showTeletipo}
+                  tag={Link}
+                  to={`/sector/${sect.idSector}`}
+                  key={sect.idSector}
+                  title={sect.descr}
+                  active={idSector === sect.idSector}
+                  onClick={onClickSector}
                 >
-                  Teletipo
+                  {sect.descrCorta}
                 </DropdownItem>
-                <DropdownItem
-                  onClick={onClickShowEnclavamientos}
-                  active={enclavamientosActive}
-                >
-                  Enclavamientos
-                </DropdownItem>
-                <DropdownItem onClick={onClickShowCoords} active={showCoords}>
-                  Coordenadas
-                </DropdownItem>
-                <DropdownItem onClick={onClickShowConfig} active={showConfig}>
-                  Mostrar Config.
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <NavItem>
-              <NavLink
-                href="https://github.com/Satyam/reactc2"
-                title="Ver código fuente en GitHub"
+              ))}
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret title="Opciones de visualización">
+              Opciones
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={onClickShowTeletipo} active={showTeletipo}>
+                Teletipo
+              </DropdownItem>
+              <DropdownItem
+                onClick={onClickShowEnclavamientos}
+                active={enclavamientosActive}
               >
-                <GitHub /> Github
-              </NavLink>
-            </NavItem>
-          </Nav>
-        </Collapse>
-      </Navbar>
-      <div className={styles.spacer}> </div>
-    </>
+                Enclavamientos
+              </DropdownItem>
+              <DropdownItem onClick={onClickShowCoords} active={showCoords}>
+                Coordenadas
+              </DropdownItem>
+              <DropdownItem onClick={onClickShowConfig} active={showConfig}>
+                Mostrar Config.
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <NavItem>
+            <NavLink
+              href="https://github.com/Satyam/reactc2"
+              title="Ver código fuente en GitHub"
+              target="_blank"
+            >
+              <GitHub /> Github
+            </NavLink>
+          </NavItem>
+        </Nav>
+      </Collapse>
+    </Navbar>
   );
 }
