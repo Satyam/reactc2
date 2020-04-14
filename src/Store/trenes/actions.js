@@ -279,7 +279,7 @@ export function moveTren(idTren) {
 
 export function moveTrenes() {
   return (dispatch, getState) =>
-    selTrenes(getState()).forEach((tren) => {
-      window.requestAnimationFrame(() => dispatch(moveTren(tren.idTren)));
-    });
+    Promise.all(
+      selTrenes(getState()).map((tren) => dispatch(moveTren(tren.idTren)))
+    );
 }
