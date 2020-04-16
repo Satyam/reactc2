@@ -39,6 +39,7 @@ const {
   W,
   NW,
   BLOQUE,
+  FIJO,
 } = require('./constantes');
 
 const validate = (what, schema) => {
@@ -77,16 +78,8 @@ const color = j.valid(VERDE, AMARILLO, ROJO);
 const icd = j.valid(IZQ, CENTRO, DER);
 const cambios = j.valid(NORMAL, DESVIADO, IZQ, CENTRO, DER);
 const coords = {
-  x: j
-    .number()
-    .integer()
-    .min(0)
-    .required(),
-  y: j
-    .number()
-    .integer()
-    .min(0)
-    .required(),
+  x: j.number().integer().min(0).required(),
+  y: j.number().integer().min(0).required(),
 };
 
 function validateConstants() {
@@ -116,6 +109,7 @@ function validateConstants() {
   validateConst(W, 'W');
   validateConst(NW, 'NW');
   validateConst(BLOQUE, 'bloque');
+  validateConst(FIJO, 'fijo');
 }
 
 function validateSector(name) {
@@ -126,22 +120,9 @@ function validateSector(name) {
     sector,
     j.object({
       descr: j.string().required(),
-      descrCorta: j
-        .string()
-        .max(30)
-        .required(),
-      ancho: j
-        .number()
-        .positive()
-        .integer()
-        .required()
-        .min(1),
-      alto: j
-        .number()
-        .positive()
-        .integer()
-        .required()
-        .min(1),
+      descrCorta: j.string().max(30).required(),
+      ancho: j.number().positive().integer().required().min(1),
+      alto: j.number().positive().integer().required().min(1),
     })
   );
   return sector;
@@ -168,12 +149,7 @@ function validateCeldas(name) {
     })
     .append(coords);
 
-  const puntas = j
-    .array()
-    .items(dir)
-    .length(2)
-    .unique()
-    .required();
+  const puntas = j.array().items(dir).length(2).unique().required();
 
   const celdaLinea = baseCelda.append({
     tipo: j.valid(LINEA),
@@ -203,17 +179,11 @@ function validateCeldas(name) {
     tipo: j.valid(CRUCE),
     linea1: j.object({
       puntas,
-      nivel: j
-        .number()
-        .integer()
-        .min(0),
+      nivel: j.number().integer().min(0),
     }),
     linea2: j.object({
       puntas,
-      nivel: j
-        .number()
-        .integer()
-        .min(0),
+      nivel: j.number().integer().min(0),
     }),
     nivel: j.boolean(),
   });
@@ -390,10 +360,16 @@ function validateEnclavamientos(name) {
     luzAfectada: icd,
   });
 
+  const depSenalFijo = j.object({
+    tipo: j.valid(FIJO),
+    luzAfectada: icd,
+    estado: color,
+  });
+
   const depsCambio = depCambioCambio;
   const depsSenal = j
     .alternatives()
-    .try(depSenalSenal, depSenalCambio, depSenalBloque);
+    .try(depSenalSenal, depSenalCambio, depSenalBloque, depSenalFijo);
 
   const baseEncl = j.object({}).append(coords);
 
@@ -443,7 +419,7 @@ function processEnclavamientos(idSector, enclavamientos) {
 validateConstants();
 
 const dirs = fs.readdirSync('./', { withFileTypes: true });
-dirs.forEach(d => {
+dirs.forEach((d) => {
   if (d.isDirectory() && !d.name.startsWith('_')) {
     const name = d.name;
     console.log(name);
@@ -468,7 +444,7 @@ fs.writeFileSync(
 export * from './constantes.js'
 ${Object.keys(salida)
   .map(
-    el =>
+    (el) =>
       `export const ${el} =  ${util.inspect(salida[el], {
         depth: null,
         maxArrayLength: null,

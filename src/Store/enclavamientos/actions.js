@@ -10,7 +10,16 @@ import {
   selBloqueOcupado,
 } from 'Store/selectors';
 
-import { VERDE, ROJO, CAMBIO, SENAL, BLOQUE, NORMAL, CENTRO } from 'Store/data';
+import {
+  VERDE,
+  ROJO,
+  CAMBIO,
+  SENAL,
+  BLOQUE,
+  FIJO,
+  NORMAL,
+  CENTRO,
+} from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
 
@@ -101,6 +110,12 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             if (ocupado) {
               nuevoEstado[dep.luzAfectada] = ROJO;
             }
+            break;
+          case FIJO:
+            nuevoEstado[dep.luzAfectada] = Math.max(
+              dep.estado,
+              nuevoEstado[dep.luzAfectada]
+            );
             break;
           default:
             throw new Error(

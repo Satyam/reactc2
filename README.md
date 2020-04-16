@@ -29,6 +29,7 @@ Está disponible en [https://satyam.github.io/reactc2/](https://satyam.github.io
       - [SENAL dependiendo de CAMBIO](#senal-dependiendo-de-cambio)
       - [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
       - [SENAL dependiendo de BLOQUE](#senal-dependiendo-de-bloque)
+      - [SENAL dependiendo de nada](#senal-dependiendo-de-nada)
 
 ## Uso
 
@@ -542,3 +543,25 @@ Los bloques son la unidad de ocupación de la vía. Varias celdas pueden pertene
 ```
 
 Este ejemplo nos dice que la señal en [2,0], lado oeste, depende del bloque `'dos'` tal que si este estuviera ocupado, la luz `CENTRO` se pondrá en rojo. En este caso, no se necesita indicar el color de la señal, siempre pasará a rojo cuando esté ocupado. Al desocuparse el bloque, el color de la señal sera el más restrictivo que le corresponda según lo indiquen otras dependencias. En este caso, al no tener otras dependencias, la señal volverá a verde.
+
+#### SENAL dependiendo de nada
+
+Si una señal ha de volver a un estado fijo cuando no haya otros enclavamientos más restrictivos, se usa el de tipo `FIJO`.
+
+```js
+{
+  x: 2,
+  y: 0,
+  dir: W,
+  tipo: SENAL,
+  dependencias: [
+    {
+      tipo: FIJO,
+      luzAfectada: CENTRO,
+      estado: ROJO
+    },
+  ]
+}
+```
+
+Este ejemplo nos dice que la luz del centro de la señal en [2,0], lado oeste, ha de permanecer en `ROJO`. Dado que no hay estado más restrictivo que el `ROJO`, esta señal quedará permanentemente en este estado, salvo que se cambie manualmente. Si, en lugar de `ROJO` se hubiera indicado `AMARILLO`, la señal podría pasar a `ROJO` si alguna otra dependencia le forzara, y volvería a `AMARILLO` al cesar la influencia de esa dependencia. Es innecesario indicar `VERDE` como estado fijo, dado que este es el estado predeterminado.
