@@ -45,7 +45,11 @@ const {
 const validate = (what, schema) => {
   const { error, warning } = schema.validate(what);
   if (error) {
-    console.error(error);
+    if (error.name === 'ValidationError') {
+      console.error(JSON.stringify(error.details, null, 2));
+    } else {
+      console.error(error);
+    }
     process.exit(1);
   }
   if (warning) {
@@ -308,13 +312,18 @@ function validateEnclavamientos(name) {
     .without(NORMAL, [IZQ, CENTRO, DER])
     .without(DESVIADO, [IZQ, CENTRO, DER]);
 
+  const luzColor = j.object({
+    [IZQ]: color,
+    [CENTRO]: color,
+    [DER]: color,
+  });
+
   const depSenalSenal = j
     .object({
       tipo: j.valid(SENAL),
       dir,
       luces: j.array().items(
         j.object({
-          luzOrigen: icd,
           cuando: color,
           luzAfectada: icd,
           estado: color,
@@ -326,31 +335,11 @@ function validateEnclavamientos(name) {
   const depSenalCambio = j
     .object({
       tipo: j.valid(CAMBIO),
-      [NORMAL]: j.object({
-        [IZQ]: color,
-        [CENTRO]: color,
-        [DER]: color,
-      }),
-      [DESVIADO]: j.object({
-        [IZQ]: color,
-        [CENTRO]: color,
-        [DER]: color,
-      }),
-      [IZQ]: j.object({
-        [IZQ]: color,
-        [CENTRO]: color,
-        [DER]: color,
-      }),
-      [CENTRO]: j.object({
-        [IZQ]: color,
-        [CENTRO]: color,
-        [DER]: color,
-      }),
-      [DER]: j.object({
-        [IZQ]: color,
-        [CENTRO]: color,
-        [DER]: color,
-      }),
+      [NORMAL]: luzColor,
+      [DESVIADO]: luzColor,
+      [IZQ]: luzColor,
+      [CENTRO]: luzColor,
+      [DER]: luzColor,
     })
     .append(coords);
 

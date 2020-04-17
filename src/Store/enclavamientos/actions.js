@@ -18,7 +18,9 @@ import {
   BLOQUE,
   FIJO,
   NORMAL,
+  IZQ,
   CENTRO,
+  DER,
 } from 'Store/data';
 
 import { doSetCambio, doSetLuzEstado } from 'Store/actions';
@@ -93,8 +95,13 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
             break;
           case SENAL:
             const senalSource = selSenal(getState(), idSource);
-            dep.luces.forEach(({ luzOrigen, cuando, luzAfectada, estado }) => {
-              if (senalSource[luzOrigen] === cuando) {
+            const estadoSource = [IZQ, CENTRO, DER].reduce((permiso, luz) => {
+              return luz in senalSource
+                ? Math.min(permiso, senalSource[luz])
+                : permiso;
+            }, ROJO);
+            dep.luces.forEach(({ cuando, luzAfectada, estado }) => {
+              if (estadoSource === cuando) {
                 nuevoEstado[luzAfectada] = Math.max(
                   nuevoEstado[luzAfectada],
                   estado
