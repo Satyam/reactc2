@@ -30,6 +30,7 @@ Está disponible en [https://satyam.github.io/reactc2/](https://satyam.github.io
       - [SENAL dependiendo de SENAL](#senal-dependiendo-de-senal)
       - [SENAL dependiendo de BLOQUE](#senal-dependiendo-de-bloque)
       - [SENAL dependiendo de nada](#senal-dependiendo-de-nada)
+      - [BLOQUE dependiendo de BLOQUE y CAMBIO](#bloque-dependiendo-de-bloque-y-cambio)
 
 ## Uso
 
@@ -469,7 +470,6 @@ En este caso, tanto **afectada** como **origen** son ambas señales.
         luces: [
           {
             cuando: ROJO,
-            luzOrigen: CENTRO,
             luzAfectada: CENTRO,
             estado: AMARILLO,
           },
@@ -479,9 +479,10 @@ En este caso, tanto **afectada** como **origen** son ambas señales.
   },
 ```
 
-El ejemplo nos dice que la `SENAL` del lado oeste (`W`) de la celda en `[0,0]` depende de la señal del lado `W` de la celda en `[3,0]`. Como una señal puede tener hasta 3 luces, debe indicarse la interacción entre las varias luces. Nótese que las luces relacionadas no tiene que corresponderse en posición. En este caso, ambas son luces del `CENTRO` pero esto es casualidad. La configuarción nos dice que `cuando` la luz `CENTRO` del **origen** esté en `ROJO` la `luzAfectada`, que también es la del `CENTRO`, ha de estar en `AMARILLO`.
+El ejemplo nos dice que la `SENAL` del lado oeste (`W`) de la celda en `[0,0]` depende de la señal del lado `W` de la celda en `[3,0]`. Como una señal puede tener hasta 3 luces, el programa toma la luz con el color más permisiva, o sea, que si alguna de sus posiblemente múltiples luces está en `VERDE` considera que toda la señal está en `VERDE` pues eso quiere decir que hay una vía libre y poco le importa a la luz afectada, cuál de las posibles vías es la que está libre.
+La configuarción nos dice que `cuando` la luz más permisiva del **origen** esté en `ROJO` la `luzAfectada`, que es la del `CENTRO`, ha de estar en `AMARILLO`.
 
-Podrían agregarse más líneas de configuración para los varios posibles colores de `luzOrigen` pero resulta que como el estado de `luzAfectada` para los otros casos, sería `VERDE` que es el valor por defecto, es innecesario, pero bién podría hacerse si se quisiera:
+Podrían agregarse más líneas de configuración para los varios posibles colores pero resulta que como el estado de `luzAfectada` para los otros casos, sería `VERDE` que es el valor por defecto, es innecesario, pero bién podría hacerse si se quisiera:
 
 ```js
   {
@@ -498,19 +499,16 @@ Podrían agregarse más líneas de configuración para los varios posibles color
         luces: [
           {
             cuando: ROJO,
-            luzOrigen: CENTRO,
             luzAfectada: CENTRO,
             estado: AMARILLO,
           },
           {
             cuando: AMARILLO,
-            luzOrigen: CENTRO,
             luzAfectada: CENTRO,
             estado: VERDE,
           },
           {
             cuando: VERDE,
-            luzOrigen: CENTRO,
             luzAfectada: CENTRO,
             estado: VERDE,
           },
@@ -519,8 +517,6 @@ Podrían agregarse más líneas de configuración para los varios posibles color
     ],
   },
 ```
-
-Igualmente, podrían sumarse entradas para las otras luces de `luzOrigen` (`izq` y `der`) si existieran o tuvieran alguna relación con las luces de esta señal.
 
 #### SENAL dependiendo de BLOQUE
 
@@ -565,3 +561,32 @@ Si una señal ha de volver a un estado fijo cuando no haya otros enclavamientos 
 ```
 
 Este ejemplo nos dice que la luz del centro de la señal en [2,0], lado oeste, ha de permanecer en `ROJO`. Dado que no hay estado más restrictivo que el `ROJO`, esta señal quedará permanentemente en este estado, salvo que se cambie manualmente. Si, en lugar de `ROJO` se hubiera indicado `AMARILLO`, la señal podría pasar a `ROJO` si alguna otra dependencia le forzara, y volvería a `AMARILLO` al cesar la influencia de esa dependencia. Es innecesario indicar `VERDE` como estado fijo, dado que este es el estado predeterminado.
+
+#### BLOQUE dependiendo de BLOQUE y CAMBIO
+
+Dos bloques pueden estar temporalmente vinculados al hacerse un cambio que los conecta.  El caso típico son dos vías paralelas, una en cada sentido, donde habitualmente los trenes circulando por una vía no afectan a los de la vecina.  Sin embargo, por razones de servicio, avería u reparaciones, los trenes de una de las vías han de ser derivados a la vía contigua, mediante un cambio.  En este caso, la ocupación de un bloque a un lado de ese cambio temporalmente afecta al bloque al otro lado de ese cambio.
+
+```js
+{
+  tipo: BLOQUE,
+  bloque: 'Norte',
+  dependencias: [
+    {
+      tipo: BLOQUE,
+      bloque: 'Sur',
+      x: 0,
+      y: 0,
+      posicion: DESVIADO,
+    },
+    {
+      tipo: BLOQUE,
+      bloque: 'Sur',
+      x: 1,
+      y: 0,
+      posicion: DESVIADO,
+    },
+  ]
+}
+```
+
+Este ejemplo nos dice que el bloque llamado `'Norte'` puede estar temporalmente vinculado con el bloque llamado `'Sur'` cuando el cambio en `[0,0]` está en `DESVIADO` o cuando el cambio en `[1,0]` está en `DESVIADO`.  Si ninguna de estas conexiones estuviera activa, o sea, si los cambios estuvieran ambos en `NORMAL` los bloques funcionarían independientemente.
