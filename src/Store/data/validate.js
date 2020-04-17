@@ -156,31 +156,31 @@ function validateCeldas(name) {
   const puntas = j.array().items(dir).length(2).unique().required();
 
   const celdaLinea = baseCelda.append({
-    tipo: j.valid(LINEA),
+    tipo: j.valid(LINEA).required(),
     puntas,
   });
 
   const celdaCambio = baseCelda.append({
-    tipo: j.valid(CAMBIO),
+    tipo: j.valid(CAMBIO).required(),
     posicion: j.valid(NORMAL, DESVIADO),
     punta: dir,
     ramas: j.object({ [NORMAL]: dir, [DESVIADO]: dir }),
   });
 
   const celdaParagolpe = baseCelda.append({
-    tipo: j.valid(PARAGOLPE),
+    tipo: j.valid(PARAGOLPE).required(),
     punta: dir,
   });
 
   const celdaTriple = baseCelda.append({
-    tipo: j.valid(TRIPLE),
+    tipo: j.valid(TRIPLE).required(),
     posicion: icd,
     punta: dir,
     ramas: j.object({ [IZQ]: dir, [CENTRO]: dir, [DER]: dir }),
   });
 
   const celdaCruce = baseCelda.append({
-    tipo: j.valid(CRUCE),
+    tipo: j.valid(CRUCE).required(),
     linea1: j.object({
       puntas,
       nivel: j.number().integer().min(0),
@@ -189,7 +189,6 @@ function validateCeldas(name) {
       puntas,
       nivel: j.number().integer().min(0),
     }),
-    nivel: j.boolean(),
   });
 
   validate(
@@ -298,7 +297,7 @@ function validateEnclavamientos(name) {
 
   const depCambioCambio = j
     .object({
-      tipo: j.valid(CAMBIO),
+      tipo: j.valid(CAMBIO).required(),
     })
     .append(coords)
     .append({
@@ -320,21 +319,24 @@ function validateEnclavamientos(name) {
 
   const depSenalSenal = j
     .object({
-      tipo: j.valid(SENAL),
+      tipo: j.valid(SENAL).required(),
       dir,
-      luces: j.array().items(
-        j.object({
-          cuando: color,
-          luzAfectada: icd,
-          estado: color,
-        })
-      ),
+      luces: j
+        .array()
+        .items(
+          j.object({
+            cuando: color.required(),
+            luzAfectada: icd.required(),
+            estado: color.required(),
+          })
+        )
+        .required(),
     })
     .append(coords);
 
   const depSenalCambio = j
     .object({
-      tipo: j.valid(CAMBIO),
+      tipo: j.valid(CAMBIO).required(),
       [NORMAL]: luzColor,
       [DESVIADO]: luzColor,
       [IZQ]: luzColor,
@@ -344,15 +346,15 @@ function validateEnclavamientos(name) {
     .append(coords);
 
   const depSenalBloque = j.object({
-    tipo: j.valid(BLOQUE),
+    tipo: j.valid(BLOQUE).required(),
     bloque: j.string().required(),
-    luzAfectada: icd,
+    luzAfectada: icd.required(),
   });
 
   const depSenalFijo = j.object({
-    tipo: j.valid(FIJO),
-    luzAfectada: icd,
-    estado: color,
+    tipo: j.valid(FIJO).required(),
+    luzAfectada: icd.required(),
+    estado: color.required(),
   });
 
   const depsCambio = depCambioCambio;
@@ -363,28 +365,28 @@ function validateEnclavamientos(name) {
   const baseEncl = j.object({}).append(coords);
 
   const enclCambio = baseEncl.append({
-    tipo: j.valid(CAMBIO),
-    dependencias: j.array().items(depsCambio),
+    tipo: j.valid(CAMBIO).required(),
+    dependencias: j.array().items(depsCambio).required(),
   });
 
   const enclSenal = baseEncl.append({
-    tipo: j.valid(SENAL),
+    tipo: j.valid(SENAL).required(),
     dir,
-    dependencias: j.array().items(depsSenal),
+    dependencias: j.array().items(depsSenal).required(),
   });
 
   const depsBloque = j
     .object({
-      tipo: j.valid(BLOQUE),
+      tipo: j.valid(BLOQUE).required(),
       bloque: j.string().required(),
-      posicion: cambios,
+      posicion: cambios.required(),
     })
     .append(coords);
 
   const enclBloque = j.object({
-    tipo: j.valid(BLOQUE),
+    tipo: j.valid(BLOQUE).required(),
     bloque: j.string().required(),
-    dependencias: j.array().items(depsBloque),
+    dependencias: j.array().items(depsBloque).required(),
   });
 
   validate(
