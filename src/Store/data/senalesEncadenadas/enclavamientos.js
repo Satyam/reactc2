@@ -35,7 +35,6 @@ export const enclavamientos = [
         tipo: SENAL,
         luces: [
           {
-            luzOrigen: CENTRO,
             cuando: ROJO,
             luzAfectada: CENTRO,
             estado: AMARILLO,
