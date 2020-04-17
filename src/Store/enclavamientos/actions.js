@@ -8,6 +8,7 @@ import {
   selSenalIsManual,
   selCeldaIsManual,
   selBloqueOcupado,
+  selBloque,
 } from 'Store/selectors';
 
 import {
@@ -17,13 +18,12 @@ import {
   SENAL,
   BLOQUE,
   FIJO,
-  NORMAL,
   IZQ,
   CENTRO,
   DER,
 } from 'Store/data';
 
-import { doSetCambio, doSetLuzEstado } from 'Store/actions';
+import { doSetCambio, doSetLuzEstado, setBloqueOcupado } from 'Store/actions';
 
 export function setEnclavamientos(idOrigen, tipoOrigen, force) {
   return async (dispatch, getState) => {
@@ -59,9 +59,8 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
       return dependencias.reduce((p1, dep) => {
         const idSource = buildId({ idSector, x: dep.x, y: dep.y });
         const celdaSource = selCelda(getState(), idSource);
-        const posicionEsperada =
-          dep[celdaSource.posicion] ||
-          (celdaTarget.tipo === CAMBIO ? NORMAL : CENTRO);
+        const posicionEsperada = dep[celdaSource.posicion];
+        if (!posicionEsperada) return p1;
         if (posicionEsperada === celdaTarget.posicion) return p1;
         if (selCeldaIsManual(getState(), idTarget)) return p1;
         return p1.then(
@@ -141,11 +140,46 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
       }, Promise.resolve(false));
     }
 
+    const enclavamientosBloque = (idTarget, dependencias) => {
+      const bloqueTarget = selBloque(getState(), idTarget);
+      dependencias.reduce(
+        (p3, dep) => {
+          switch (dep.tipo) {
+            case BLOQUE:
+              const idSource = buildId({ idSector, x: dep.x, y: dep.y });
+              const celdaSource = selCelda(getState(), idSource);
+              if (celdaSource.posicion === dep.posicion) {
+                const bloqueSource = selBloque(
+                  getState(),
+                  buildIdBloque(idSector, dep.bloque)
+                );
+                if (bloqueSource.idTren && !bloqueSource.vecino) {
+                  return dispatch(
+                    setBloqueOcupado(idTarget, bloqueSource.idTren, true)
+                  );
+                }
+              }
+              return p3;
+            default:
+              throw new Error(
+                `Dependencia de  ${idTarget} tiene tipo desconocido: ${dep.tipo}`
+              );
+          }
+        },
+        bloqueTarget.vecino
+          ? dispatch(setBloqueOcupado(idTarget, false, false))
+          : Promise.resolve(false)
+      );
+    };
+
     const browseEnclavamientos = () => {
       const enclavamientos = selEnclavamientos(getState(), idSector);
       return enclavamientos.reduce((p, encl) => {
-        const { x, y, dir, tipo, dependencias } = encl;
-        const idTarget = buildId({ idSector, x, y, dir });
+        const { x, y, dir, tipo, dependencias, bloque } = encl;
+        const idTarget =
+          tipo === BLOQUE
+            ? buildIdBloque(idSector, bloque)
+            : buildId({ idSector, x, y, dir });
         if (!force && idTarget === idOrigen) return p;
         switch (tipo) {
           case CAMBIO:
@@ -155,6 +189,10 @@ export function setEnclavamientos(idOrigen, tipoOrigen, force) {
           case SENAL:
             return p.then(
               (r) => enclavamientosSenal(idTarget, dependencias) || r
+            );
+          case BLOQUE:
+            return p.then(
+              (r) => enclavamientosBloque(idTarget, dependencias) || r
             );
           default:
             throw new Error(

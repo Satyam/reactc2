@@ -73,7 +73,7 @@ const buildId = (idSector, { x, y, dir }) =>
     .replace(/\W/g, '_')
     .replace(/(^\d)/, '_$1');
 
-const buildIdBloque = (idSector, bloque) =>
+const buildIdBloque = (idSector, { bloque }) =>
   `${idSector}__${bloque}`.replace(/\W/g, '_').replace(/(^\d)/, '_$1');
 
 // various standard types
@@ -212,7 +212,7 @@ function processCeldas(idSector, celdas) {
     const idCelda = buildId(idSector, c);
     if (cs[idCelda]) throw new Error(`Clave duplicada en Celdas: ${idCelda}`);
     if (c.bloque) {
-      const idBloque = buildIdBloque(idSector, c.bloque);
+      const idBloque = buildIdBloque(idSector, c);
 
       if (!salida.bloques[idBloque]) {
         salida.bloques[idBloque] = {
@@ -363,24 +363,39 @@ function validateEnclavamientos(name) {
   const baseEncl = j.object({}).append(coords);
 
   const enclCambio = baseEncl.append({
-    tipo: CAMBIO,
+    tipo: j.valid(CAMBIO),
     dependencias: j.array().items(depsCambio),
   });
 
   const enclSenal = baseEncl.append({
-    tipo: SENAL,
+    tipo: j.valid(SENAL),
     dir,
     dependencias: j.array().items(depsSenal),
+  });
+
+  const depsBloque = j
+    .object({
+      tipo: j.valid(BLOQUE),
+      bloque: j.string().required(),
+      posicion: cambios,
+    })
+    .append(coords);
+
+  const enclBloque = j.object({
+    tipo: j.valid(BLOQUE),
+    bloque: j.string().required(),
+    dependencias: j.array().items(depsBloque),
   });
 
   validate(
     enclavamientos,
     j
       .array()
-      .items(j.alternatives().try(enclCambio, enclSenal))
-      .unique(
-        (a, b) =>
-          a.x === b.x && a.y === b.y && a.tipo === b.tipo && a.dir === b.dir
+      .items(j.alternatives().try(enclCambio, enclSenal, enclBloque))
+      .unique((a, b) =>
+        a.tipo === BLOQUE && b.tipo === BLOQUE
+          ? a.bloque === b.bloque
+          : a.x === b.x && a.y === b.y && a.tipo === b.tipo && a.dir === b.dir
       )
   );
 
@@ -389,7 +404,8 @@ function validateEnclavamientos(name) {
 
 function processEnclavamientos(idSector, enclavamientos) {
   salida.enclavamientos = enclavamientos.reduce((es, e) => {
-    const idEncl = buildId(idSector, e);
+    const idEncl =
+      e.tipo === BLOQUE ? buildIdBloque(idSector, e) : buildId(idSector, e);
     if (es[idEncl])
       throw new Error(`Clave duplicada en Enclavamientos: ${idEncl}`);
     return {
