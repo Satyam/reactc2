@@ -71,7 +71,7 @@ export const isPlainClick = (ev) => {
   if (ev.button || ev.shiftKey || ev.altKey || ev.metaKey || ev.ctrlKey)
     return false;
   ev.stopPropagation();
-  ev.preventRefDefault();
+  ev.preventDefault();
   return true;
 };
 
