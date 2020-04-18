@@ -139,6 +139,8 @@ export default function Menu() {
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
+        </Nav>
+        <Nav navbar>
           <NavItem>
             <NavLink
               href="https://github.com/Satyam/reactc2"
