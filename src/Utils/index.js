@@ -1,49 +1,57 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 export function useLongPress({
   onClick = () => {},
   onLongPress = () => {},
   ms = 300,
 } = {}) {
-  const [startLongPress, setStartLongPress] = useState(false);
-  const timer = useRef(false);
+  const timerRef = useRef(false);
+  const eventRef = useRef({});
 
   const callback = useCallback(() => {
-    onLongPress();
-    timer.current = false;
+    onLongPress(eventRef.current);
+    eventRef.current = {};
+    timerRef.current = false;
   }, [onLongPress]);
 
-  useEffect(() => {
-    if (startLongPress) {
-      timer.current = setTimeout(callback, ms);
-    } else {
-      if (timer.current) onClick();
-      timer.current = false;
-    }
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [onClick, onLongPress, ms, startLongPress, callback]);
+  const start = useCallback(
+    (ev) => {
+      ev.persist();
+      eventRef.current = ev;
+      timerRef.current = setTimeout(callback, ms);
+    },
+    [callback, ms]
+  );
 
-  const start = useCallback(() => {
-    setStartLongPress(true);
-  }, []);
-  const stop = useCallback(() => {
-    setStartLongPress(false);
-  }, []);
+  const stop = useCallback(
+    (ev) => {
+      ev.persist();
+      eventRef.current = ev;
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        onClick(eventRef.current);
+        timerRef.current = false;
+        eventRef.current = {};
+      }
+    },
+    [onClick]
+  );
 
-  return {
-    onMouseDown: start,
-    onMouseUp: stop,
-    onMouseLeave: stop,
-    onTouchStart: start,
-    onTouchEnd: stop,
-  };
+  return useMemo(
+    () => ({
+      onMouseDown: start,
+      onMouseUp: stop,
+      onMouseLeave: stop,
+      onTouchStart: start,
+      onTouchEnd: stop,
+    }),
+    [start, stop]
+  );
 }
 
 /* Usage:
 
-https://stackoverflow.com/questions/48048957/react-long-press-event
+https://stackoverflow.com/questions/48048957/react-long-press-eventRef
 
 function MyComponent (props) {
   const longPressProps = useLongPress({
@@ -63,7 +71,7 @@ export const isPlainClick = (ev) => {
   if (ev.button || ev.shiftKey || ev.altKey || ev.metaKey || ev.ctrlKey)
     return false;
   ev.stopPropagation();
-  ev.preventDefault();
+  ev.preventRefDefault();
   return true;
 };
 
