@@ -158,6 +158,7 @@ function validateCeldas(name) {
   const celdaLinea = baseCelda.append({
     tipo: j.valid(LINEA).required(),
     puntas,
+    longitud: j.number().positive(),
   });
 
   const celdaCambio = baseCelda.append({
@@ -170,6 +171,7 @@ function validateCeldas(name) {
   const celdaParagolpe = baseCelda.append({
     tipo: j.valid(PARAGOLPE).required(),
     punta: dir,
+    rebota: j.boolean(),
   });
 
   const celdaTriple = baseCelda.append({

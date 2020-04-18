@@ -124,6 +124,7 @@ function solveNewDir(newDir, newCelda) {
         return newCelda.punta;
       else return;
     case PARAGOLPE:
+      if (newCelda.rebota) return newCelda.punta;
       if (newCelda.punta === newDir) return 'X';
       else return;
     case CRUCE:

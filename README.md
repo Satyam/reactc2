@@ -141,7 +141,6 @@ Todas las celdas comparten las siguiente propiedades:
 - `tipo`: indica el tipo de celda. El resto de las propiedades de la celda depende del tipo, según se verá a continuación.
 - `descr`: _(opcional)_ El mímico mostrará este texto en el ángulo inferior izquierdo de cada celda en la grilla. Si no estuviera presente y la opción correspondiente del menú habilitada, mostrará las coordenadas.
 - `despachador`: _(opcional)_ Esta celda podrá despachar trenes. Contendrá una lista de direcciones hacia las cuales esta celda podrá despachar trenes. Se corresponderán a las direcciones a que apuntan los tramos de vía de esa celda (según se verá más adelante), pero pueden omitirse algunos. Esta propiedad hará aparecer el círculo amarillo en el centro de la celda, y las flechas azules en las direcciones que se indiquen.
-- `longitud`: _(opcional)_ la longitud de la celda en unidades arbitrarias.
 - `bloque`: _(opcional)_ el nombre de un bloque al que esta celda pertenece. Varias celdas pueden formar un bloque, usualmente delimitado por señales que controlan el acceso al mismo. Si un tren se encuentra en un bloque, todas las celdas de ese bloque se encuentran ocupadas.
 
 Adicionalmente, el programa generará estas propiedades, que se podrán ver en el _pop-up_ de configuración.
@@ -212,7 +211,11 @@ Los tipos de celdas son:
 
 ##### tipo: LINEA
 
-Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. Requiere la propiedad `puntas` indicando los puntos geográficos que une. El orden de las puntas es indistinto.
+Contiene una vía con una única entrada y una única salida, sin cambios o desvíos. 
+
+Requiere la propiedad `puntas` indicando los puntos geográficos que une. El orden de las puntas es indistinto.
+
+La propiedad `longitud`, si la hubiera, indicará el largo del tramo que esta celda representa.  Los trenes habitualmente circulan a una unidad por segundo.  Con una `longitud` de 4, el tren tardará 4 segundos en pasar por este tramo. El resto de los tipos de vía del mímico tienen una unidad fija de 1. La `LINEA` es el único que puede tener una longitud distinta.
 
 Ej.:
 
@@ -222,7 +225,8 @@ Ej.:
     y: 0,
     tipo: LINEA,
     descr: 'XVI-b',
-    puntas: [N, S]
+    puntas: [N, S],
+    longitud: 4
   }
 ```
 
@@ -255,7 +259,11 @@ Adicionalmente, al mostrar la configuración en el _pop-up_ se podrán ver los v
 
 ##### tipo: PARAGOLPE
 
-Contiene un tramo de vía sin salida. Requiere indicar la única salida mediante la propiedad `punta`.
+Contiene un tramo de vía sin salida. 
+
+Requiere indicar la única salida mediante la propiedad `punta`.
+
+La propiedad `rebota`, si la hubiera, admite un booleano que si fuera `true` indica que los trenes al llegar a este paragolpe vuelven inmediatamente en el sentido inverso.  Si esta propiedad no estuviera o fuera `false` el tren desaparece al llegar a este paragolpe.
 
 Ej:
 
@@ -265,6 +273,7 @@ Ej:
     y: 4,
     tipo: PARAGOLPE,
     punta: E,
+    rebota: true,
   }
 ```
 
