@@ -1,10 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { isPlainClick, buildId } from 'Utils';
+import { isPlainClick, buildId, useLongPress } from 'Utils';
 
-import { useCelda, useShowCoords, useEstado, useBloque } from 'Store';
+import {
+  useCelda,
+  useShowCoords,
+  useEstado,
+  useBloque,
+  useSetCambio,
+} from 'Store';
 import Senal from 'Components/Senal';
+import { CAMBIO, TRIPLE, NORMAL, DESVIADO, IZQ, CENTRO, DER } from 'Store/data';
 
 import { ANCHO_CELDA, DIR } from 'Components/common';
 import styles from './styles.module.css';
@@ -24,19 +31,50 @@ export default function Celda({
   padTop,
 }) {
   const celda = useCelda(idCelda);
+  const setCambio = useSetCambio(idCelda);
   const bloque = useBloque(celda.idBloque);
   const [showCoords] = useShowCoords();
   const { showEstado } = useEstado();
+  const longPressProps = useLongPress({
+    onClick: (ev) => {
+      if (isPlainClick(ev)) {
+        switch (celda.tipo) {
+          case CAMBIO:
+            setCambio(celda.posicion === NORMAL ? DESVIADO : NORMAL);
+            break;
+          case TRIPLE:
+            switch (celda.posicion) {
+              case IZQ:
+                setCambio(CENTRO);
+                break;
+              case CENTRO:
+                setCambio(DER);
+                break;
+              case DER:
+                setCambio(IZQ);
+                break;
+
+              default:
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    onLongPress: (ev) => {
+      if (isPlainClick(ev)) {
+        showEstado({
+          tipo: celda.tipo,
+          idCelda,
+          placement,
+        });
+      }
+    },
+  });
+
   if (!cellWidth || !celda) return null;
   const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
-
-  const onClick = (tipo) => (ev) =>
-    isPlainClick(ev) &&
-    showEstado({
-      tipo,
-      idCelda,
-      placement,
-    });
 
   const label = celda.desc || (showCoords ? `[${celda.x},${celda.y}]` : '');
   const title = [];
@@ -71,8 +109,8 @@ export default function Celda({
         width: cellWidth,
         height: cellWidth,
       }}
-      onClick={onClick(celda.tipo)}
       title={title.join('\n')}
+      {...longPressProps}
     >
       <svg
         viewBox={`0 0 ${ANCHO_CELDA} ${ANCHO_CELDA}`}
