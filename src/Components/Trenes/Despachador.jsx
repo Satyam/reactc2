@@ -42,6 +42,9 @@ export default function Despachador({ celda }) {
           r={9}
           className={styles.trenDespachador}
         />
+        {celda.rebota && (
+          <circle cx={CENTRO_CELDA} cy={CENTRO_CELDA} r={5} fill={'gray'} />
+        )}
         {dirs.map((dir) => {
           return (
             <g
