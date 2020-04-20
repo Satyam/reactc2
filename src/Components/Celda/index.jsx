@@ -8,7 +8,7 @@ import {
   useShowCoords,
   useEstado,
   useBloque,
-  useSetCambio,
+  useSetPosicion,
 } from 'Store';
 import Senal from 'Components/Senal';
 import { CAMBIO, TRIPLE, NORMAL, DESVIADO, IZQ, CENTRO, DER } from 'Store/data';
@@ -31,7 +31,7 @@ export default function Celda({
   padTop,
 }) {
   const celda = useCelda(idCelda);
-  const setCambio = useSetCambio(idCelda);
+  const setPosicion = useSetPosicion(idCelda);
   const bloque = useBloque(celda.idBloque);
   const [showCoords] = useShowCoords();
   const { showEstado } = useEstado();
@@ -40,18 +40,18 @@ export default function Celda({
       if (isPlainClick(ev)) {
         switch (celda.tipo) {
           case CAMBIO:
-            setCambio(celda.posicion === NORMAL ? DESVIADO : NORMAL);
+            setPosicion(celda.posicion === NORMAL ? DESVIADO : NORMAL);
             break;
           case TRIPLE:
             switch (celda.posicion) {
               case IZQ:
-                setCambio(CENTRO);
+                setPosicion(CENTRO);
                 break;
               case CENTRO:
-                setCambio(DER);
+                setPosicion(DER);
                 break;
               case DER:
-                setCambio(IZQ);
+                setPosicion(IZQ);
                 break;
 
               default:

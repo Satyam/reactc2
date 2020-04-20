@@ -10,7 +10,7 @@ import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 import { CAMBIO, TRIPLE } from 'Store/data';
 
 export const plainSetCambio = createAction(
-  'setCambio',
+  'setPosicion',
   (idCelda, posicion) => ({
     payload: {
       idCelda,
@@ -34,7 +34,7 @@ export function doSetCambio(idCelda, posicion) {
   };
 }
 
-export function setCambio(idCelda, posicion) {
+export function setPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
     dispatch(doSetCambio(idCelda, posicion));
     if (!selCeldaIsManual(getState(), idCelda)) {

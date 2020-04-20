@@ -1,7 +1,7 @@
 import React from 'react';
 import { isPlainClick } from 'Utils';
 
-import { useSetCambio, useCeldaManual } from 'Store';
+import { useSetPosicion, useCeldaManual } from 'Store';
 import { Button, ButtonGroup, PopoverBody } from 'reactstrap';
 
 import {
@@ -18,12 +18,12 @@ import { IZQ, CENTRO, DER } from 'Store/data';
 
 export default function EstadoTriple({ celda }) {
   const { posicion, idCelda } = celda;
-  const setCambio = useSetCambio(idCelda);
+  const setPosicion = useSetPosicion(idCelda);
   const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
-  const onSetNormal = ev => isPlainClick(ev) && setCambio(CENTRO);
-  const onSetIzq = ev => isPlainClick(ev) && setCambio(IZQ);
-  const onSetDer = ev => isPlainClick(ev) && setCambio(DER);
-  const onSetManual = ev => isPlainClick(ev) && toggleCeldaManual();
+  const onSetNormal = (ev) => isPlainClick(ev) && setPosicion(CENTRO);
+  const onSetIzq = (ev) => isPlainClick(ev) && setPosicion(IZQ);
+  const onSetDer = (ev) => isPlainClick(ev) && setPosicion(DER);
+  const onSetManual = (ev) => isPlainClick(ev) && toggleCeldaManual();
 
   return (
     <PopoverBody>

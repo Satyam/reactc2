@@ -10,19 +10,19 @@ import {
 } from 'Components/Icons';
 
 import { isPlainClick } from 'Utils';
-import { useCeldaManual, useSetCambio } from 'Store';
+import { useCeldaManual, useSetPosicion } from 'Store';
 
 import { NORMAL, DESVIADO } from 'Store/data';
 import styles from './styles.module.css';
 
 export default function EstadoCambio({ celda }) {
   const { posicion, idCelda } = celda;
-  const setCambio = useSetCambio(idCelda);
+  const setPosicion = useSetPosicion(idCelda);
   const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
 
-  const onSetCambioNormal = ev => isPlainClick(ev) && setCambio(NORMAL);
-  const onSetCambioDesviado = ev => isPlainClick(ev) && setCambio(DESVIADO);
-  const onSetManual = ev => isPlainClick(ev) && toggleCeldaManual();
+  const onSetCambioNormal = (ev) => isPlainClick(ev) && setPosicion(NORMAL);
+  const onSetCambioDesviado = (ev) => isPlainClick(ev) && setPosicion(DESVIADO);
+  const onSetManual = (ev) => isPlainClick(ev) && toggleCeldaManual();
 
   return (
     <PopoverBody>
