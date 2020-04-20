@@ -21,10 +21,18 @@ import {
 import {
   NORTE,
   SUR,
-  NOR_ESTE,
-  SUD_ESTE,
-  NOR_OESTE,
-  SUD_OESTE,
+  OESTE_10,
+  OESTE_11,
+  OESTE_20,
+  OESTE_21,
+  P_OESTE_N,
+  P_OESTE_S,
+  ESTE_60,
+  ESTE_61,
+  ESTE_70,
+  ESTE_71,
+  P_ESTE_N,
+  P_ESTE_S,
 } from './bloques';
 
 export const celdas = [
@@ -35,6 +43,7 @@ export const celdas = [
     punta: E,
     despachador: [E],
     rebota: true,
+    bloque: P_OESTE_N,
   },
   {
     tipo: PARAGOLPE,
@@ -43,6 +52,7 @@ export const celdas = [
     punta: E,
     despachador: [E],
     rebota: true,
+    bloque: P_OESTE_S,
   },
 
   {
@@ -55,7 +65,7 @@ export const celdas = [
       desviado: SE,
     },
     posicion: NORMAL,
-    bloque: NOR_OESTE,
+    bloque: OESTE_10,
   },
   {
     tipo: CAMBIO,
@@ -67,7 +77,7 @@ export const celdas = [
       desviado: NE,
     },
     posicion: NORMAL,
-    bloque: SUD_OESTE,
+    bloque: OESTE_11,
   },
   {
     tipo: CAMBIO,
@@ -79,7 +89,7 @@ export const celdas = [
       desviado: SW,
     },
     posicion: NORMAL,
-    bloque: NOR_OESTE,
+    bloque: OESTE_20,
   },
   {
     tipo: CAMBIO,
@@ -91,7 +101,7 @@ export const celdas = [
       desviado: NW,
     },
     posicion: NORMAL,
-    bloque: SUD_OESTE,
+    bloque: OESTE_21,
   },
 
   {
@@ -147,7 +157,7 @@ export const celdas = [
       desviado: SE,
     },
     posicion: NORMAL,
-    bloque: NOR_ESTE,
+    bloque: ESTE_60,
   },
   {
     tipo: CAMBIO,
@@ -159,7 +169,7 @@ export const celdas = [
       desviado: NE,
     },
     posicion: NORMAL,
-    bloque: SUD_ESTE,
+    bloque: ESTE_61,
   },
   {
     tipo: CAMBIO,
@@ -171,7 +181,7 @@ export const celdas = [
       desviado: SW,
     },
     posicion: NORMAL,
-    bloque: NOR_ESTE,
+    bloque: ESTE_70,
   },
   {
     tipo: CAMBIO,
@@ -183,7 +193,7 @@ export const celdas = [
       desviado: NW,
     },
     posicion: NORMAL,
-    bloque: SUD_ESTE,
+    bloque: ESTE_71,
   },
   {
     tipo: PARAGOLPE,
@@ -192,6 +202,7 @@ export const celdas = [
     punta: W,
     despachador: [W],
     rebota: true,
+    bloque: P_ESTE_N,
   },
   {
     tipo: PARAGOLPE,
@@ -200,5 +211,6 @@ export const celdas = [
     punta: W,
     despachador: [W],
     rebota: true,
+    bloque: P_ESTE_S,
   },
 ];

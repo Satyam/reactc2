@@ -26,10 +26,18 @@ import {
 import {
   NORTE,
   SUR,
-  NOR_ESTE,
-  SUD_ESTE,
-  NOR_OESTE,
-  SUD_OESTE,
+  OESTE_10,
+  OESTE_11,
+  OESTE_20,
+  OESTE_21,
+  P_OESTE_N,
+  P_OESTE_S,
+  ESTE_60,
+  ESTE_61,
+  ESTE_70,
+  ESTE_71,
+  P_ESTE_N,
+  P_ESTE_S,
 } from './bloques';
 
 export const enclavamientos = [
@@ -211,7 +219,7 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: NOR_OESTE,
+        bloque: OESTE_10,
         luzAfectada: DER,
       },
       {
@@ -253,6 +261,14 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: CAMBIO,
+        x: 1,
+        y: 1,
+        desviado: {
+          centro: ROJO,
+        },
+      },
+      {
+        tipo: CAMBIO,
         x: 2,
         y: 1,
         desviado: {
@@ -261,7 +277,7 @@ export const enclavamientos = [
       },
       {
         tipo: BLOQUE,
-        bloque: SUD_OESTE,
+        bloque: OESTE_11,
         luzAfectada: CENTRO,
       },
       {
@@ -293,8 +309,23 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: NOR_OESTE,
+        bloque: OESTE_20,
         luzAfectada: CENTRO,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: OESTE_20,
+        luzAfectada: IZQ,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: P_OESTE_N,
+        luzAfectada: CENTRO,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: P_OESTE_S,
+        luzAfectada: IZQ,
       },
       {
         tipo: CAMBIO,
@@ -381,7 +412,7 @@ export const enclavamientos = [
       },
       {
         tipo: BLOQUE,
-        bloque: SUD_ESTE,
+        bloque: ESTE_71,
         luzAfectada: DER,
       },
       {
@@ -412,6 +443,14 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: CAMBIO,
+        x: 7,
+        y: 0,
+        desviado: {
+          centro: ROJO,
+        },
+      },
+      {
+        tipo: CAMBIO,
         x: 6,
         y: 0,
         desviado: {
@@ -420,7 +459,7 @@ export const enclavamientos = [
       },
       {
         tipo: BLOQUE,
-        bloque: NOR_ESTE,
+        bloque: ESTE_70,
         luzAfectada: CENTRO,
       },
       {
@@ -452,13 +491,23 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: SUD_ESTE,
+        bloque: ESTE_61,
         luzAfectada: IZQ,
       },
       {
         tipo: BLOQUE,
-        bloque: SUD_ESTE,
+        bloque: ESTE_61,
         luzAfectada: CENTRO,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: P_ESTE_S,
+        luzAfectada: CENTRO,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: P_ESTE_N,
+        luzAfectada: IZQ,
       },
       {
         tipo: CAMBIO,
@@ -490,12 +539,12 @@ export const enclavamientos = [
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: NOR_ESTE,
+        bloque: ESTE_60,
         luzAfectada: DER,
       },
       {
         tipo: BLOQUE,
-        bloque: NOR_ESTE,
+        bloque: ESTE_60,
         luzAfectada: CENTRO,
       },
       {
@@ -517,6 +566,11 @@ export const enclavamientos = [
         desviado: {
           centro: ROJO,
         },
+      },
+      {
+        tipo: FIJO,
+        luzAfectada: CENTRO,
+        estado: ROJO,
       },
     ],
   },
@@ -574,58 +628,18 @@ export const enclavamientos = [
   },
   {
     tipo: BLOQUE,
-    bloque: NOR_ESTE,
+    bloque: OESTE_10,
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: SUD_ESTE,
-        x: 7,
+        bloque: OESTE_20,
+        x: 1,
         y: 0,
-        posicion: DESVIADO,
+        posicion: NORMAL,
       },
       {
         tipo: BLOQUE,
-        bloque: SUD_ESTE,
-        x: 6,
-        y: 0,
-        posicion: DESVIADO,
-      },
-    ],
-  },
-  {
-    tipo: BLOQUE,
-    bloque: SUD_ESTE,
-    dependencias: [
-      {
-        tipo: BLOQUE,
-        bloque: NOR_ESTE,
-        x: 7,
-        y: 1,
-        posicion: DESVIADO,
-      },
-      {
-        tipo: BLOQUE,
-        bloque: NOR_ESTE,
-        x: 6,
-        y: 1,
-        posicion: DESVIADO,
-      },
-    ],
-  },
-  {
-    tipo: BLOQUE,
-    bloque: NOR_OESTE,
-    dependencias: [
-      {
-        tipo: BLOQUE,
-        bloque: SUD_OESTE,
-        x: 2,
-        y: 0,
-        posicion: DESVIADO,
-      },
-      {
-        tipo: BLOQUE,
-        bloque: SUD_OESTE,
+        bloque: OESTE_21,
         x: 1,
         y: 0,
         posicion: DESVIADO,
@@ -634,19 +648,139 @@ export const enclavamientos = [
   },
   {
     tipo: BLOQUE,
-    bloque: SUD_OESTE,
+    bloque: OESTE_20,
     dependencias: [
       {
         tipo: BLOQUE,
-        bloque: NOR_OESTE,
+        bloque: OESTE_10,
+        x: 2,
+        y: 0,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: OESTE_11,
+        x: 1,
+        y: 0,
+        posicion: DESVIADO,
+      },
+    ],
+  },
+  {
+    tipo: BLOQUE,
+    bloque: OESTE_11,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: OESTE_21,
+        x: 1,
+        y: 1,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: OESTE_20,
+        x: 1,
+        y: 1,
+        posicion: DESVIADO,
+      },
+    ],
+  },
+  {
+    tipo: BLOQUE,
+    bloque: OESTE_21,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: OESTE_11,
+        x: 2,
+        y: 1,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: OESTE_10,
         x: 2,
         y: 1,
         posicion: DESVIADO,
       },
+    ],
+  },
+  {
+    tipo: BLOQUE,
+    bloque: ESTE_60,
+    dependencias: [
       {
         tipo: BLOQUE,
-        bloque: NOR_OESTE,
-        x: 1,
+        bloque: ESTE_70,
+        x: 6,
+        y: 0,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_71,
+        x: 6,
+        y: 0,
+        posicion: DESVIADO,
+      },
+    ],
+  },
+  {
+    tipo: BLOQUE,
+    bloque: ESTE_70,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_60,
+        x: 7,
+        y: 0,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_61,
+        x: 7,
+        y: 0,
+        posicion: DESVIADO,
+      },
+    ],
+  },
+  {
+    tipo: BLOQUE,
+    bloque: ESTE_61,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_71,
+        x: 6,
+        y: 1,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_70,
+        x: 6,
+        y: 1,
+        posicion: DESVIADO,
+      },
+    ],
+  },
+  {
+    tipo: BLOQUE,
+    bloque: ESTE_71,
+    dependencias: [
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_61,
+        x: 7,
+        y: 1,
+        posicion: NORMAL,
+      },
+      {
+        tipo: BLOQUE,
+        bloque: ESTE_60,
+        x: 7,
         y: 1,
         posicion: DESVIADO,
       },
