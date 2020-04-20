@@ -51,7 +51,7 @@ export default function Despachador({ celda }) {
               transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
             >
               <path
-                d="M 15,-8 L 23,0 15,8 z"
+                d="M 11,-12 L 29,0 11,12 z"
                 transform={`translate(${CENTRO_CELDA},${CENTRO_CELDA})`}
               />
             </g>
