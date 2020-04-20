@@ -18,6 +18,14 @@ export default function Paragolpe({ idCelda }) {
         r={ANCHO_CELDA / 10}
         fill={ocupado ? 'yellow' : 'black'}
       />
+      {celda.rebota && (
+        <circle
+          cx={CENTRO_CELDA}
+          cy={CENTRO_CELDA}
+          r={ANCHO_CELDA / 15}
+          fill={'white'}
+        />
+      )}
     </g>
   );
 }

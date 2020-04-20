@@ -9,9 +9,19 @@ import {
   useEstado,
   useBloque,
   useSetPosicion,
+  useToggleRebota,
 } from 'Store';
 import Senal from 'Components/Senal';
-import { CAMBIO, TRIPLE, NORMAL, DESVIADO, IZQ, CENTRO, DER } from 'Store/data';
+import {
+  CAMBIO,
+  TRIPLE,
+  PARAGOLPE,
+  NORMAL,
+  DESVIADO,
+  IZQ,
+  CENTRO,
+  DER,
+} from 'Store/data';
 
 import { ANCHO_CELDA, DIR } from 'Components/common';
 import styles from './styles.module.css';
@@ -32,6 +42,7 @@ export default function Celda({
 }) {
   const celda = useCelda(idCelda);
   const setPosicion = useSetPosicion(idCelda);
+  const toggleRebota = useToggleRebota(idCelda);
   const bloque = useBloque(celda.idBloque);
   const [showCoords] = useShowCoords();
   const { showEstado } = useEstado();
@@ -56,6 +67,9 @@ export default function Celda({
 
               default:
             }
+            break;
+          case PARAGOLPE:
+            toggleRebota();
             break;
           default:
             break;

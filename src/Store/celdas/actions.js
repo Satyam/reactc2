@@ -92,3 +92,10 @@ export function addTrenToCelda(idCelda, idTren) {
     }
   };
 }
+
+export const setRebota = createAction('setRebota', (idCelda, rebota) => ({
+  payload: {
+    idCelda,
+    rebota,
+  },
+}));

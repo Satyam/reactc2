@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
-import { setCambioManual, setPosicion } from './actions';
+import { setCambioManual, setPosicion, setRebota } from './actions';
 import { selCelda, selCeldas, selCeldaIsManual } from './selectors';
 
 export const useCelda = (idCelda) =>
@@ -24,4 +24,10 @@ export const useCeldaManual = (idCelda) => {
 export const useSetPosicion = (idCelda) => {
   const dispatch = useDispatch();
   return (posicion) => dispatch(setPosicion(idCelda, posicion));
+};
+
+export const useToggleRebota = (idCelda) => {
+  const celda = useSelector((state) => selCelda(state, idCelda));
+  const dispatch = useDispatch();
+  return () => dispatch(setRebota(idCelda, !celda.rebota));
 };

@@ -5,6 +5,7 @@ import {
   setCambioManual,
   doRemoveTrenFromCelda,
   doAddTrenToCelda,
+  setRebota,
 } from 'Store/actions';
 
 export default createReducer(celdas, {
@@ -22,5 +23,9 @@ export default createReducer(celdas, {
   [doAddTrenToCelda]: (state, action) => {
     const { idCelda, idTren } = action.payload;
     state[idCelda].idTren = idTren;
+  },
+  [setRebota]: (state, action) => {
+    const { idCelda, rebota } = action.payload;
+    state[idCelda].rebota = rebota;
   },
 });
