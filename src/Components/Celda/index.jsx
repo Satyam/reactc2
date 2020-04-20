@@ -90,7 +90,7 @@ export default function Celda({
   if (!cellWidth || !celda) return null;
   const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
 
-  const label = celda.desc || (showCoords ? `[${celda.x},${celda.y}]` : '');
+  const coords = showCoords ? `[${celda.x},${celda.y}]` : '';
   const title = [];
   if (celda.descr) {
     title.push(`Celda: ${celda.descr}`);
@@ -133,11 +133,11 @@ export default function Celda({
         className={styles.svg}
       >
         <text x="0" y="95" className={styles.text}>
-          {label}
+          {coords}
         </text>
-        {bloque && (
+        {celda.descr && (
           <text textAnchor="end" x={95} y={95} className={styles.text}>
-            {bloque.descr}
+            {celda.descr}
           </text>
         )}
         <Renderer idCelda={idCelda} />
