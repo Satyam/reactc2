@@ -11,7 +11,7 @@ import {
   useSetPosicion,
   useToggleRebota,
 } from 'Store';
-import Senal from 'Components/Senal';
+import Semaforo from 'Components/Semaforo';
 import {
   CAMBIO,
   TRIPLE,
@@ -92,13 +92,13 @@ export default function Celda({
 
   const coords = showCoords ? `[${celda.x},${celda.y}]` : '';
   const title = [];
-  if (celda.descr) {
-    title.push(`Celda: ${celda.descr}`);
+  if (celda.nombre) {
+    title.push(`Celda: ${celda.nombre}`);
   }
   title.push(`Coordenadas: [${celda.x},${celda.y}]`);
 
   if (bloque) {
-    title.push(`Bloque: ${bloque.descr}`);
+    title.push(`Bloque: ${bloque.nombre}`);
   }
   if (celda.idTren) {
     title.push(`Con tren ${celda.idTren}`);
@@ -135,16 +135,16 @@ export default function Celda({
         <text x="0" y="95" className={styles.text}>
           {coords}
         </text>
-        {celda.descr && (
+        {celda.nombre && (
           <text textAnchor="end" x={95} y={95} className={styles.text}>
-            {celda.descr}
+            {celda.nombre}
           </text>
         )}
         <Renderer idCelda={idCelda} />
         {DIR.map((dir) => (
-          <Senal
+          <Semaforo
             key={dir}
-            idSenal={buildId({
+            idSemaforo={buildId({
               ...celda,
               dir,
             })}

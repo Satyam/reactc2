@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars*/
 import {
   CAMBIO,
-  SENAL,
+  SEMAFORO,
   NORMAL,
   DESVIADO,
   IZQ,
   CENTRO,
   DER,
-  VERDE,
-  AMARILLO,
-  ROJO,
+  LIBRE,
+  PRECAUCION,
+  ALTO,
   N,
   NE,
   E,
@@ -40,13 +40,13 @@ import {
   P_ESTE_S,
 } from './bloques';
 
-export const enclavamientos = [
+export const automatizaciones = [
   {
     x: 1,
     y: 0,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 2,
         y: 1,
@@ -67,7 +67,7 @@ export const enclavamientos = [
     y: 1,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 2,
         y: 0,
@@ -88,7 +88,7 @@ export const enclavamientos = [
     y: 0,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 1,
         y: 1,
@@ -109,7 +109,7 @@ export const enclavamientos = [
     y: 1,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 1,
         y: 0,
@@ -131,7 +131,7 @@ export const enclavamientos = [
     y: 0,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 7,
         y: 1,
@@ -152,7 +152,7 @@ export const enclavamientos = [
     y: 1,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 7,
         y: 0,
@@ -173,7 +173,7 @@ export const enclavamientos = [
     y: 0,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 6,
         y: 1,
@@ -194,7 +194,7 @@ export const enclavamientos = [
     y: 1,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 6,
         y: 0,
@@ -215,41 +215,41 @@ export const enclavamientos = [
     x: 1,
     y: 0,
     dir: W,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: BLOQUE,
         bloque: OESTE_10,
-        luzAfectada: DER,
+        senalAfectada: DER,
       },
       {
         tipo: CAMBIO,
         x: 1,
         y: 0,
         normal: {
-          der: ROJO,
+          der: ALTO,
         },
         desviado: {
-          der: AMARILLO,
+          der: PRECAUCION,
         },
       },
       {
         x: 3,
         y: 1,
         dir: W,
-        tipo: SENAL,
-        luces: [
+        tipo: SEMAFORO,
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: DER,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: DER,
+            estado: PRECAUCION,
           },
         ],
       },
       {
         tipo: FIJO,
-        luzAfectada: CENTRO,
-        estado: ROJO,
+        senalAfectada: CENTRO,
+        estado: ALTO,
       },
     ],
   },
@@ -257,14 +257,14 @@ export const enclavamientos = [
     x: 1,
     y: 1,
     dir: W,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: CAMBIO,
         x: 1,
         y: 1,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
       {
@@ -272,31 +272,31 @@ export const enclavamientos = [
         x: 2,
         y: 1,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
       {
         tipo: BLOQUE,
         bloque: OESTE_11,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         x: 3,
         y: 1,
         dir: W,
-        tipo: SENAL,
-        luces: [
+        tipo: SEMAFORO,
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: DER,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: DER,
+            estado: PRECAUCION,
           },
         ],
       },
       {
         tipo: FIJO,
-        luzAfectada: IZQ,
-        estado: ROJO,
+        senalAfectada: IZQ,
+        estado: ALTO,
       },
     ],
   },
@@ -305,38 +305,38 @@ export const enclavamientos = [
     x: 2,
     y: 0,
     dir: E,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: BLOQUE,
         bloque: OESTE_20,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         tipo: BLOQUE,
         bloque: OESTE_20,
-        luzAfectada: IZQ,
+        senalAfectada: IZQ,
       },
       {
         tipo: BLOQUE,
         bloque: P_OESTE_N,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         tipo: BLOQUE,
         bloque: P_OESTE_S,
-        luzAfectada: IZQ,
+        senalAfectada: IZQ,
       },
       {
         tipo: CAMBIO,
         x: 2,
         y: 0,
         normal: {
-          izq: ROJO,
+          izq: ALTO,
         },
         desviado: {
-          centro: ROJO,
-          izq: AMARILLO,
+          centro: ALTO,
+          izq: PRECAUCION,
         },
       },
       {
@@ -344,7 +344,7 @@ export const enclavamientos = [
         x: 1,
         y: 0,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
     ],
@@ -353,28 +353,28 @@ export const enclavamientos = [
     x: 2,
     y: 1,
     dir: E,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: FIJO,
-        luzAfectada: DER,
-        estado: ROJO,
+        senalAfectada: DER,
+        estado: ALTO,
       },
       {
         tipo: FIJO,
-        luzAfectada: CENTRO,
-        estado: ROJO,
+        senalAfectada: CENTRO,
+        estado: ALTO,
       },
       {
         tipo: CAMBIO,
         x: 2,
         y: 1,
         normal: {
-          der: ROJO,
+          der: ALTO,
         },
         desviado: {
-          centro: ROJO,
-          der: AMARILLO,
+          centro: ALTO,
+          der: PRECAUCION,
         },
       },
       {
@@ -382,7 +382,7 @@ export const enclavamientos = [
         x: 1,
         y: 1,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
     ],
@@ -392,46 +392,46 @@ export const enclavamientos = [
     x: 7,
     y: 1,
     dir: E,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: CAMBIO,
         x: 7,
         y: 1,
         normal: {
-          der: ROJO,
+          der: ALTO,
         },
         desviado: {
-          der: AMARILLO,
+          der: PRECAUCION,
         },
       },
       {
         tipo: FIJO,
-        luzAfectada: CENTRO,
-        estado: ROJO,
+        senalAfectada: CENTRO,
+        estado: ALTO,
       },
       {
         tipo: BLOQUE,
         bloque: ESTE_71,
-        luzAfectada: DER,
+        senalAfectada: DER,
       },
       {
         x: 5,
         y: 0,
         dir: E,
-        tipo: SENAL,
-        luces: [
+        tipo: SEMAFORO,
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: DER,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: DER,
+            estado: PRECAUCION,
           },
         ],
       },
       {
         tipo: FIJO,
-        luzAfectada: CENTRO,
-        estado: ROJO,
+        senalAfectada: CENTRO,
+        estado: ALTO,
       },
     ],
   },
@@ -439,14 +439,14 @@ export const enclavamientos = [
     x: 7,
     y: 0,
     dir: E,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: CAMBIO,
         x: 7,
         y: 0,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
       {
@@ -454,31 +454,31 @@ export const enclavamientos = [
         x: 6,
         y: 0,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
       {
         tipo: BLOQUE,
         bloque: ESTE_70,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         x: 5,
         y: 1,
         dir: E,
-        tipo: SENAL,
-        luces: [
+        tipo: SEMAFORO,
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: IZQ,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: IZQ,
+            estado: PRECAUCION,
           },
         ],
       },
       {
         tipo: FIJO,
-        luzAfectada: IZQ,
-        estado: ROJO,
+        senalAfectada: IZQ,
+        estado: ALTO,
       },
     ],
   },
@@ -487,38 +487,38 @@ export const enclavamientos = [
     x: 6,
     y: 1,
     dir: W,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: BLOQUE,
         bloque: ESTE_61,
-        luzAfectada: IZQ,
+        senalAfectada: IZQ,
       },
       {
         tipo: BLOQUE,
         bloque: ESTE_61,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         tipo: BLOQUE,
         bloque: P_ESTE_S,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         tipo: BLOQUE,
         bloque: P_ESTE_N,
-        luzAfectada: IZQ,
+        senalAfectada: IZQ,
       },
       {
         tipo: CAMBIO,
         x: 7,
         y: 0,
         normal: {
-          izq: ROJO,
+          izq: ALTO,
         },
         desviado: {
-          centro: ROJO,
-          izq: AMARILLO,
+          centro: ALTO,
+          izq: PRECAUCION,
         },
       },
       {
@@ -526,7 +526,7 @@ export const enclavamientos = [
         x: 7,
         y: 1,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
     ],
@@ -535,28 +535,28 @@ export const enclavamientos = [
     x: 6,
     y: 0,
     dir: W,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         tipo: BLOQUE,
         bloque: ESTE_60,
-        luzAfectada: DER,
+        senalAfectada: DER,
       },
       {
         tipo: BLOQUE,
         bloque: ESTE_60,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
         tipo: CAMBIO,
         x: 6,
         y: 0,
         normal: {
-          der: ROJO,
+          der: ALTO,
         },
         desviado: {
-          centro: ROJO,
-          der: AMARILLO,
+          centro: ALTO,
+          der: PRECAUCION,
         },
       },
       {
@@ -564,63 +564,63 @@ export const enclavamientos = [
         x: 7,
         y: 0,
         desviado: {
-          centro: ROJO,
+          centro: ALTO,
         },
       },
       {
         tipo: FIJO,
-        luzAfectada: CENTRO,
-        estado: ROJO,
+        senalAfectada: CENTRO,
+        estado: ALTO,
       },
     ],
   },
   {
-    tipo: SENAL,
+    tipo: SEMAFORO,
     x: 3,
     y: 1,
     dir: W,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: SUR,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
-        tipo: SENAL,
+        tipo: SEMAFORO,
         x: 6,
         y: 1,
         dir: W,
-        luces: [
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: CENTRO,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: CENTRO,
+            estado: PRECAUCION,
           },
         ],
       },
     ],
   },
   {
-    tipo: SENAL,
+    tipo: SEMAFORO,
     x: 5,
     y: 0,
     dir: E,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: NORTE,
-        luzAfectada: CENTRO,
+        senalAfectada: CENTRO,
       },
       {
-        tipo: SENAL,
+        tipo: SEMAFORO,
         x: 2,
         y: 0,
         dir: E,
-        luces: [
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: CENTRO,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: CENTRO,
+            estado: PRECAUCION,
           },
         ],
       },
@@ -629,7 +629,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: OESTE_10,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: OESTE_20,
@@ -649,7 +649,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: OESTE_20,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: OESTE_10,
@@ -669,7 +669,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: OESTE_11,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: OESTE_21,
@@ -689,7 +689,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: OESTE_21,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: OESTE_11,
@@ -709,7 +709,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: ESTE_60,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: ESTE_70,
@@ -729,7 +729,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: ESTE_70,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: ESTE_60,
@@ -749,7 +749,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: ESTE_61,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: ESTE_71,
@@ -769,7 +769,7 @@ export const enclavamientos = [
   {
     tipo: BLOQUE,
     bloque: ESTE_71,
-    dependencias: [
+    deps: [
       {
         tipo: BLOQUE,
         bloque: ESTE_61,

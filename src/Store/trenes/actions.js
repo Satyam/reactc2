@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
-import { selCelda, selSenal, selCurrentSector } from 'Store/selectors';
+import { selCelda, selSemaforo, selCurrentSector } from 'Store/selectors';
 import {
   removeTrenFromCelda,
   addTrenToCelda,
   setAlarma,
-  setEnclavamientos,
+  setAutomatizaciones,
   setAviso,
 } from 'Store/actions';
 import { buildId } from 'Utils';
@@ -18,9 +18,9 @@ import {
   IZQ,
   CENTRO,
   DER,
-  ROJO,
-  AMARILLO,
-  VERDE,
+  ALTO,
+  PRECAUCION,
+  LIBRE,
   N,
   NE,
   E,
@@ -61,7 +61,7 @@ export function addTren(celda, dir, maxSpeed = 1) {
     );
     dispatch(doAddTren(celda, dir, maxSpeed, idTren));
     dispatch(addTrenToCelda(idCelda, idTren));
-    dispatch(setEnclavamientos(idCelda, BLOQUE));
+    dispatch(setAutomatizaciones(idCelda, BLOQUE));
   };
 }
 
@@ -161,7 +161,7 @@ export function moveTren(idTren) {
         x: newX,
         y: newY,
       });
-      const newIdSenal = buildId({
+      const newIdSemaforo = buildId({
         idSector: oldCelda.idSector,
         x: newX,
         y: newY,
@@ -170,13 +170,15 @@ export function moveTren(idTren) {
       const newCelda = selCelda(getState(), newIdCelda);
 
       if (newCelda) {
-        const newSenal = selSenal(getState(), newIdSenal);
-        if (newSenal) {
-          const newPermiso = [IZQ, CENTRO, DER].reduce((permiso, luz) => {
-            return luz in newSenal ? Math.min(permiso, newSenal[luz]) : permiso;
-          }, ROJO);
+        const newSemaforo = selSemaforo(getState(), newIdSemaforo);
+        if (newSemaforo) {
+          const newPermiso = [IZQ, CENTRO, DER].reduce((permiso, senal) => {
+            return senal in newSemaforo
+              ? Math.min(permiso, newSemaforo[senal])
+              : permiso;
+          }, ALTO);
           switch (newPermiso) {
-            case ROJO:
+            case ALTO:
               if (tren.speed)
                 dispatch(
                   setAviso(
@@ -189,7 +191,7 @@ export function moveTren(idTren) {
               dispatch(setTren({ idTren, speed: 0 }));
 
               return;
-            case AMARILLO:
+            case PRECAUCION:
               if (tren.speed === 0) {
                 dispatch(
                   setAviso(
@@ -204,7 +206,7 @@ export function moveTren(idTren) {
               }
               nextSpeed = tren.maxSpeed / 2;
               break;
-            case VERDE:
+            case LIBRE:
               if (tren.speed === 0) {
                 dispatch(
                   setAviso(
@@ -221,7 +223,7 @@ export function moveTren(idTren) {
               break;
             default:
               throw new Error(
-                `Señal ${newIdSenal} dá señal imposible ${newPermiso}`
+                `Semaforo ${newIdSemaforo} dá semaforo imposible ${newPermiso}`
               );
           }
         }
@@ -275,7 +277,7 @@ export function moveTren(idTren) {
         dispatch(delTren(tren));
       }
     } else dispatch(setTren(tren));
-    dispatch(setEnclavamientos(tren.idCelda, BLOQUE));
+    dispatch(setAutomatizaciones(tren.idCelda, BLOQUE));
   };
 }
 

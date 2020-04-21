@@ -4,15 +4,15 @@ export const CAMBIO = 'cambio';
 export const TRIPLE = 'triple';
 export const CRUCE = 'cruce';
 export const PARAGOLPE = 'paragolpe';
-export const SENAL = 'senal';
-// Luces:
-export const VERDE = 1;
-export const AMARILLO = 2;
-export const ROJO = 3;
+export const SEMAFORO = 'semaforo';
+// Señales:
+export const LIBRE = 1;
+export const PRECAUCION = 2;
+export const ALTO = 3;
 // Cambio:
 export const NORMAL = 'normal';
 export const DESVIADO = 'desviado';
-// Triple  y luces
+// Triple  y senales
 export const IZQ = 'izq';
 export const CENTRO = 'centro';
 export const DER = 'der';
@@ -25,8 +25,8 @@ export const S = 'S';
 export const SW = 'SW';
 export const W = 'W';
 export const NW = 'NW';
-// para tipo de enclavamiento
-// se reutilizan CAMBIO y SENAL de anges
+// para tipo de automatización
+// se reutilizan CAMBIO y SEMAFORO de anges
 export const BLOQUE = 'bloque';
 export const FIJO = 'fijo';
 

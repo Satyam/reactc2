@@ -21,15 +21,15 @@ const {
   PARAGOLPE,
   TRIPLE,
   CRUCE,
-  SENAL,
+  SEMAFORO,
   NORMAL,
   DESVIADO,
   IZQ,
   CENTRO,
   DER,
-  VERDE,
-  AMARILLO,
-  ROJO,
+  LIBRE,
+  PRECAUCION,
+  ALTO,
   N,
   NE,
   E,
@@ -61,8 +61,8 @@ const validate = (what, schema) => {
 const salida = {
   sectores: {},
   celdas: {},
-  enclavamientos: {},
-  senales: {},
+  automatizaciones: {},
+  semaforos: {},
   bloques: {},
 };
 
@@ -78,7 +78,7 @@ const buildIdBloque = (idSector, { bloque }) =>
 
 // various standard types
 const dir = j.valid(N, NE, E, SE, S, SW, W, NW).required();
-const color = j.valid(VERDE, AMARILLO, ROJO);
+const aspecto = j.valid(LIBRE, PRECAUCION, ALTO);
 const icd = j.valid(IZQ, CENTRO, DER);
 const cambios = j.valid(NORMAL, DESVIADO, IZQ, CENTRO, DER);
 const coords = {
@@ -95,15 +95,15 @@ function validateConstants() {
   validateConst(PARAGOLPE, 'paragolpe');
   validateConst(TRIPLE, 'triple');
   validateConst(CRUCE, 'cruce');
-  validateConst(SENAL, 'senal');
+  validateConst(SEMAFORO, 'semaforo');
   validateConst(NORMAL, 'normal');
   validateConst(DESVIADO, 'desviado');
   validateConst(IZQ, 'izq');
   validateConst(CENTRO, 'centro');
   validateConst(DER, 'der');
-  validateConst(VERDE, 1);
-  validateConst(AMARILLO, 2);
-  validateConst(ROJO, 3);
+  validateConst(LIBRE, 1);
+  validateConst(PRECAUCION, 2);
+  validateConst(ALTO, 3);
   validateConst(N, 'N');
   validateConst(NE, 'NE');
   validateConst(E, 'E');
@@ -148,7 +148,7 @@ function validateCeldas(name) {
   const baseCelda = j
     .object({
       despachador: j.array().items(dir),
-      descr: j.string(),
+      nombre: j.string(),
       bloque: j.string(),
     })
     .append(coords);
@@ -218,7 +218,7 @@ function processCeldas(idSector, celdas) {
       if (!salida.bloques[idBloque]) {
         salida.bloques[idBloque] = {
           celdas: [],
-          descr: c.bloque,
+          nombre: c.bloque,
         };
       }
       salida.bloques[idBloque].celdas.push(idCelda);
@@ -243,27 +243,27 @@ function processCeldas(idSector, celdas) {
   }, salida.celdas);
 }
 
-function validateSenales(name) {
-  console.log('  Senales');
+function validateSemaforos(name) {
+  console.log('  Semaforos');
 
-  const senales = require(`./${name}/senales.js`).senales;
+  const semaforos = require(`./${name}/semaforos.js`).semaforos;
 
-  const baseSenales = j
+  const baseSemaforos = j
     .object({
       dir,
-      [IZQ]: color,
-      [CENTRO]: color,
-      [DER]: color,
+      [IZQ]: aspecto,
+      [CENTRO]: aspecto,
+      [DER]: aspecto,
       soloManual: j.boolean(),
     })
     .append(coords)
     .or(IZQ, CENTRO, DER);
 
   validate(
-    senales,
+    semaforos,
     j
       .array()
-      .items(baseSenales)
+      .items(baseSemaforos)
       .unique(
         (a, b) =>
           a.idSector === b.idSector &&
@@ -273,29 +273,31 @@ function validateSenales(name) {
       )
   );
 
-  return senales;
+  return semaforos;
 }
 
-function processSenales(idSector, senales) {
-  salida.senales = senales.reduce((ss, s) => {
-    const idSenal = buildId(idSector, s);
-    if (ss[idSenal]) throw new Error(`Clave duplicada en Señales: ${idSenal}`);
+function processSemaforos(idSector, semaforos) {
+  salida.semaforos = semaforos.reduce((ss, s) => {
+    const idSemaforo = buildId(idSector, s);
+    if (ss[idSemaforo])
+      throw new Error(`Clave duplicada en Semaforos: ${idSemaforo}`);
 
     return {
       ...ss,
-      [idSenal]: {
+      [idSemaforo]: {
         ...s,
-        idSenal,
+        idSemaforo,
         idSector,
       },
     };
-  }, salida.senales);
+  }, salida.semaforos);
 }
 
-function validateEnclavamientos(name) {
-  console.log('  Enclavamientos');
+function validateAutomatizaciones(name) {
+  console.log('  Automatizaciones');
 
-  const enclavamientos = require(`./${name}/enclavamientos.js`).enclavamientos;
+  const automatizaciones = require(`./${name}/automatizaciones.js`)
+    .automatizaciones;
 
   const depCambioCambio = j
     .object({
@@ -313,68 +315,73 @@ function validateEnclavamientos(name) {
     .without(NORMAL, [IZQ, CENTRO, DER])
     .without(DESVIADO, [IZQ, CENTRO, DER]);
 
-  const luzColor = j.object({
-    [IZQ]: color,
-    [CENTRO]: color,
-    [DER]: color,
+  const senalColor = j.object({
+    [IZQ]: aspecto,
+    [CENTRO]: aspecto,
+    [DER]: aspecto,
   });
 
-  const depSenalSenal = j
+  const depSemaforoSemaforo = j
     .object({
-      tipo: j.valid(SENAL).required(),
+      tipo: j.valid(SEMAFORO).required(),
       dir,
-      luces: j
+      senales: j
         .array()
         .items(
           j.object({
-            cuando: color.required(),
-            luzAfectada: icd.required(),
-            estado: color.required(),
+            cuando: aspecto.required(),
+            senalAfectada: icd.required(),
+            estado: aspecto.required(),
           })
         )
         .required(),
     })
     .append(coords);
 
-  const depSenalCambio = j
+  const depSemaforoCambio = j
     .object({
       tipo: j.valid(CAMBIO).required(),
-      [NORMAL]: luzColor,
-      [DESVIADO]: luzColor,
-      [IZQ]: luzColor,
-      [CENTRO]: luzColor,
-      [DER]: luzColor,
+      [NORMAL]: senalColor,
+      [DESVIADO]: senalColor,
+      [IZQ]: senalColor,
+      [CENTRO]: senalColor,
+      [DER]: senalColor,
     })
     .append(coords);
 
-  const depSenalBloque = j.object({
+  const depSemaforoBloque = j.object({
     tipo: j.valid(BLOQUE).required(),
     bloque: j.string().required(),
-    luzAfectada: icd.required(),
+    senalAfectada: icd.required(),
   });
 
-  const depSenalFijo = j.object({
+  const depSemaforoFijo = j.object({
     tipo: j.valid(FIJO).required(),
-    luzAfectada: icd.required(),
-    estado: color.required(),
+    senalAfectada: icd.required(),
+    estado: aspecto.required(),
   });
 
   const depsCambio = depCambioCambio;
-  const depsSenal = j
+  const depsSemaforo = j
     .alternatives()
-    .try(depSenalSenal, depSenalCambio, depSenalBloque, depSenalFijo);
+    .try(
+      depSemaforoSemaforo,
+      depSemaforoCambio,
+      depSemaforoBloque,
+      depSemaforoFijo
+    );
 
-  const baseEncl = j.object({}).append(coords);
+  const baseAutom = j.object({}).append(coords);
 
-  const enclCambio = baseEncl.append({
+  const automCambio = baseAutom.append({
     tipo: j.valid(CAMBIO).required(),
-    dependencias: j.array().items(depsCambio).required(),
+    deps: j.array().items(depsCambio).required(),
   });
 
-  const enclSenal = baseEncl.append({
-    tipo: j.valid(SENAL).required(),
+  const automSemaforo = baseAutom.append({
+    tipo: j.valid(SEMAFORO).required(),
     dir,
-    dependencias: j.array().items(depsSenal).required(),
+    deps: j.array().items(depsSemaforo).required(),
   });
 
   const depsBloque = j
@@ -385,17 +392,17 @@ function validateEnclavamientos(name) {
     })
     .append(coords);
 
-  const enclBloque = j.object({
+  const automBloque = j.object({
     tipo: j.valid(BLOQUE).required(),
     bloque: j.string().required(),
-    dependencias: j.array().items(depsBloque).required(),
+    deps: j.array().items(depsBloque).required(),
   });
 
   validate(
-    enclavamientos,
+    automatizaciones,
     j
       .array()
-      .items(j.alternatives().try(enclCambio, enclSenal, enclBloque))
+      .items(j.alternatives().try(automCambio, automSemaforo, automBloque))
       .unique((a, b) =>
         a.tipo === BLOQUE && b.tipo === BLOQUE
           ? a.bloque === b.bloque
@@ -403,24 +410,24 @@ function validateEnclavamientos(name) {
       )
   );
 
-  return enclavamientos;
+  return automatizaciones;
 }
 
-function processEnclavamientos(idSector, enclavamientos) {
-  salida.enclavamientos = enclavamientos.reduce((es, e) => {
-    const idEncl =
+function processAutomatizaciones(idSector, automatizaciones) {
+  salida.automatizaciones = automatizaciones.reduce((es, e) => {
+    const idAutom =
       e.tipo === BLOQUE ? buildIdBloque(idSector, e) : buildId(idSector, e);
-    if (es[idEncl])
-      throw new Error(`Clave duplicada en Enclavamientos: ${idEncl}`);
+    if (es[idAutom])
+      throw new Error(`Clave duplicada en Automatizaciones: ${idAutom}`);
     return {
       ...es,
-      [idEncl]: {
+      [idAutom]: {
         ...e,
-        idEncl,
+        idAutom,
         idSector,
       },
     };
-  }, salida.enclavamientos);
+  }, salida.automatizaciones);
 }
 
 // This is where it starts validating and processing
@@ -438,11 +445,11 @@ dirs.forEach((d) => {
     const celdas = validateCeldas(name);
     processCeldas(name, celdas);
 
-    const senales = validateSenales(name);
-    processSenales(name, senales);
+    const semaforos = validateSemaforos(name);
+    processSemaforos(name, semaforos);
 
-    const enclavamientos = validateEnclavamientos(name);
-    processEnclavamientos(name, enclavamientos);
+    const automatizaciones = validateAutomatizaciones(name);
+    processAutomatizaciones(name, automatizaciones);
   }
 });
 

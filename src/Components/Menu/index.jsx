@@ -5,7 +5,7 @@ import {
   useSectores,
   useSector,
   useShowTeletipo,
-  useEnclavamientosActive,
+  useAutomatizacionesActive,
   useShowCoords,
   useShowConfig,
   useEstado,
@@ -35,9 +35,9 @@ export default function Menu() {
   const sectores = useSectores();
   const sector = useSector(idSector);
   const [
-    enclavamientosActive,
-    toggleEnclavamientos,
-  ] = useEnclavamientosActive();
+    automatizacionesActive,
+    toggleAutomatizaciones,
+  ] = useAutomatizacionesActive();
   const [showTeletipo, toggleTeletipo] = useShowTeletipo();
   const [showCoords, toggleShowCoords] = useShowCoords();
   const [showConfig, toggleShowConfig] = useShowConfig();
@@ -52,9 +52,9 @@ export default function Menu() {
     }
   };
 
-  const onClickShowEnclavamientos = (ev) => {
+  const onClickShowAutomatizaciones = (ev) => {
     if (isPlainClick(ev)) {
-      toggleEnclavamientos();
+      toggleAutomatizaciones();
       setIsOpen(false);
     }
   };
@@ -126,10 +126,10 @@ export default function Menu() {
                 Teletipo
               </DropdownItem>
               <DropdownItem
-                onClick={onClickShowEnclavamientos}
-                active={enclavamientosActive}
+                onClick={onClickShowAutomatizaciones}
+                active={automatizacionesActive}
               >
-                Enclavamientos
+                Automatizaciones
               </DropdownItem>
               <DropdownItem onClick={onClickShowCoords} active={showCoords}>
                 Coordenadas

@@ -3,11 +3,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import alertas from './alertas/reducer';
 import bloques from './bloques/reducer';
 import celdas from './celdas/reducer';
-import enclavamientos from './enclavamientos/reducer';
+import automatizaciones from './automatizaciones/reducer';
 import options from './options/reducer';
 import pendientes from './pendientes/reducer';
 import sectores from './sectores/reducer';
-import senales from './senales/reducer';
+import semaforos from './semaforos/reducer';
 import trenes from './trenes/reducer';
 
 export default configureStore({
@@ -15,11 +15,11 @@ export default configureStore({
     alertas,
     bloques,
     celdas,
-    enclavamientos,
+    automatizaciones,
     options,
     pendientes,
     sectores,
-    senales,
+    semaforos,
     trenes,
   },
 });
@@ -27,8 +27,8 @@ export default configureStore({
 export * from './alertas/hooks';
 export * from './bloques/hooks';
 export * from './celdas/hooks';
-export * from './enclavamientos/hooks';
+export * from './automatizaciones/hooks';
 export * from './options/hooks';
 export * from './sectores/hooks';
-export * from './senales/hooks';
+export * from './semaforos/hooks';
 export * from './trenes/hooks';

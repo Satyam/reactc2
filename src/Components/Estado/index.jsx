@@ -15,24 +15,24 @@ import {
 
 import {
   useCelda,
-  useSenal,
+  useSemaforo,
   useShowConfig,
   useEstado,
-  useSelEnclavamiento,
+  useSelAutomatizacion,
 } from 'Store';
 
 import { CAMBIO, TRIPLE } from 'Store/data';
 
 import EstadoCambio from './Cambio';
 import EstadoTriple from './Triple';
-import EstadoSenal from './Senal';
+import EstadoSemaforo from './Semaforo';
 
 import styles from './styles.module.css';
 import { isPlainClick } from 'Utils';
 
-const TAB_SENAL = 'Señal';
+const TAB_SEMAFORO = 'Semaforo';
 const TAB_CELDA = 'Celda';
-const TAB_ENCL = 'Encl.';
+const TAB_AUTOM = 'Autom.';
 const TAB_COMANDO = 'Cmd.';
 
 export default function Estado() {
@@ -45,34 +45,37 @@ export default function Estado() {
   return show && <EstadoPopover {...more} />;
 }
 
-function EstadoPopover({ idCelda, idSenal, placement }) {
+function EstadoPopover({ idCelda, idSemaforo, placement }) {
   const [oldId, setOldId] = useState();
   const celda = useCelda(idCelda);
-  const senal = useSenal(idSenal);
+  const semaforo = useSemaforo(idSemaforo);
   const [showConfig] = useShowConfig();
   const { hideEstado } = useEstado();
-  const enclavamiento = useSelEnclavamiento(idSenal || idCelda);
+  const automatizacion = useSelAutomatizacion(idSemaforo || idCelda);
 
   const [activeTab, setActiveTab] = useState();
 
-  const activeElement = senal || celda.tipo === CAMBIO || celda.tipo === TRIPLE;
+  const activeElement =
+    semaforo || celda.tipo === CAMBIO || celda.tipo === TRIPLE;
 
   if (oldId !== idCelda) {
-    setActiveTab(activeElement ? TAB_COMANDO : idSenal ? TAB_SENAL : TAB_CELDA);
+    setActiveTab(
+      activeElement ? TAB_COMANDO : idSemaforo ? TAB_SEMAFORO : TAB_CELDA
+    );
     setOldId(idCelda);
   }
 
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const onClose = ev => isPlainClick(ev) && hideEstado();
+  const onClose = (ev) => isPlainClick(ev) && hideEstado();
 
   const Command = () => (
     <>
-      {senal && <EstadoSenal senal={senal} />}
-      {!senal && celda.tipo === CAMBIO && <EstadoCambio celda={celda} />}
-      {!senal && celda.tipo === TRIPLE && <EstadoTriple celda={celda} />}
+      {semaforo && <EstadoSemaforo semaforo={semaforo} />}
+      {!semaforo && celda.tipo === CAMBIO && <EstadoCambio celda={celda} />}
+      {!semaforo && celda.tipo === TRIPLE && <EstadoTriple celda={celda} />}
     </>
   );
   // See: https://github.com/reactstrap/reactstrap/issues/1404#issuecomment-602011689
@@ -84,7 +87,8 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
       placement={placement}
     >
       <PopoverHeader>
-        {senal ? 'Señal' : 'Celda'} {celda.x} {celda.y} {senal && senal.dir}
+        {semaforo ? 'Semaforo' : 'Celda'} {celda.x} {celda.y}{' '}
+        {semaforo && semaforo.dir}
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>
@@ -105,17 +109,17 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
                   </NavLink>
                 </NavItem>
               )}
-              {senal && (
-                <NavItem title="Mostrar COnfiguración Señal">
+              {semaforo && (
+                <NavItem title="Mostrar COnfiguración Semaforo">
                   <NavLink
                     className={classnames(styles.solapa, {
-                      active: activeTab === TAB_SENAL,
+                      active: activeTab === TAB_SEMAFORO,
                     })}
                     onClick={() => {
-                      toggle(TAB_SENAL);
+                      toggle(TAB_SEMAFORO);
                     }}
                   >
-                    {TAB_SENAL}
+                    {TAB_SEMAFORO}
                   </NavLink>
                 </NavItem>
               )}
@@ -131,17 +135,17 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
                   {TAB_CELDA}
                 </NavLink>
               </NavItem>
-              {enclavamiento && (
-                <NavItem title="Mostrar Configuración Enclavamientos">
+              {automatizacion && (
+                <NavItem title="Mostrar Configuración Automatización">
                   <NavLink
                     className={classnames(styles.solapa, {
-                      active: activeTab === TAB_ENCL,
+                      active: activeTab === TAB_AUTOM,
                     })}
                     onClick={() => {
-                      toggle(TAB_ENCL);
+                      toggle(TAB_AUTOM);
                     }}
                   >
-                    {TAB_ENCL}
+                    {TAB_AUTOM}
                   </NavLink>
                 </NavItem>
               )}{' '}
@@ -152,17 +156,17 @@ function EstadoPopover({ idCelda, idSenal, placement }) {
                   <Command />
                 </TabPane>
               )}
-              {senal && (
-                <TabPane tabId={TAB_SENAL}>
-                  <pre>{JSON.stringify(senal, null, 2)}</pre>
+              {semaforo && (
+                <TabPane tabId={TAB_SEMAFORO}>
+                  <pre>{JSON.stringify(semaforo, null, 2)}</pre>
                 </TabPane>
               )}
               <TabPane tabId={TAB_CELDA}>
                 <pre>{JSON.stringify(celda, null, 2)}</pre>
               </TabPane>
-              {enclavamiento && (
-                <TabPane tabId={TAB_ENCL}>
-                  <pre>{JSON.stringify(enclavamiento, null, 2)}</pre>
+              {automatizacion && (
+                <TabPane tabId={TAB_AUTOM}>
+                  <pre>{JSON.stringify(automatizacion, null, 2)}</pre>
                 </TabPane>
               )}
             </TabContent>

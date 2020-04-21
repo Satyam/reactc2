@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  enclavamientosActive,
+  automatizacionesActive,
   showTeletipo,
   showCoords,
   showEstado,
@@ -12,15 +12,15 @@ import {
 
 export default createReducer(
   {
-    enclavamientosActive: true,
+    automatizacionesActive: true,
     showCoords: true,
     showEstado: { show: false },
     playRate: 1,
     showTeletipo: true,
   },
   {
-    [enclavamientosActive]: (state, action) => {
-      state.enclavamientosActive = action.payload;
+    [automatizacionesActive]: (state, action) => {
+      state.automatizacionesActive = action.payload;
     },
     [showTeletipo]: (state, action) => {
       state.showTeletipo = action.payload;

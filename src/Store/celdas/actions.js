@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import {
   setPendiente,
-  setEnclavamientos,
+  setAutomatizaciones,
   clearPendientes,
   setBloqueOcupado,
 } from 'Store/actions';
@@ -38,7 +38,7 @@ export function setPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
     dispatch(doSetCambio(idCelda, posicion));
     if (!selCeldaIsManual(getState(), idCelda)) {
-      dispatch(setEnclavamientos(idCelda, CAMBIO));
+      dispatch(setAutomatizaciones(idCelda, CAMBIO));
     }
     return dispatch(clearPendientes());
   };

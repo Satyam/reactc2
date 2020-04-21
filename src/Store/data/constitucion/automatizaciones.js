@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars*/
 import {
   CAMBIO,
-  SENAL,
+  SEMAFORO,
   NORMAL,
   DESVIADO,
   IZQ,
   CENTRO,
   DER,
-  VERDE,
-  AMARILLO,
-  ROJO,
+  LIBRE,
+  PRECAUCION,
+  ALTO,
   N,
   NE,
   E,
@@ -21,13 +21,13 @@ import {
 } from '../constantes';
 /* eslint-enable no-unused-vars*/
 
-export const enclavamientos = [
+export const automatizaciones = [
   {
     x: 4,
     y: 4,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 5,
         y: 5,
@@ -48,7 +48,7 @@ export const enclavamientos = [
     y: 5,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 5,
         y: 4,
@@ -63,7 +63,7 @@ export const enclavamientos = [
     y: 4,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 4,
         y: 5,
@@ -78,7 +78,7 @@ export const enclavamientos = [
     y: 5,
     tipo: CAMBIO,
 
-    dependencias: [
+    deps: [
       {
         x: 4,
         y: 4,
@@ -98,24 +98,24 @@ export const enclavamientos = [
     x: 2,
     y: 4,
     dir: W,
-    tipo: SENAL,
+    tipo: SEMAFORO,
 
-    dependencias: [
+    deps: [
       {
         x: 2,
         y: 4,
         tipo: CAMBIO,
         izq: {
-          centro: ROJO,
-          der: ROJO,
+          centro: ALTO,
+          der: ALTO,
         },
         centro: {
-          izq: ROJO,
-          der: ROJO,
+          izq: ALTO,
+          der: ALTO,
         },
         der: {
-          izq: ROJO,
-          centro: ROJO,
+          izq: ALTO,
+          centro: ALTO,
         },
       },
     ],
@@ -124,19 +124,19 @@ export const enclavamientos = [
     x: 4,
     y: 4,
     dir: W,
-    tipo: SENAL,
+    tipo: SEMAFORO,
 
-    dependencias: [
+    deps: [
       {
         x: 4,
         y: 4,
         tipo: CAMBIO,
         normal: {
-          der: ROJO,
+          der: ALTO,
         },
         desviado: {
-          centro: ROJO,
-          der: AMARILLO,
+          centro: ALTO,
+          der: PRECAUCION,
         },
       },
       {
@@ -144,8 +144,8 @@ export const enclavamientos = [
         y: 4,
         tipo: CAMBIO,
         desviado: {
-          centro: ROJO,
-          der: ROJO,
+          centro: ALTO,
+          der: ALTO,
         },
       },
     ],
@@ -154,19 +154,19 @@ export const enclavamientos = [
     x: 8,
     y: 3,
     dir: SE,
-    tipo: SENAL,
+    tipo: SEMAFORO,
 
-    dependencias: [
+    deps: [
       {
         x: 8,
         y: 3,
         tipo: CAMBIO,
         normal: {
-          izq: ROJO,
+          izq: ALTO,
         },
         desviado: {
-          izq: AMARILLO,
-          centro: ROJO,
+          izq: PRECAUCION,
+          centro: ALTO,
         },
       },
     ],

@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars*/
 import {
   CAMBIO,
-  SENAL,
+  SEMAFORO,
   NORMAL,
   DESVIADO,
   IZQ,
   CENTRO,
   DER,
-  VERDE,
-  AMARILLO,
-  ROJO,
+  LIBRE,
+  PRECAUCION,
+  ALTO,
   N,
   NE,
   E,
@@ -21,23 +21,23 @@ import {
 } from '../constantes';
 /* eslint-enable no-unused-vars*/
 
-export const enclavamientos = [
+export const automatizaciones = [
   {
     x: 0,
     y: 0,
     dir: W,
-    tipo: SENAL,
-    dependencias: [
+    tipo: SEMAFORO,
+    deps: [
       {
         x: 3,
         y: 0,
         dir: W,
-        tipo: SENAL,
-        luces: [
+        tipo: SEMAFORO,
+        senales: [
           {
-            cuando: ROJO,
-            luzAfectada: CENTRO,
-            estado: AMARILLO,
+            cuando: ALTO,
+            senalAfectada: CENTRO,
+            estado: PRECAUCION,
           },
         ],
       },

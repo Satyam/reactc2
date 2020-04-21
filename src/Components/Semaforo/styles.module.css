@@ -1,9 +1,9 @@
-.senal {
+.semaforo {
   stroke-width: 2;
   stroke: black;
   pointer-events: bounding-box;
 }
-.senal:hover {
+.semaforo:hover {
   stroke: lightblue;
 }
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars*/
 import {
-  VERDE,
-  AMARILLO,
-  ROJO,
+  LIBRE,
+  PRECAUCION,
+  ALTO,
   IZQ,
   CENTRO,
   DER,
@@ -17,4 +17,4 @@ import {
 } from '../constantes';
 /* eslint-enable no-unused-vars */
 
-export const senales = [];
+export const semaforos = [];

@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
-import { VERDE, AMARILLO, ROJO, SENAL } from 'Store/data';
+import { LIBRE, PRECAUCION, ALTO, SEMAFORO } from 'Store/data';
 import { isPlainClick } from 'Utils';
 
-import { useSetLuz, useSenalManual, useSetEnclavamientos } from 'Store';
+import { useSetSenal, useSemaforoManual, useSetAutomatizaciones } from 'Store';
 
 import {
   ButtonGroup,
@@ -17,32 +17,32 @@ import {
 
 import styles from './styles.module.css';
 
-export function EstadoLuz({ luz, estado, onSetEstado }) {
-  const onSetAlto = (ev) => isPlainClick(ev) && onSetEstado(luz, ROJO);
+export function EstadoSenal({ senal, estado, onSetEstado }) {
+  const onSetAlto = (ev) => isPlainClick(ev) && onSetEstado(senal, ALTO);
   const onSetPrecaucion = (ev) =>
-    isPlainClick(ev) && onSetEstado(luz, AMARILLO);
-  const onSetLibre = (ev) => isPlainClick(ev) && onSetEstado(luz, VERDE);
+    isPlainClick(ev) && onSetEstado(senal, PRECAUCION);
+  const onSetLibre = (ev) => isPlainClick(ev) && onSetEstado(senal, LIBRE);
 
   return (
     <>
       <ButtonGroup vertical>
         <Button
           size="sm"
-          color={estado === ROJO ? 'danger' : 'outline-danger'}
+          color={estado === ALTO ? 'danger' : 'outline-danger'}
           onClick={onSetAlto}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === AMARILLO ? 'warning' : 'outline-warning'}
+          color={estado === PRECAUCION ? 'warning' : 'outline-warning'}
           onClick={onSetPrecaucion}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === VERDE ? 'success' : 'outline-success'}
+          color={estado === LIBRE ? 'success' : 'outline-success'}
           onClick={onSetLibre}
         >
           <Circle />
@@ -52,23 +52,25 @@ export function EstadoLuz({ luz, estado, onSetEstado }) {
   );
 }
 
-export default function EstadoSenal({ senal }) {
-  const { izq, soloManual, centro, der, idSenal } = senal;
-  const setLuzEstado = useSetLuz();
-  const [senalIsManual, toggleSenalManual] = useSenalManual(idSenal);
-  const setEnclavamientos = useSetEnclavamientos();
+export default function EstadoSemaforo({ semaforo }) {
+  const { izq, soloManual, centro, der, idSemaforo } = semaforo;
+  const setSenalEstado = useSetSenal();
+  const [semaforoIsManual, toggleSemaforoManual] = useSemaforoManual(
+    idSemaforo
+  );
+  const setAutomatizaciones = useSetAutomatizaciones();
 
-  const onSetEstado = (luz, estado) => {
-    if (senalIsManual || soloManual) {
-      setLuzEstado(idSenal, luz, estado);
+  const onSetEstado = (senal, estado) => {
+    if (semaforoIsManual || soloManual) {
+      setSenalEstado(idSemaforo, senal, estado);
     }
     if (soloManual) {
-      setEnclavamientos(idSenal, SENAL, true);
+      setAutomatizaciones(idSemaforo, SEMAFORO, true);
     }
   };
   const onSetManual = () => {
-    toggleSenalManual();
-    if (senalIsManual) setEnclavamientos(idSenal, SENAL, true);
+    toggleSemaforoManual();
+    if (semaforoIsManual) setAutomatizaciones(idSemaforo, SEMAFORO, true);
   };
 
   return (
@@ -76,7 +78,7 @@ export default function EstadoSenal({ senal }) {
       <Container>
         <div
           className={classNames({
-            [styles.disabled]: !soloManual && !senalIsManual,
+            [styles.disabled]: !soloManual && !semaforoIsManual,
           })}
         >
           <Row>
@@ -86,7 +88,11 @@ export default function EstadoSenal({ senal }) {
                   [styles.hidden]: !izq,
                 })}
               >
-                <EstadoLuz luz="izq" estado={izq} onSetEstado={onSetEstado} />
+                <EstadoSenal
+                  senal="izq"
+                  estado={izq}
+                  onSetEstado={onSetEstado}
+                />
               </div>
             </Col>
             <Col>
@@ -95,8 +101,8 @@ export default function EstadoSenal({ senal }) {
                   [styles.hidden]: !centro,
                 })}
               >
-                <EstadoLuz
-                  luz="centro"
+                <EstadoSenal
+                  senal="centro"
                   estado={centro}
                   onSetEstado={onSetEstado}
                 />
@@ -104,11 +110,15 @@ export default function EstadoSenal({ senal }) {
             </Col>
             <Col>
               <div
-                className={classNames(styles.senal, styles.pushDown, {
+                className={classNames(styles.semaforo, styles.pushDown, {
                   [styles.hidden]: !der,
                 })}
               >
-                <EstadoLuz luz="der" estado={der} onSetEstado={onSetEstado} />
+                <EstadoSenal
+                  senal="der"
+                  estado={der}
+                  onSetEstado={onSetEstado}
+                />
               </div>
             </Col>
           </Row>
@@ -118,10 +128,10 @@ export default function EstadoSenal({ senal }) {
             <Button
               className={styles.manual}
               size="sm"
-              color={senalIsManual ? 'danger' : 'outline-info'}
+              color={semaforoIsManual ? 'danger' : 'outline-info'}
               onClick={onSetManual}
             >
-              {senalIsManual ? <Unlocked /> : <Locked />}
+              {semaforoIsManual ? <Unlocked /> : <Locked />}
             </Button>
           </Row>
         )}

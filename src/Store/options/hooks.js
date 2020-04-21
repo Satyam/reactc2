@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import {
   showTeletipo,
-  enclavamientosActive,
+  automatizacionesActive,
   showCoords,
   showConfig,
   showEstado as showEstadoAction,
@@ -13,7 +13,7 @@ import {
 
 import {
   selShowTeletipo,
-  selEnclavamientosActive,
+  selAutomatizacionesActive,
   selShowCoords,
   selShowConfig,
   selShowEstado,
@@ -31,14 +31,14 @@ export const useShowTeletipo = () => {
   return [teletipoShown, toggleTeletipo];
 };
 
-export const useEnclavamientosActive = () => {
-  const elementosActive = useSelector(selEnclavamientosActive);
+export const useAutomatizacionesActive = () => {
+  const elementosActive = useSelector(selAutomatizacionesActive);
   const dispatch = useDispatch();
-  const togleEnclavamientosActive = useCallback(
-    () => dispatch(enclavamientosActive(!elementosActive)),
+  const togleAutomatizacionesActive = useCallback(
+    () => dispatch(automatizacionesActive(!elementosActive)),
     [dispatch, elementosActive]
   );
-  return [elementosActive, togleEnclavamientosActive];
+  return [elementosActive, togleAutomatizacionesActive];
 };
 
 export const useShowCoords = () => {
