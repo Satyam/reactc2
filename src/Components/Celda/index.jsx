@@ -19,7 +19,6 @@ import styles from './styles.module.css';
 
 import Linea from './Linea';
 import Cambio from './Cambio';
-import Triple from './Triple';
 import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 import { Despachador, Tren } from 'Components/Trenes';
@@ -85,7 +84,6 @@ export default function Celda({
     cambio: Cambio,
     paragolpe: Paragolpe,
     cruce: Cruce,
-    triple: Triple,
   }[celda.tipo];
   return (
     <div

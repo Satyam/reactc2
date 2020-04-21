@@ -3,7 +3,6 @@ import {
   LINEA,
   CAMBIO,
   PARAGOLPE,
-  TRIPLE,
   CRUCE,
   NORMAL,
   CENTRO,

@@ -19,7 +19,6 @@ const {
   LINEA,
   CAMBIO,
   PARAGOLPE,
-  TRIPLE,
   CRUCE,
   SEMAFORO,
   NORMAL,
@@ -94,7 +93,6 @@ function validateConstants() {
   validateConst(LINEA, 'linea');
   validateConst(CAMBIO, 'cambio');
   validateConst(PARAGOLPE, 'paragolpe');
-  validateConst(TRIPLE, 'triple');
   validateConst(CRUCE, 'cruce');
   validateConst(SEMAFORO, 'semaforo');
   validateConst(NORMAL, 0);

@@ -12,7 +12,6 @@ import { buildId } from 'Utils';
 import {
   LINEA,
   CAMBIO,
-  TRIPLE,
   CRUCE,
   PARAGOLPE,
   IZQ,
@@ -118,7 +117,6 @@ function solveNewDir(newDir, newCelda) {
     case LINEA:
       return other(newCelda);
     case CAMBIO:
-    case TRIPLE:
       if (newCelda.punta === newDir) return newCelda.ramas[newCelda.posicion];
       else if (newCelda.ramas[newCelda.posicion] === newDir)
         return newCelda.punta;

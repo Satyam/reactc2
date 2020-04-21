@@ -21,10 +21,9 @@ import {
   useSelAutomatizacion,
 } from 'Store';
 
-import { CAMBIO, TRIPLE } from 'Store/data';
+import { CAMBIO } from 'Store/data';
 
 import EstadoCambio from './Cambio';
-import EstadoTriple from './Triple';
 import EstadoSemaforo from './Semaforo';
 
 import styles from './styles.module.css';
@@ -55,8 +54,7 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
 
   const [activeTab, setActiveTab] = useState();
 
-  const activeElement =
-    semaforo || celda.tipo === CAMBIO || celda.tipo === TRIPLE;
+  const activeElement = semaforo || celda.tipo === CAMBIO;
 
   if (oldId !== idCelda) {
     setActiveTab(
@@ -75,7 +73,6 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
     <>
       {semaforo && <EstadoSemaforo semaforo={semaforo} />}
       {!semaforo && celda.tipo === CAMBIO && <EstadoCambio celda={celda} />}
-      {!semaforo && celda.tipo === TRIPLE && <EstadoTriple celda={celda} />}
     </>
   );
   // See: https://github.com/reactstrap/reactstrap/issues/1404#issuecomment-602011689

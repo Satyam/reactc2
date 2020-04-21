@@ -7,7 +7,7 @@ import {
   setBloqueOcupado,
 } from 'Store/actions';
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
-import { CAMBIO, TRIPLE } from 'Store/data';
+import { CAMBIO } from 'Store/data';
 
 export const plainSetCambio = createAction(
   'setPosicion',
@@ -22,7 +22,7 @@ export const plainSetCambio = createAction(
 export function doSetCambio(idCelda, posicion) {
   return (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
-    if (celda.tipo !== CAMBIO && celda.tipo !== TRIPLE) {
+    if (celda.tipo !== CAMBIO) {
       throw new Error(`Celda ${idCelda}  no es un cambio`);
     }
     if (celda.posicion === posicion) {

@@ -1,7 +1,6 @@
 // Tipos de celda
 export const LINEA = 'linea';
 export const CAMBIO = 'cambio';
-export const TRIPLE = 'triple';
 export const CRUCE = 'cruce';
 export const PARAGOLPE = 'paragolpe';
 export const SEMAFORO = 'semaforo';
