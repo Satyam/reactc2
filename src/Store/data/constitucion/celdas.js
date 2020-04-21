@@ -87,12 +87,8 @@ export const celdas = [
   },
   {
     tipo: CAMBIO,
-    posicion: NORMAL,
     punta: SE,
-    ramas: {
-      normal: NW,
-      desviado: W,
-    },
+    ramas: [NW, W],
     x: 8,
     y: 3,
   },
@@ -109,14 +105,9 @@ export const celdas = [
     y: 4,
   },
   {
-    tipo: TRIPLE,
-    posicion: CENTRO,
+    tipo: CAMBIO,
     punta: W,
-    ramas: {
-      centro: E,
-      izq: NE,
-      der: SE,
-    },
+    ramas: [E, NE, SE],
     x: 2,
     y: 4,
   },
@@ -133,23 +124,15 @@ export const celdas = [
   },
   {
     tipo: CAMBIO,
-    posicion: NORMAL,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: SE,
-    },
+    ramas: [E, SE],
     x: 4,
     y: 4,
   },
   {
     tipo: CAMBIO,
-    posicion: NORMAL,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: SW,
-    },
+    ramas: [W, SW],
     x: 5,
     y: 4,
   },
@@ -179,12 +162,8 @@ export const celdas = [
   },
   {
     tipo: CAMBIO,
-    posicion: NORMAL,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: NE,
-    },
+    ramas: [E, NE],
     x: 2,
     y: 5,
   },
@@ -201,23 +180,15 @@ export const celdas = [
   },
   {
     tipo: CAMBIO,
-    posicion: NORMAL,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: NE,
-    },
+    ramas: [E, NE],
     x: 4,
     y: 5,
   },
   {
     tipo: CAMBIO,
-    posicion: NORMAL,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: NW,
-    },
+    ramas: [W, NW],
     x: 5,
     y: 5,
   },

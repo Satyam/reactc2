@@ -60,11 +60,7 @@ export const celdas = [
     x: 1,
     y: 0,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: SE,
-    },
-    posicion: NORMAL,
+    ramas: [E, SE],
     bloque: OESTE_10,
   },
   {
@@ -72,11 +68,7 @@ export const celdas = [
     x: 1,
     y: 1,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: NE,
-    },
-    posicion: NORMAL,
+    ramas: [E, NE],
     bloque: OESTE_11,
   },
   {
@@ -84,11 +76,7 @@ export const celdas = [
     x: 2,
     y: 0,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: SW,
-    },
-    posicion: NORMAL,
+    ramas: [W, SW],
     bloque: OESTE_20,
   },
   {
@@ -96,11 +84,7 @@ export const celdas = [
     x: 2,
     y: 1,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: NW,
-    },
-    posicion: NORMAL,
+    ramas: [W, NW],
     bloque: OESTE_21,
   },
 
@@ -152,11 +136,7 @@ export const celdas = [
     x: 6,
     y: 0,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: SE,
-    },
-    posicion: NORMAL,
+    ramas: [E, SE],
     bloque: ESTE_60,
   },
   {
@@ -164,11 +144,7 @@ export const celdas = [
     x: 6,
     y: 1,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: NE,
-    },
-    posicion: NORMAL,
+    ramas: [E, NE],
     bloque: ESTE_61,
   },
   {
@@ -176,11 +152,7 @@ export const celdas = [
     x: 7,
     y: 0,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: SW,
-    },
-    posicion: NORMAL,
+    ramas: [W, SW],
     bloque: ESTE_70,
   },
   {
@@ -188,11 +160,7 @@ export const celdas = [
     x: 7,
     y: 1,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: NW,
-    },
-    posicion: NORMAL,
+    ramas: [W, NW],
     bloque: ESTE_71,
   },
   {

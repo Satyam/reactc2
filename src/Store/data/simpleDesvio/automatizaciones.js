@@ -32,13 +32,13 @@ export const automatizaciones = [
         x: 0,
         y: 0,
         tipo: CAMBIO,
-        normal: {
-          izq: ALTO,
-        },
-        desviado: {
-          izq: PRECAUCION,
-          centro: ALTO,
-        },
+        alts: [
+          {
+            cuando: NORMAL,
+            izq: ALTO,
+          },
+          { cuando: DESVIADO, izq: PRECAUCION, centro: ALTO },
+        ],
       },
     ],
   },

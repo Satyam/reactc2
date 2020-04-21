@@ -12,16 +12,7 @@ import {
   useToggleRebota,
 } from 'Store';
 import Semaforo from 'Components/Semaforo';
-import {
-  CAMBIO,
-  TRIPLE,
-  PARAGOLPE,
-  NORMAL,
-  DESVIADO,
-  IZQ,
-  CENTRO,
-  DER,
-} from 'Store/data';
+import { CAMBIO, PARAGOLPE } from 'Store/data';
 
 import { ANCHO_CELDA, DIR } from 'Components/common';
 import styles from './styles.module.css';
@@ -51,22 +42,7 @@ export default function Celda({
       if (isPlainClick(ev)) {
         switch (celda.tipo) {
           case CAMBIO:
-            setPosicion(celda.posicion === NORMAL ? DESVIADO : NORMAL);
-            break;
-          case TRIPLE:
-            switch (celda.posicion) {
-              case IZQ:
-                setPosicion(CENTRO);
-                break;
-              case CENTRO:
-                setPosicion(DER);
-                break;
-              case DER:
-                setPosicion(IZQ);
-                break;
-
-              default:
-            }
+            setPosicion((celda.posicion + 1) % celda.ramas.length);
             break;
           case PARAGOLPE:
             toggleRebota();

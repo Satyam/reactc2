@@ -23,44 +23,28 @@ export const celdas = [
     tipo: CAMBIO,
     x: 0,
     y: 0,
-    posicion: NORMAL,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: SE,
-    },
+    ramas: [E, SE],
   },
   {
     tipo: CAMBIO,
     x: 1,
     y: 0,
-    posicion: NORMAL,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: SW,
-    },
+    ramas: [W, SW],
   },
   {
     tipo: CAMBIO,
     x: 0,
     y: 1,
-    posicion: NORMAL,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: NE,
-    },
+    ramas: [E, NE],
   },
   {
     tipo: CAMBIO,
     x: 1,
     y: 1,
-    posicion: NORMAL,
     punta: E,
-    ramas: {
-      normal: W,
-      desviado: NW,
-    },
+    ramas: [W, NW],
   },
 ];

@@ -12,12 +12,12 @@ export default function Cambio({ idCelda }) {
         dir={celda.punta}
         estilo={ocupado ? 'tramo-ocupado' : 'tramo-normal'}
       />
-      {Object.keys(celda.ramas).map(nombre => (
+      {celda.ramas.map((dir, idx) => (
         <Tramo
-          key={nombre}
-          dir={celda.ramas[nombre]}
+          key={dir}
+          dir={dir}
           estilo={
-            celda.posicion === nombre
+            celda.posicion === idx
               ? ocupado
                 ? 'tramo-ocupado'
                 : 'tramo-normal'

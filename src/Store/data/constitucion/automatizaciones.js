@@ -4,6 +4,7 @@ import {
   SEMAFORO,
   NORMAL,
   DESVIADO,
+  ALTERNATIVA,
   IZQ,
   CENTRO,
   DER,
@@ -32,14 +33,21 @@ export const automatizaciones = [
         x: 5,
         y: 5,
         tipo: CAMBIO,
-        normal: NORMAL,
-        desviado: DESVIADO,
+        alts: [
+          { cuando: NORMAL, estado: NORMAL },
+          { cuando: DESVIADO, estado: DESVIADO },
+        ],
       },
       {
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        desviado: NORMAL,
+        alts: [
+          {
+            cuando: DESVIADO,
+            estado: NORMAL,
+          },
+        ],
       },
     ],
   },
@@ -53,8 +61,10 @@ export const automatizaciones = [
         x: 5,
         y: 4,
         tipo: CAMBIO,
-        normal: NORMAL,
-        desviado: DESVIADO,
+        alts: [
+          { cuando: NORMAL, estado: NORMAL },
+          { cuando: DESVIADO, estado: DESVIADO },
+        ],
       },
     ],
   },
@@ -68,8 +78,10 @@ export const automatizaciones = [
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        normal: NORMAL,
-        desviado: DESVIADO,
+        alts: [
+          { cuando: NORMAL, estado: NORMAL },
+          { cuando: DESVIADO, estado: DESVIADO },
+        ],
       },
     ],
   },
@@ -83,14 +95,16 @@ export const automatizaciones = [
         x: 4,
         y: 4,
         tipo: CAMBIO,
-        normal: NORMAL,
-        desviado: DESVIADO,
+        alts: [
+          { cuando: NORMAL, estado: NORMAL },
+          { cuando: DESVIADO, estado: DESVIADO },
+        ],
       },
       {
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        desviado: NORMAL,
+        alts: [{ cuando: DESVIADO, estado: NORMAL }],
       },
     ],
   },
@@ -105,18 +119,19 @@ export const automatizaciones = [
         x: 2,
         y: 4,
         tipo: CAMBIO,
-        izq: {
-          centro: ALTO,
-          der: ALTO,
-        },
-        centro: {
-          izq: ALTO,
-          der: ALTO,
-        },
-        der: {
-          izq: ALTO,
-          centro: ALTO,
-        },
+        alts: [
+          { cuando: ALTERNATIVA, centro: ALTO, der: ALTO },
+          {
+            cuando: NORMAL,
+            izq: ALTO,
+            der: ALTO,
+          },
+          {
+            cuando: DESVIADO,
+            izq: ALTO,
+            centro: ALTO,
+          },
+        ],
       },
     ],
   },
@@ -131,22 +146,23 @@ export const automatizaciones = [
         x: 4,
         y: 4,
         tipo: CAMBIO,
-        normal: {
-          der: ALTO,
-        },
-        desviado: {
-          centro: ALTO,
-          der: PRECAUCION,
-        },
+        alts: [
+          {
+            cuando: NORMAL,
+            der: ALTO,
+          },
+          {
+            cuando: DESVIADO,
+            centro: ALTO,
+            der: PRECAUCION,
+          },
+        ],
       },
       {
         x: 5,
         y: 4,
         tipo: CAMBIO,
-        desviado: {
-          centro: ALTO,
-          der: ALTO,
-        },
+        alts: [{ cuando: DESVIADO, centro: ALTO, der: ALTO }],
       },
     ],
   },
@@ -161,13 +177,14 @@ export const automatizaciones = [
         x: 8,
         y: 3,
         tipo: CAMBIO,
-        normal: {
-          izq: ALTO,
-        },
-        desviado: {
-          izq: PRECAUCION,
-          centro: ALTO,
-        },
+        alts: [
+          { cuando: NORMAL, izq: ALTO },
+          {
+            cuando: DESVIADO,
+            izq: PRECAUCION,
+            centro: ALTO,
+          },
+        ],
       },
     ],
   },

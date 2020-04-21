@@ -10,9 +10,10 @@ export const LIBRE = 1;
 export const PRECAUCION = 2;
 export const ALTO = 3;
 // Cambio:
-export const NORMAL = 'normal';
-export const DESVIADO = 'desviado';
-// Triple  y senales
+export const NORMAL = 0;
+export const DESVIADO = 1;
+export const ALTERNATIVA = 2;
+// Señales
 export const IZQ = 'izq';
 export const CENTRO = 'centro';
 export const DER = 'der';

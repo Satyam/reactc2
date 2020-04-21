@@ -24,6 +24,7 @@ const {
   SEMAFORO,
   NORMAL,
   DESVIADO,
+  ALTERNATIVA,
   IZQ,
   CENTRO,
   DER,
@@ -80,7 +81,7 @@ const buildIdBloque = (idSector, { bloque }) =>
 const dir = j.valid(N, NE, E, SE, S, SW, W, NW).required();
 const aspecto = j.valid(LIBRE, PRECAUCION, ALTO);
 const icd = j.valid(IZQ, CENTRO, DER);
-const cambios = j.valid(NORMAL, DESVIADO, IZQ, CENTRO, DER);
+const cambios = j.valid(NORMAL, DESVIADO, ALTERNATIVA);
 const coords = {
   x: j.number().integer().min(0).required(),
   y: j.number().integer().min(0).required(),
@@ -96,8 +97,9 @@ function validateConstants() {
   validateConst(TRIPLE, 'triple');
   validateConst(CRUCE, 'cruce');
   validateConst(SEMAFORO, 'semaforo');
-  validateConst(NORMAL, 'normal');
-  validateConst(DESVIADO, 'desviado');
+  validateConst(NORMAL, 0);
+  validateConst(DESVIADO, 1);
+  validateConst(ALTERNATIVA, 2);
   validateConst(IZQ, 'izq');
   validateConst(CENTRO, 'centro');
   validateConst(DER, 'der');
@@ -165,20 +167,13 @@ function validateCeldas(name) {
     tipo: j.valid(CAMBIO).required(),
     posicion: j.valid(NORMAL, DESVIADO),
     punta: dir,
-    ramas: j.object({ [NORMAL]: dir, [DESVIADO]: dir }),
+    ramas: j.array().items(dir).min(2).max(3),
   });
 
   const celdaParagolpe = baseCelda.append({
     tipo: j.valid(PARAGOLPE).required(),
     punta: dir,
     rebota: j.boolean(),
-  });
-
-  const celdaTriple = baseCelda.append({
-    tipo: j.valid(TRIPLE).required(),
-    posicion: icd,
-    punta: dir,
-    ramas: j.object({ [IZQ]: dir, [CENTRO]: dir, [DER]: dir }),
   });
 
   const celdaCruce = baseCelda.append({
@@ -200,7 +195,7 @@ function validateCeldas(name) {
       .items(
         j
           .alternatives()
-          .try(celdaLinea, celdaCambio, celdaParagolpe, celdaTriple, celdaCruce)
+          .try(celdaLinea, celdaCambio, celdaParagolpe, celdaCruce)
       )
       .unique((a, b) => a.x === b.x && a.y === b.y)
   );
@@ -302,24 +297,14 @@ function validateAutomatizaciones(name) {
   const depCambioCambio = j
     .object({
       tipo: j.valid(CAMBIO).required(),
+      alts: j.array().items(
+        j.object({
+          cuando: cambios,
+          estado: cambios,
+        })
+      ),
     })
-    .append(coords)
-    .append({
-      [NORMAL]: cambios,
-      [DESVIADO]: cambios,
-      [IZQ]: cambios,
-      [CENTRO]: cambios,
-      [DER]: cambios,
-    })
-    .or(NORMAL, DESVIADO)
-    .without(NORMAL, [IZQ, CENTRO, DER])
-    .without(DESVIADO, [IZQ, CENTRO, DER]);
-
-  const senalColor = j.object({
-    [IZQ]: aspecto,
-    [CENTRO]: aspecto,
-    [DER]: aspecto,
-  });
+    .append(coords);
 
   const depSemaforoSemaforo = j
     .object({
@@ -341,11 +326,14 @@ function validateAutomatizaciones(name) {
   const depSemaforoCambio = j
     .object({
       tipo: j.valid(CAMBIO).required(),
-      [NORMAL]: senalColor,
-      [DESVIADO]: senalColor,
-      [IZQ]: senalColor,
-      [CENTRO]: senalColor,
-      [DER]: senalColor,
+      alts: j.array().items(
+        j.object({
+          cuando: cambios.required(),
+          [IZQ]: aspecto,
+          [CENTRO]: aspecto,
+          [DER]: aspecto,
+        })
+      ),
     })
     .append(coords);
 

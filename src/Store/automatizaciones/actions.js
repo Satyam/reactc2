@@ -59,8 +59,9 @@ export function setAutomatizaciones(idOrigen, tipoOrigen, force) {
       return deps.reduce((p1, dep) => {
         const idSource = buildId({ idSector, x: dep.x, y: dep.y });
         const celdaSource = selCelda(getState(), idSource);
-        const posicionEsperada = dep[celdaSource.posicion];
-        if (!posicionEsperada) return p1;
+        const alt = dep.alts.find((alt) => alt.cuando === celdaSource.posicion);
+        if (!alt) return p1;
+        const posicionEsperada = alt.estado;
         if (posicionEsperada === celdaTarget.posicion) return p1;
         if (selCeldaIsManual(getState(), idTarget)) return p1;
         return p1.then(
@@ -87,13 +88,15 @@ export function setAutomatizaciones(idOrigen, tipoOrigen, force) {
         switch (dep.tipo) {
           case CAMBIO:
             const celdaSource = selCelda(getState(), idSource);
-            const estadoBuscado = dep[celdaSource.posicion] || {};
-            Object.keys(estadoBuscado).forEach((senal) => {
-              nuevoEstado[senal] = Math.max(
-                nuevoEstado[senal],
-                estadoBuscado[senal]
-              );
-            });
+            const alt = dep.alts.find(
+              (alt) => alt.cuando === celdaSource.posicion
+            );
+            if (alt) {
+              Object.keys(nuevoEstado).forEach((senal) => {
+                if (alt[senal])
+                  nuevoEstado[senal] = Math.max(nuevoEstado[senal], alt[senal]);
+              });
+            }
             break;
           case SEMAFORO:
             const semaforoSource = selSemaforo(getState(), idSource);

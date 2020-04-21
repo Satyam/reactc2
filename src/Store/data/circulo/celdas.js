@@ -62,11 +62,7 @@ export const celdas = [
     x: 3,
     y: 3,
     punta: N,
-    ramas: {
-      normal: SW,
-      desviado: S,
-    },
-    posicion: NORMAL,
+    ramas: [SW, S],
   },
   {
     tipo: CRUCE,
@@ -81,26 +77,16 @@ export const celdas = [
   },
 
   {
-    tipo: TRIPLE,
-    posicion: CENTRO,
+    tipo: CAMBIO,
     punta: N,
-    ramas: {
-      centro: S,
-      izq: SE,
-      der: SW,
-    },
+    ramas: [S, SE, SW],
     x: 0,
     y: 2,
   },
   {
-    tipo: TRIPLE,
-    posicion: CENTRO,
+    tipo: CAMBIO,
     punta: N,
-    ramas: {
-      centro: S,
-      izq: SE,
-      der: SW,
-    },
+    ramas: [S, SE, SW],
     x: 5,
     y: 1,
     despachador: [N, S, SE, SW],
@@ -109,12 +95,8 @@ export const celdas = [
     tipo: CAMBIO,
     x: 5,
     y: 3,
-    posicion: NORMAL,
     punta: W,
-    ramas: {
-      normal: E,
-      desviado: NE,
-    },
+    ramas: [E, NE],
     despachador: [W, E, NE],
   },
   {
