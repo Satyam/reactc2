@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isPlainClick } from 'Utils';
+import { isPlainClick, holdPropagation } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { CAMBIO } from 'Store/data';
 import { useAddTren, useBloqueOcupado } from 'Store';
@@ -48,6 +48,7 @@ export default function Despachador({ celda }) {
               onClick={despacha(dir)}
               key={dir}
               transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
+              {...holdPropagation}
             >
               <path
                 d="M 11,-12 L 29,0 11,12 z"

@@ -1,5 +1,23 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
+/* Usage:
+
+https://stackoverflow.com/questions/48048957/react-long-press-eventRef
+
+function MyComponent (props) {
+  const longPressProps = useLongPress({
+    onClick: () => void console.log('on click'),
+    onLongPress: () => void console.log('long press'),
+  });
+
+
+  return (
+      <button {...longPressProps} >
+        click me
+      </button>  );
+};
+*/
+
 export function useLongPress({
   onClick = () => {},
   onLongPress = () => {},
@@ -29,7 +47,9 @@ export function useLongPress({
       eventRef.current = ev;
       if (timerRef.current) {
         clearTimeout(timerRef.current);
-        onClick(eventRef.current);
+        ev.stopPropagation();
+        ev.preventDefault();
+        onClick(ev);
         timerRef.current = false;
         eventRef.current = {};
       }
@@ -49,23 +69,15 @@ export function useLongPress({
   );
 }
 
-/* Usage:
+const stopProp = (ev) => ev.stopPropagation();
 
-https://stackoverflow.com/questions/48048957/react-long-press-eventRef
-
-function MyComponent (props) {
-  const longPressProps = useLongPress({
-    onClick: () => void console.log('on click'),
-    onLongPress: () => void console.log('long press'),
-  });
-
-
-  return (
-      <button {...longPressProps} >
-        click me
-      </button>  );
+export const holdPropagation = {
+  onMouseDown: stopProp,
+  onMouseUp: stopProp,
+  onMouseLeave: stopProp,
+  onTouchStart: stopProp,
+  onTouchEnd: stopProp,
 };
-*/
 
 export const isPlainClick = (ev) => {
   if (ev.button || ev.shiftKey || ev.altKey || ev.metaKey || ev.ctrlKey)
