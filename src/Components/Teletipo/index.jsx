@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 
 import { Table, Button, Label, Input } from 'reactstrap';
-import { useAvisos, useShowTeletipo } from 'Store';
-import { isPlainClick } from 'Utils';
+import { useAvisos, useShowTeletipo, useCelda } from 'Store';
+import { isPlainClick, nombreEntity } from 'Utils';
 import { Trash } from 'Components/Icons';
 import styles from './styles.module.css';
 import { INFO } from 'Store/data';
+
+function Item({ nivel, fecha, idCelda, numero, msg, clearAviso }) {
+  const celda = useCelda(idCelda);
+  const clear = (ev) => isPlainClick(ev) && clearAviso(fecha);
+  return (
+    <tr className={styles[nivel]}>
+      <td>{new Date(fecha).toLocaleString()}</td>
+      <td>{nombreEntity(celda)}</td>
+      <td>{numero}</td>
+      <td colSpan={2}>{msg}</td>
+      <td>
+        <Trash onClick={clear} />
+      </td>
+    </tr>
+  );
+}
 
 export default function Teletipo() {
   const [mensajes, clearAvisos, clearAviso] = useAvisos();
@@ -14,7 +30,6 @@ export default function Teletipo() {
 
   const clearAll = (ev) => isPlainClick(ev) && clearAvisos();
   const close = (ev) => isPlainClick(ev) && toggleTeletipo();
-  const clear = (fecha) => (ev) => isPlainClick(ev) && clearAviso(fecha);
   const toggleInfo = (ev) => setInfo((i) => !i);
 
   return mensajes.length ? (
@@ -48,19 +63,17 @@ export default function Teletipo() {
         {mensajes
           .filter((row) => (info ? true : row.nivel !== INFO))
           .map((row) => (
-            <tr className={styles[row.nivel]} key={row.fecha}>
-              <td>{new Date(row.fecha).toLocaleString()}</td>
-              <td>{row.idCelda}</td>
-              <td>{row.numero}</td>
-              <td colSpan={2}>{row.msg}</td>
-              <td>
-                <Trash onClick={clear(row.fecha)} />
-              </td>
-            </tr>
+            <Item {...row} key={row.fecha} clearAviso={clearAviso} />
           ))}
       </tbody>
     </Table>
   ) : (
-    <p className={styles.fixed}>No hay mensajes</p>
+    <Table className={styles.fixed} size="sm">
+      <thead>
+        <tr>
+          <th>No hay mensajes</th>
+        </tr>
+      </thead>
+    </Table>
   );
 }
