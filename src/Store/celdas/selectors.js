@@ -4,10 +4,14 @@ import { NORMAL } from 'Store/data';
 export const selCelda = createSelector(
   (state) => state.celdas,
   (_, idCelda) => idCelda,
-  (celdas, idCelda) => ({
-    posicion: NORMAL,
-    ...celdas[idCelda],
-  })
+  (celdas, idCelda) => {
+    const celda = celdas[idCelda];
+    if (celda)
+      return {
+        posicion: NORMAL,
+        ...celdas[idCelda],
+      };
+  }
 );
 
 export const selCeldaIsManual = (state, idCelda) =>
