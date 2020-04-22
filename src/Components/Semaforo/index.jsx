@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { isPlainClick, buildId, nombreEntity } from 'Utils';
+import { buildId, nombreEntity, useLongPress } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
 import { SEMAFORO } from 'Store/data';
 import { useEstado, useSemaforo } from 'Store';
@@ -11,23 +11,25 @@ const aspectos = ['', 'verde', 'amarillo', 'rojo'];
 
 export default function Semaforo({ idSemaforo, placement }) {
   const semaforo = useSemaforo(idSemaforo);
+  const { idSector, x, y, dir, centro, izq, der } = semaforo || {};
   const { showEstado } = useEstado();
-  if (!semaforo) return null;
-
-  const { idSector, x, y, dir, centro, izq, der } = semaforo;
-
-  const onClick = (ev) =>
-    isPlainClick(ev) &&
-    showEstado({
-      tipo: SEMAFORO,
-      idCelda: buildId({
-        idSector,
-        x,
-        y,
+  const longPressProps = useLongPress({
+    onClick: () => {
+      window.alert('not implemented yet');
+    },
+    onLongPress: (ev) =>
+      showEstado({
+        tipo: SEMAFORO,
+        idCelda: buildId({
+          idSector,
+          x,
+          y,
+        }),
+        idSemaforo: buildId(semaforo),
+        placement,
       }),
-      idSemaforo: buildId(semaforo),
-      placement,
-    });
+  });
+  if (!semaforo) return null;
 
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
@@ -48,7 +50,7 @@ export default function Semaforo({ idSemaforo, placement }) {
         [styles.manual]: !semaforo.soloManual && semaforo.manual,
       })}
       transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
-      onClick={onClick}
+      {...longPressProps}
     >
       <title>{nombreEntity(semaforo)}</title>
       <line x1={xTope} y1={cy} x2={x2 + r} y2={cy} />

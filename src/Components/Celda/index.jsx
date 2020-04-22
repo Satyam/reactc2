@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { isPlainClick, buildId, useLongPress } from 'Utils';
+import { buildId, useLongPress } from 'Utils';
 
 import {
   useCelda,
@@ -38,27 +38,23 @@ export default function Celda({
   const { showEstado } = useEstado();
   const longPressProps = useLongPress({
     onClick: (ev) => {
-      if (isPlainClick(ev)) {
-        switch (celda.tipo) {
-          case CAMBIO:
-            setPosicion((celda.posicion + 1) % celda.ramas.length);
-            break;
-          case PARAGOLPE:
-            toggleRebota();
-            break;
-          default:
-            break;
-        }
+      switch (celda.tipo) {
+        case CAMBIO:
+          setPosicion((celda.posicion + 1) % celda.ramas.length);
+          break;
+        case PARAGOLPE:
+          toggleRebota();
+          break;
+        default:
+          break;
       }
     },
     onLongPress: (ev) => {
-      if (isPlainClick(ev)) {
-        showEstado({
-          tipo: celda.tipo,
-          idCelda,
-          placement,
-        });
-      }
+      showEstado({
+        tipo: celda.tipo,
+        idCelda,
+        placement,
+      });
     },
   });
 
