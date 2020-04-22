@@ -27,7 +27,7 @@ import EstadoCambio from './Cambio';
 import EstadoSemaforo from './Semaforo';
 
 import styles from './styles.module.css';
-import { isPlainClick } from 'Utils';
+import { isPlainClick, nombreEntity } from 'Utils';
 
 const TAB_SEMAFORO = 'Semaforo';
 const TAB_CELDA = 'Celda';
@@ -84,8 +84,9 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
       placement={placement}
     >
       <PopoverHeader>
-        {semaforo ? 'Semaforo' : 'Celda'} {celda.x} {celda.y}{' '}
-        {semaforo && semaforo.dir}
+        {semaforo
+          ? `Semáforo ${nombreEntity(semaforo)}`
+          : `Celda ${nombreEntity(celda)}`}
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>

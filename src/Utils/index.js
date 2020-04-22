@@ -107,3 +107,10 @@ export function useResize() {
 
   return size;
 }
+
+export function nombreEntity(entity) {
+  return (
+    entity.nombre ||
+    `[${entity.x},${entity.y}]` + (entity.dir ? `-${entity.dir}` : '')
+  );
+}

@@ -248,6 +248,7 @@ function validateSemaforos(name) {
       [CENTRO]: aspecto,
       [DER]: aspecto,
       soloManual: j.boolean(),
+      nombre: j.string(),
     })
     .append(coords)
     .or(IZQ, CENTRO, DER);
