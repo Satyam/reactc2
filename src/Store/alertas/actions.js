@@ -4,10 +4,10 @@ import { DANGER } from 'Store/data';
 
 export const doSetAlarma = createAction('doSetAlarma');
 
-export function setAlarma(idCelda, idTren, msg) {
+export function setAlarma(idCelda, numero, msg) {
   return (dispatch) => {
-    dispatch(setAviso(DANGER, idCelda, idTren, msg));
-    dispatch(doSetAlarma({ idCelda, idTren, msg, fecha: Date.now() }));
+    dispatch(setAviso(DANGER, idCelda, numero, msg));
+    dispatch(doSetAlarma({ idCelda, numero, msg, fecha: Date.now() }));
     dispatch(setPlayRate(0));
   };
 }
@@ -16,11 +16,11 @@ export const clearAlarma = createAction('clearAlarma');
 
 export const setAviso = createAction(
   'setAviso',
-  (nivel, idCelda, idTren, msg) => ({
+  (nivel, idCelda, numero, msg) => ({
     payload: {
       nivel,
       idCelda,
-      idTren,
+      numero,
       msg,
       fecha: Date.now(),
     },

@@ -7,7 +7,7 @@ import {
   setAutomatizaciones,
   setAviso,
 } from 'Store/actions';
-import { buildId } from 'Utils';
+import { buildId, nombreEntity } from 'Utils';
 
 import {
   LINEA,
@@ -34,10 +34,10 @@ import {
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
 import { BLOQUE } from '../data/constantes';
 
-let id = 0;
+let id = 100;
 export const doAddTren = createAction(
   'addTren',
-  (celda, dir, maxSpeed, idTren) => ({
+  (celda, dir, maxSpeed, idTren, numero) => ({
     payload: {
       idCelda: celda.idCelda,
       x: celda.x,
@@ -47,18 +47,26 @@ export const doAddTren = createAction(
       maxSpeed,
       idTren,
       idSector: celda.idSector,
+      numero,
     },
   })
 );
 
 export function addTren(celda, dir, maxSpeed = 1) {
   return (dispatch) => {
-    const idTren = `_tren_${id++}`;
+    const numero = id;
+    id += 2;
+    const idTren = `_tren_${numero}`;
     const { idCelda } = celda;
     dispatch(
-      setAviso(INFO, idCelda, idTren, `Parte tren ${idTren} desde ${idCelda}`)
+      setAviso(
+        INFO,
+        idCelda,
+        numero,
+        `Parte tren ${numero} desde ${nombreEntity(celda)}`
+      )
     );
-    dispatch(doAddTren(celda, dir, maxSpeed, idTren));
+    dispatch(doAddTren(celda, dir, maxSpeed, idTren, numero));
     dispatch(addTrenToCelda(idCelda, idTren));
     dispatch(setAutomatizaciones(idCelda, BLOQUE));
   };
@@ -67,11 +75,17 @@ export function addTren(celda, dir, maxSpeed = 1) {
 export const doDelTren = createAction('doDelTren');
 
 export function delTren(tren) {
-  return (dispatch) => {
-    const { idTren, idCelda } = tren;
+  return (dispatch, getState) => {
+    const { idTren, idCelda, numero } = tren;
+    const celda = selCelda(getState(), idCelda);
     if (idCelda) dispatch(removeTrenFromCelda(idCelda, idTren));
     dispatch(
-      setAviso(INFO, idCelda, idTren, `Borrado el tren ${idTren} en ${idCelda}`)
+      setAviso(
+        INFO,
+        idCelda,
+        numero,
+        `Borrado el tren ${numero} en ${nombreEntity(celda)}`
+      )
     );
     dispatch(doDelTren(tren.idTren));
   };
@@ -182,8 +196,8 @@ export function moveTren(idTren) {
                   setAviso(
                     WARNING,
                     tren.idCelda,
-                    idTren,
-                    `Tren ${idTren} detenido en ${tren.idCelda}`
+                    tren.numero,
+                    `Tren ${tren.numero} detenido en ${nombreEntity(oldCelda)}`
                   )
                 );
               dispatch(setTren({ idTren, speed: 0 }));
@@ -195,8 +209,10 @@ export function moveTren(idTren) {
                   setAviso(
                     INFO,
                     tren.idCelda,
-                    idTren,
-                    `Tren ${idTren} reanuda la marcha en ${tren.idCelda}`
+                    tren.numero,
+                    `Tren ${tren.numero} reanuda la marcha en ${nombreEntity(
+                      oldCelda
+                    )}`
                   )
                 );
                 dispatch(setTren({ idTren, speed: tren.maxSpeed / 2 }));
@@ -210,8 +226,10 @@ export function moveTren(idTren) {
                   setAviso(
                     INFO,
                     tren.idCelda,
-                    idTren,
-                    `Tren ${idTren} reanuda la marcha en ${tren.idCelda}`
+                    tren.numero,
+                    `Tren ${tren.numero} reanuda la marcha en ${nombreEntity(
+                      oldCelda
+                    )}`
                   )
                 );
                 dispatch(setTren({ idTren, speed: tren.maxSpeed }));
@@ -221,28 +239,32 @@ export function moveTren(idTren) {
               break;
             default:
               throw new Error(
-                `Semaforo ${newIdSemaforo} dá semaforo imposible ${newPermiso}`
+                `Semáforo ${newIdSemaforo} dá semáforo imposible ${newPermiso}`
               );
           }
         }
 
         if (newCelda.idTren) {
+          const newTren = selTren(getState(), newCelda.idTren);
           dispatch(
             setAlarma(
               newIdCelda,
-              idTren,
-              `Colisión en ${newCelda.idCelda} entre ${idTren} y ${newCelda.idTren}`
+              tren.numero,
+              `Colisión en ${nombreEntity(newCelda)} entre trenes ${
+                tren.numero
+              } y ${newTren.numero}`
             )
           );
           return;
         }
         const trenEnBloque = selBloqueOcupado(getState(), newCelda.idBloque);
         if (trenEnBloque && trenEnBloque !== idTren) {
+          const newTren = selTren(getState(), trenEnBloque);
           dispatch(
             setAlarma(
               newIdCelda,
-              idTren,
-              `Tren ${idTren} invade el bloque ${newCelda.idBloque} ocupado por ${trenEnBloque}`
+              tren.numero,
+              `Tren ${tren.numero} invade el bloque ${newCelda.idBloque} ocupado por el tren ${newTren.numero}`
             )
           );
           return;
@@ -252,8 +274,12 @@ export function moveTren(idTren) {
           dispatch(
             setAlarma(
               newCelda.idCelda,
-              idTren,
-              `Tren ${idTren} no encuentra vía correspondiente en celda ${newCelda.idCelda}`
+              tren.numero,
+              `Tren ${
+                tren.numero
+              } no encuentra vía correspondiente en celda ${nombreEntity(
+                newCelda
+              )}`
             )
           );
           return;

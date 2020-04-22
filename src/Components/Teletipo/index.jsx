@@ -51,7 +51,7 @@ export default function Teletipo() {
             <tr className={styles[row.nivel]} key={row.fecha}>
               <td>{new Date(row.fecha).toLocaleString()}</td>
               <td>{row.idCelda}</td>
-              <td>{row.idTren}</td>
+              <td>{row.numero}</td>
               <td colSpan={2}>{row.msg}</td>
               <td>
                 <Trash onClick={clear(row.fecha)} />
