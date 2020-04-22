@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 import { isPlainClick } from 'Utils';
 
 export default function Alarma() {
-  const [{ idCelda, idTren, msg, time }, clearAlarma] = useAlarma();
+  const [{ idCelda, idTren, msg, fecha }, clearAlarma] = useAlarma();
   const delTrenes = useDelTrenes();
   const setAutomatizaciones = useSetAutomatizaciones();
 
@@ -27,7 +27,7 @@ export default function Alarma() {
           <Button close className={styles.close} onClick={onClose} />
         </PopoverHeader>
         <PopoverBody>
-          <p>{new Date(time).toLocaleString()}</p>
+          <p>{new Date(fecha).toLocaleString()}</p>
           {msg}
         </PopoverBody>
       </Popover>
