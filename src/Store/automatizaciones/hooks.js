@@ -1,11 +1,15 @@
-import { setAutomatizaciones } from './actions';
+import { runAutomatizaciones, runAutomatizacion } from './actions';
 import { selAutomatizacion } from './selectors';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const useSetAutomatizaciones = () => {
+export const useRunAutomatizaciones = () => {
   const dispatch = useDispatch();
-  return (idOrigen, tipo, force) =>
-    dispatch(setAutomatizaciones(idOrigen, tipo, force));
+  return (idOrigen) => dispatch(runAutomatizaciones(idOrigen));
+};
+
+export const useRunAutomatizacion = () => {
+  const dispatch = useDispatch();
+  return (idOrigen) => dispatch(runAutomatizacion(idOrigen));
 };
 
 export const useSelAutomatizacion = (idOrigen) =>

@@ -1,10 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
-import { LIBRE, PRECAUCION, ALTO, SEMAFORO } from 'Store/data';
+import { LIBRE, PRECAUCION, ALTO } from 'Store/data';
 import { isPlainClick } from 'Utils';
 
-import { useSetSenal, useSemaforoManual, useSetAutomatizaciones } from 'Store';
+import {
+  useSetSenal,
+  useSemaforoManual,
+  useRunAutomatizaciones,
+  useRunAutomatizacion,
+} from 'Store';
 
 import {
   ButtonGroup,
@@ -58,19 +63,20 @@ export default function EstadoSemaforo({ semaforo }) {
   const [semaforoIsManual, toggleSemaforoManual] = useSemaforoManual(
     idSemaforo
   );
-  const setAutomatizaciones = useSetAutomatizaciones();
+  const runAutomatizacion = useRunAutomatizacion();
+  const runAutomatizaciones = useRunAutomatizaciones();
 
   const onSetEstado = (senal, estado) => {
     if (semaforoIsManual || soloManual) {
       setSenalEstado(idSemaforo, senal, estado);
     }
     if (soloManual) {
-      setAutomatizaciones(idSemaforo, SEMAFORO, true);
+      runAutomatizaciones(idSemaforo);
     }
   };
   const onSetManual = () => {
     toggleSemaforoManual();
-    if (semaforoIsManual) setAutomatizaciones(idSemaforo, SEMAFORO, true);
+    if (semaforoIsManual) runAutomatizacion(idSemaforo);
   };
 
   return (

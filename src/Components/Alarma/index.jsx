@@ -1,6 +1,5 @@
 import React from 'react';
-import { useAlarma, useDelTrenes, useSetAutomatizaciones } from 'Store';
-import { CAMBIO } from 'Store/data';
+import { useAlarma, useDelTrenes, useRunAutomatizaciones } from 'Store';
 import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import styles from './styles.module.css';
@@ -9,13 +8,13 @@ import { isPlainClick } from 'Utils';
 export default function Alarma() {
   const [{ idCelda, numero, msg, fecha }, clearAlarma] = useAlarma();
   const delTrenes = useDelTrenes();
-  const setAutomatizaciones = useSetAutomatizaciones();
+  const runAutomatizaciones = useRunAutomatizaciones();
 
   const onClose = (ev) => {
     if (isPlainClick(ev)) {
       clearAlarma();
       delTrenes();
-      setAutomatizaciones(idCelda, CAMBIO);
+      runAutomatizaciones();
     }
   };
 

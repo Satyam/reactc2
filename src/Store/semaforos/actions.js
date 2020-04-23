@@ -1,9 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { clearPendientes, setAutomatizaciones } from 'Store/actions';
+import { clearPendientes, runAutomatizaciones } from 'Store/actions';
 import { selSemaforo } from 'Store/selectors';
 import { selSemaforoIsManual } from './selectors';
-import { SEMAFORO } from 'Store/data';
 
 export const plainSetSenalEstado = createAction(
   'setSenalEstado',
@@ -31,7 +30,7 @@ export function setSenalEstado(idSemaforo, senal, estado) {
   return (dispatch, getState) => {
     dispatch(doSetSenalEstado(idSemaforo, senal, estado));
     if (!selSemaforoIsManual(getState(), idSemaforo)) {
-      dispatch(setAutomatizaciones(idSemaforo, SEMAFORO));
+      dispatch(runAutomatizaciones(idSemaforo));
     }
     return dispatch(clearPendientes());
   };

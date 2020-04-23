@@ -4,7 +4,7 @@ import {
   removeTrenFromCelda,
   addTrenToCelda,
   setAlarma,
-  setAutomatizaciones,
+  runAutomatizaciones,
   setAviso,
 } from 'Store/actions';
 import { buildId, nombreEntity } from 'Utils';
@@ -32,7 +32,6 @@ import {
   WARNING,
 } from 'Store/data';
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
-import { BLOQUE } from '../data/constantes';
 
 let id = 100;
 export const doAddTren = createAction(
@@ -68,7 +67,7 @@ export function addTren(celda, dir, maxSpeed = 1) {
     );
     dispatch(doAddTren(celda, dir, maxSpeed, idTren, numero));
     dispatch(addTrenToCelda(idCelda, idTren));
-    dispatch(setAutomatizaciones(idCelda, BLOQUE));
+    dispatch(runAutomatizaciones());
   };
 }
 
@@ -301,7 +300,7 @@ export function moveTren(idTren) {
         dispatch(delTren(tren));
       }
     } else dispatch(setTren(tren));
-    dispatch(setAutomatizaciones(tren.idCelda, BLOQUE));
+    dispatch(runAutomatizaciones());
   };
 }
 
