@@ -23,7 +23,7 @@ import {
 } from 'Store/data';
 
 import {
-  doSetPosicion,
+  rawSetPosicion,
   doSetAspectoSenal,
   setBloqueOcupado,
 } from 'Store/actions';
@@ -42,7 +42,7 @@ function automate(dispatch, getState, idTarget, autom) {
       if (posicionEsperada === celdaTarget.posicion) return p1;
       if (celdaTarget.manual) return p1;
       return p1.then(
-        (r1) => !!dispatch(doSetPosicion(idTarget, posicionEsperada)) || r1
+        (r1) => !!dispatch(rawSetPosicion(idTarget, posicionEsperada)) || r1
       );
     }, Promise.resolve(false));
   }

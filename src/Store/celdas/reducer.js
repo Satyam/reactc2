@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { celdas } from 'Store/data';
 import {
-  plainSetPosicion,
+  doSetPosicion,
   doSetCambioManual,
   doRemoveTrenFromCelda,
   doAddTrenToCelda,
@@ -9,7 +9,7 @@ import {
 } from 'Store/actions';
 
 export default createReducer(celdas, {
-  [plainSetPosicion]: (state, action) => {
+  [doSetPosicion]: (state, action) => {
     const { idCelda, posicion } = action.payload;
     state[idCelda].posicion = posicion;
   },

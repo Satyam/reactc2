@@ -9,7 +9,7 @@ import {
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 import { CAMBIO } from 'Store/data';
 
-export const plainSetPosicion = createAction(
+export const doSetPosicion = createAction(
   'setPosicion',
   (idCelda, posicion) => ({
     payload: {
@@ -19,7 +19,7 @@ export const plainSetPosicion = createAction(
   })
 );
 
-export function doSetPosicion(idCelda, posicion) {
+export function rawSetPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
     if (celda.tipo !== CAMBIO) {
@@ -30,13 +30,13 @@ export function doSetPosicion(idCelda, posicion) {
     }
     if (selPendiente(getState(), idCelda)) return false;
     dispatch(setPendiente(idCelda));
-    return dispatch(plainSetPosicion(idCelda, posicion));
+    return dispatch(doSetPosicion(idCelda, posicion));
   };
 }
 
 export function setPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
-    dispatch(doSetPosicion(idCelda, posicion));
+    dispatch(rawSetPosicion(idCelda, posicion));
     if (!selCeldaIsManual(getState(), idCelda)) {
       dispatch(runAutomatizaciones(idCelda));
     }
