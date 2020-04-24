@@ -174,13 +174,6 @@ function automate(dispatch, getState, idTarget, autom) {
   }
 }
 
-const semaforoIdPattern = /_\d+_\d+_[NSEW][EW]?$/;
-function selEntity(state, id) {
-  return semaforoIdPattern.test(id)
-    ? selSemaforo(state, id)
-    : selCelda(state, id);
-}
-
 export function runAutomatizacion(idTarget) {
   return async (dispatch, getState) => {
     const autom = selAutomatizacion(getState(), idTarget);
@@ -191,11 +184,6 @@ export function runAutomatizacion(idTarget) {
 export function runAutomatizaciones(idOrigen) {
   return async (dispatch, getState) => {
     if (!selAutomatizacionesActive(getState())) return;
-
-    if (idOrigen) {
-      const origen = selEntity(getState(), idOrigen);
-      if (origen.manual) return;
-    }
 
     const browseAutomatizaciones = () => {
       const automatizaciones = selAutomatizaciones(getState());
