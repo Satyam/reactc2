@@ -1,19 +1,19 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { celdas } from 'Store/data';
 import {
-  plainSetCambio,
-  setCambioManual,
+  plainSetPosicion,
+  doSetCambioManual,
   doRemoveTrenFromCelda,
   doAddTrenToCelda,
   setRebota,
 } from 'Store/actions';
 
 export default createReducer(celdas, {
-  [plainSetCambio]: (state, action) => {
+  [plainSetPosicion]: (state, action) => {
     const { idCelda, posicion } = action.payload;
     state[idCelda].posicion = posicion;
   },
-  [setCambioManual]: (state, action) => {
+  [doSetCambioManual]: (state, action) => {
     const { idCelda, manual } = action.payload;
     state[idCelda].manual = manual;
   },

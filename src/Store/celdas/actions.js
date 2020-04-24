@@ -9,7 +9,7 @@ import {
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 import { CAMBIO } from 'Store/data';
 
-export const plainSetCambio = createAction(
+export const plainSetPosicion = createAction(
   'setPosicion',
   (idCelda, posicion) => ({
     payload: {
@@ -19,7 +19,7 @@ export const plainSetCambio = createAction(
   })
 );
 
-export function doSetCambio(idCelda, posicion) {
+export function doSetPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
     if (celda.tipo !== CAMBIO) {
@@ -30,13 +30,13 @@ export function doSetCambio(idCelda, posicion) {
     }
     if (selPendiente(getState(), idCelda)) return false;
     dispatch(setPendiente(idCelda));
-    return dispatch(plainSetCambio(idCelda, posicion));
+    return dispatch(plainSetPosicion(idCelda, posicion));
   };
 }
 
 export function setPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
-    dispatch(doSetCambio(idCelda, posicion));
+    dispatch(doSetPosicion(idCelda, posicion));
     if (!selCeldaIsManual(getState(), idCelda)) {
       dispatch(runAutomatizaciones(idCelda));
     }
@@ -44,7 +44,7 @@ export function setPosicion(idCelda, posicion) {
   };
 }
 
-export const setCambioManual = createAction(
+export const doSetCambioManual = createAction(
   'setCambioManual',
   (idCelda, manual) => ({
     payload: {
@@ -53,6 +53,15 @@ export const setCambioManual = createAction(
     },
   })
 );
+
+export function setCambioManual(idCelda, manual) {
+  return (dispatch, getState) => {
+    dispatch(doSetCambioManual(idCelda, manual));
+    if (!selCeldaIsManual(getState(), idCelda)) {
+      dispatch(runAutomatizaciones());
+    }
+  };
+}
 
 export const doRemoveTrenFromCelda = createAction(
   'removeTrenFromCelda',
@@ -63,6 +72,7 @@ export const doRemoveTrenFromCelda = createAction(
     },
   })
 );
+
 export function removeTrenFromCelda(idCelda, idTren) {
   return (dispatch, getState) => {
     dispatch(doRemoveTrenFromCelda(idCelda, idTren));
