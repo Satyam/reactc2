@@ -22,7 +22,11 @@ import {
   DER,
 } from 'Store/data';
 
-import { doSetCambio, doSetSenalEstado, setBloqueOcupado } from 'Store/actions';
+import {
+  doSetPosicion,
+  doSetAspectoSenal,
+  setBloqueOcupado,
+} from 'Store/actions';
 
 function automate(dispatch, getState, idTarget, autom) {
   const idSector = autom.idSector;
@@ -34,11 +38,11 @@ function automate(dispatch, getState, idTarget, autom) {
       const celdaSource = selCelda(getState(), idSource);
       const alt = dep.alts.find((alt) => alt.cuando === celdaSource.posicion);
       if (!alt) return p1;
-      const posicionEsperada = alt.estado;
+      const posicionEsperada = alt.posicion;
       if (posicionEsperada === celdaTarget.posicion) return p1;
       if (celdaTarget.manual) return p1;
       return p1.then(
-        (r1) => !!dispatch(doSetCambio(idTarget, posicionEsperada)) || r1
+        (r1) => !!dispatch(doSetPosicion(idTarget, posicionEsperada)) || r1
       );
     }, Promise.resolve(false));
   }
@@ -46,7 +50,7 @@ function automate(dispatch, getState, idTarget, autom) {
   function automatizacionesSemaforo(idTarget, deps) {
     const semaforoTarget = selSemaforo(getState(), idTarget);
     if (semaforoTarget.manual) return false;
-    const nuevoEstado = {
+    const aspectoEsperado = {
       izq: LIBRE,
       centro: LIBRE,
       der: LIBRE,
@@ -65,9 +69,12 @@ function automate(dispatch, getState, idTarget, autom) {
             (alt) => alt.cuando === celdaSource.posicion
           );
           if (alt) {
-            Object.keys(nuevoEstado).forEach((senal) => {
+            Object.keys(aspectoEsperado).forEach((senal) => {
               if (alt[senal])
-                nuevoEstado[senal] = Math.max(nuevoEstado[senal], alt[senal]);
+                aspectoEsperado[senal] = Math.max(
+                  aspectoEsperado[senal],
+                  alt[senal]
+                );
             });
           }
           break;
@@ -78,11 +85,11 @@ function automate(dispatch, getState, idTarget, autom) {
               ? Math.min(permiso, semaforoSource[senal])
               : permiso;
           }, ALTO);
-          dep.senales.forEach(({ cuando, senalAfectada, estado }) => {
+          dep.senales.forEach(({ cuando, senalAfectada, aspecto }) => {
             if (estadoSource === cuando) {
-              nuevoEstado[senalAfectada] = Math.max(
-                nuevoEstado[senalAfectada],
-                estado
+              aspectoEsperado[senalAfectada] = Math.max(
+                aspectoEsperado[senalAfectada],
+                aspecto
               );
             }
           });
@@ -93,13 +100,13 @@ function automate(dispatch, getState, idTarget, autom) {
             buildIdBloque(idSector, dep.bloque)
           );
           if (ocupado) {
-            nuevoEstado[dep.senalAfectada] = ALTO;
+            aspectoEsperado[dep.senalAfectada] = ALTO;
           }
           break;
         case FIJO:
-          nuevoEstado[dep.senalAfectada] = Math.max(
-            dep.estado,
-            nuevoEstado[dep.senalAfectada]
+          aspectoEsperado[dep.senalAfectada] = Math.max(
+            dep.aspecto,
+            aspectoEsperado[dep.senalAfectada]
           );
           break;
         default:
@@ -108,14 +115,15 @@ function automate(dispatch, getState, idTarget, autom) {
           );
       }
     });
-    return Object.keys(nuevoEstado).reduce((p2, senal) => {
+    return Object.keys(aspectoEsperado).reduce((p2, senal) => {
       if (!(senal in semaforoTarget)) return p2;
-      if (semaforoTarget[senal] === nuevoEstado[senal]) return p2;
+      if (semaforoTarget[senal] === aspectoEsperado[senal]) return p2;
 
       return p2.then(
         (r2) =>
-          !!dispatch(doSetSenalEstado(idTarget, senal, nuevoEstado[senal])) ||
-          r2
+          !!dispatch(
+            doSetAspectoSenal(idTarget, senal, aspectoEsperado[senal])
+          ) || r2
       );
     }, Promise.resolve(false));
   }
