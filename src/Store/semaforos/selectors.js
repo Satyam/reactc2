@@ -1,9 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
-
+import { AUTOMATICO } from '../data/constantes';
 export const selSemaforo = (state, idSemaforo) => state.semaforos[idSemaforo];
 
-export const selSemaforoIsManual = (state, idSemaforo) =>
-  state.semaforos[idSemaforo].manual;
+export const selModoSemaforo = (state, idSemaforo) => {
+  const semaforo = selSemaforo(state, idSemaforo);
+  return (semaforo && semaforo.modo) || AUTOMATICO;
+};
 
 export const selSemaforos = createSelector(
   (state) => state.semaforos,

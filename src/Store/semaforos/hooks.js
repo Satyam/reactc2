@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selSemaforo, selSemaforos, selSemaforoIsManual } from './selectors';
-import { setSenalEstado, setSemaforoManual } from './actions';
+import { selSemaforo, selSemaforos, selModoSemaforo } from './selectors';
+import { setAspectoSenal, setModoSemaforo } from './actions';
 
 export const useSemaforo = (idSemaforo) =>
   useSelector((state) => selSemaforo(state, idSemaforo));
@@ -9,20 +9,20 @@ export const useSemaforo = (idSemaforo) =>
 export const useSemaforos = (celda) =>
   useSelector((state) => selSemaforos(state, celda));
 
-export const useSetSenal = () => {
+export const useSetAspectoSenal = () => {
   const dispatch = useDispatch();
-  return (idSemaforo, senal, estado) =>
-    dispatch(setSenalEstado(idSemaforo, senal, estado));
+  return (idSemaforo, senal, aspecto) =>
+    dispatch(setAspectoSenal(idSemaforo, senal, aspecto));
 };
 
-export const useSemaforoManual = (idCelda) => {
-  const semaforoIsManual = useSelector((state) =>
-    selSemaforoIsManual(state, idCelda)
-  );
+export const useModoSemaforo = (idCelda) => {
+  const modoSemaforo = useSelector((state) => selModoSemaforo(state, idCelda));
   const dispatch = useDispatch();
-  const toggleSemaforoManual = useCallback(
-    () => dispatch(setSemaforoManual(idCelda, !semaforoIsManual)),
-    [idCelda, dispatch, semaforoIsManual]
-  );
-  return [semaforoIsManual, toggleSemaforoManual];
+  return [
+    modoSemaforo,
+    useCallback((modo) => dispatch(setModoSemaforo(idCelda, modo)), [
+      idCelda,
+      dispatch,
+    ]),
+  ];
 };

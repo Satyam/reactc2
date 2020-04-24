@@ -2,46 +2,56 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { clearPendientes, runAutomatizaciones } from 'Store/actions';
 import { selSemaforo } from 'Store/selectors';
-import { selSemaforoIsManual } from './selectors';
+import { selModoSemaforo } from './selectors';
+import { AUTOMATICO } from '../data';
 
-export const plainSetSenalEstado = createAction(
-  'setSenalEstado',
-  (idSemaforo, senal, estado) => ({
+export const plainSetAspectoSenal = createAction(
+  'setAspectoSenal',
+  (idSemaforo, senal, aspecto) => ({
     payload: {
       idSemaforo,
       senal,
-      estado,
+      aspecto,
     },
   })
 );
 
-export function doSetSenalEstado(idSemaforo, senal, estado) {
+export function doSetAspectoSenal(idSemaforo, senal, aspecto) {
   return (dispatch, getState) => {
     const semaforo = selSemaforo(getState(), idSemaforo);
     if (!semaforo[senal]) {
       throw new Error(`Semaforo ${idSemaforo} no tiene senal ${senal}`);
     }
-    if (semaforo[senal] === estado) return false;
-    return dispatch(plainSetSenalEstado(idSemaforo, senal, estado));
+    if (semaforo[senal] === aspecto) return false;
+    return dispatch(plainSetAspectoSenal(idSemaforo, senal, aspecto));
   };
 }
 
-export function setSenalEstado(idSemaforo, senal, estado) {
+export function setAspectoSenal(idSemaforo, senal, aspecto) {
   return (dispatch, getState) => {
-    dispatch(doSetSenalEstado(idSemaforo, senal, estado));
-    if (!selSemaforoIsManual(getState(), idSemaforo)) {
+    dispatch(doSetAspectoSenal(idSemaforo, senal, aspecto));
+    if (selModoSemaforo(getState(), idSemaforo) === AUTOMATICO) {
       dispatch(runAutomatizaciones(idSemaforo));
     }
     return dispatch(clearPendientes());
   };
 }
 
-export const setSemaforoManual = createAction(
-  'setSemaforoManual',
-  (idSemaforo, manual) => ({
+export const doSetModoSemaforo = createAction(
+  'setModoSemaforo',
+  (idSemaforo, modo) => ({
     payload: {
       idSemaforo,
-      manual,
+      modo,
     },
   })
 );
+
+export function setModoSemaforo(idSemaforo, modo) {
+  return (dispatch, getState) => {
+    dispatch(doSetModoSemaforo(idSemaforo, modo));
+    if (selModoSemaforo(getState(), idSemaforo) === AUTOMATICO) {
+      dispatch(runAutomatizaciones(idSemaforo));
+    }
+  };
+}

@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
-import { LIBRE, PRECAUCION, ALTO } from 'Store/data';
+import { LIBRE, PRECAUCION, ALTO, MANIOBRA } from 'Store/data';
 import { isPlainClick } from 'Utils';
 
 import {
-  useSetSenal,
-  useSemaforoManual,
+  useSetAspectoSenal,
+  useModoSemaforo,
   useRunAutomatizaciones,
-  useRunAutomatizacion,
 } from 'Store';
 
 import {
@@ -21,33 +20,34 @@ import {
 } from 'reactstrap';
 
 import styles from './styles.module.css';
+import { AUTOMATICO } from '../../Store/data';
 
-export function EstadoSenal({ senal, estado, onSetEstado }) {
-  const onSetAlto = (ev) => isPlainClick(ev) && onSetEstado(senal, ALTO);
+export function EstadoSenal({ senal, aspecto, onSetAspecto }) {
+  const onSetAlto = (ev) => isPlainClick(ev) && onSetAspecto(senal, ALTO);
   const onSetPrecaucion = (ev) =>
-    isPlainClick(ev) && onSetEstado(senal, PRECAUCION);
-  const onSetLibre = (ev) => isPlainClick(ev) && onSetEstado(senal, LIBRE);
+    isPlainClick(ev) && onSetAspecto(senal, PRECAUCION);
+  const onSetLibre = (ev) => isPlainClick(ev) && onSetAspecto(senal, LIBRE);
 
   return (
     <>
       <ButtonGroup vertical>
         <Button
           size="sm"
-          color={estado === ALTO ? 'danger' : 'outline-danger'}
+          color={aspecto === ALTO ? 'danger' : 'outline-danger'}
           onClick={onSetAlto}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === PRECAUCION ? 'warning' : 'outline-warning'}
+          color={aspecto === PRECAUCION ? 'warning' : 'outline-warning'}
           onClick={onSetPrecaucion}
         >
           <Circle />
         </Button>
         <Button
           size="sm"
-          color={estado === LIBRE ? 'success' : 'outline-success'}
+          color={aspecto === LIBRE ? 'success' : 'outline-success'}
           onClick={onSetLibre}
         >
           <Circle />
@@ -58,25 +58,22 @@ export function EstadoSenal({ senal, estado, onSetEstado }) {
 }
 
 export default function EstadoSemaforo({ semaforo }) {
-  const { izq, soloManual, centro, der, idSemaforo } = semaforo;
-  const setSenalEstado = useSetSenal();
-  const [semaforoIsManual, toggleSemaforoManual] = useSemaforoManual(
-    idSemaforo
-  );
-  const runAutomatizacion = useRunAutomatizacion();
+  const { izq, soloManiobra, centro, der, idSemaforo } = semaforo;
+  const setAspectoSenal = useSetAspectoSenal();
+  const [modoSemaforo, setModoSemaforo] = useModoSemaforo(idSemaforo);
   const runAutomatizaciones = useRunAutomatizaciones();
 
-  const onSetEstado = (senal, estado) => {
-    if (semaforoIsManual || soloManual) {
-      setSenalEstado(idSemaforo, senal, estado);
+  const onSetAspecto = (senal, aspecto) => {
+    if (modoSemaforo === MANIOBRA || soloManiobra) {
+      setAspectoSenal(idSemaforo, senal, aspecto);
     }
-    if (soloManual) {
+    if (soloManiobra) {
       runAutomatizaciones(idSemaforo);
     }
   };
+
   const onSetManual = () => {
-    toggleSemaforoManual();
-    if (semaforoIsManual) runAutomatizacion(idSemaforo);
+    setModoSemaforo(modoSemaforo === AUTOMATICO ? MANIOBRA : AUTOMATICO);
   };
 
   return (
@@ -84,7 +81,7 @@ export default function EstadoSemaforo({ semaforo }) {
       <Container>
         <div
           className={classNames({
-            [styles.disabled]: !soloManual && !semaforoIsManual,
+            [styles.disabled]: !soloManiobra && !modoSemaforo,
           })}
         >
           <Row>
@@ -96,8 +93,8 @@ export default function EstadoSemaforo({ semaforo }) {
               >
                 <EstadoSenal
                   senal="izq"
-                  estado={izq}
-                  onSetEstado={onSetEstado}
+                  aspecto={izq}
+                  onSetAspecto={onSetAspecto}
                 />
               </div>
             </Col>
@@ -109,8 +106,8 @@ export default function EstadoSemaforo({ semaforo }) {
               >
                 <EstadoSenal
                   senal="centro"
-                  estado={centro}
-                  onSetEstado={onSetEstado}
+                  aspecto={centro}
+                  onSetAspecto={onSetAspecto}
                 />
               </div>
             </Col>
@@ -122,22 +119,22 @@ export default function EstadoSemaforo({ semaforo }) {
               >
                 <EstadoSenal
                   senal="der"
-                  estado={der}
-                  onSetEstado={onSetEstado}
+                  aspecto={der}
+                  onSetAspecto={onSetAspecto}
                 />
               </div>
             </Col>
           </Row>
         </div>
-        {!soloManual && (
+        {!soloManiobra && (
           <Row>
             <Button
               className={styles.manual}
               size="sm"
-              color={semaforoIsManual ? 'danger' : 'outline-info'}
+              color={modoSemaforo ? 'danger' : 'outline-info'}
               onClick={onSetManual}
             >
-              {semaforoIsManual ? <Unlocked /> : <Locked />}
+              {modoSemaforo ? <Unlocked /> : <Locked />}
             </Button>
           </Row>
         )}

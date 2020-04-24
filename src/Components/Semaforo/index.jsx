@@ -3,19 +3,33 @@ import classNames from 'classnames';
 
 import { buildId, nombreEntity, useLongPress } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
-import { SEMAFORO } from 'Store/data';
-import { useEstado, useSemaforo } from 'Store';
+import { SEMAFORO, MANIOBRA, BLOQUEADO, AUTOMATICO } from 'Store/data';
+import { useEstado, useSemaforo, useModoSemaforo } from 'Store';
 import styles from './styles.module.css';
 
-const aspectos = ['', 'verde', 'amarillo', 'rojo'];
+const estilosAspectos = ['', 'verde', 'amarillo', 'rojo'];
 
 export default function Semaforo({ idSemaforo, placement }) {
   const semaforo = useSemaforo(idSemaforo);
+  const [modoSemaforo, setModoSemaforo] = useModoSemaforo(idSemaforo);
   const { idSector, x, y, dir, centro, izq, der } = semaforo || {};
   const { showEstado } = useEstado();
   const longPressProps = useLongPress({
     onClick: () => {
-      window.alert('not implemented yet');
+      if (semaforo.soloManiobra) {
+        showEstado({
+          tipo: SEMAFORO,
+          idCelda: buildId({
+            idSector,
+            x,
+            y,
+          }),
+          idSemaforo: buildId(semaforo),
+          placement,
+        });
+      } else {
+        setModoSemaforo(modoSemaforo === AUTOMATICO ? BLOQUEADO : AUTOMATICO);
+      }
     },
     onLongPress: (ev) =>
       showEstado({
@@ -44,10 +58,12 @@ export default function Semaforo({ idSemaforo, placement }) {
   const x2 = x1 + 2 - 2 * r;
   /* eslint-enable no-mixed-operators */
 
+  const bloqueado = modoSemaforo === BLOQUEADO && 'rojo';
   return (
     <g
       className={classNames(styles.semaforo, {
-        [styles.manual]: !semaforo.soloManual && semaforo.manual,
+        [styles.maniobra]: !semaforo.soloManiobra && modoSemaforo === MANIOBRA,
+        [styles.blink]: !semaforo.soloManiobra && modoSemaforo === BLOQUEADO,
       })}
       transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
       {...longPressProps}
@@ -56,16 +72,26 @@ export default function Semaforo({ idSemaforo, placement }) {
       <line x1={xTope} y1={cy} x2={x2 + r} y2={cy} />
       <line x1={xTope} y1={cy - r} x2={xTope} y2={cy + r} />
       <circle
-        className={styles[aspectos[centro]]}
+        className={styles[bloqueado || estilosAspectos[centro]]}
         cx={izq || der ? x2 : x1}
         cy={cy}
         r={r}
       />
       {izq && (
-        <circle className={styles[aspectos[izq]]} cx={x1} cy={cy + r} r={r} />
+        <circle
+          className={styles[bloqueado || estilosAspectos[izq]]}
+          cx={x1}
+          cy={cy + r}
+          r={r}
+        />
       )}
       {der && (
-        <circle className={styles[aspectos[der]]} cx={x1} cy={cy - r} r={r} />
+        <circle
+          className={styles[bloqueado || estilosAspectos[der]]}
+          cx={x1}
+          cy={cy - r}
+          r={r}
+        />
       )}
     </g>
   );

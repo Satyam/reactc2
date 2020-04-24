@@ -1,14 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { semaforos } from 'Store/data';
-import { plainSetSenalEstado, setSemaforoManual } from 'Store/actions';
+import { plainSetAspectoSenal, doSetModoSemaforo } from 'Store/actions';
 
 export default createReducer(semaforos, {
-  [plainSetSenalEstado]: (state, action) => {
-    const { idSemaforo, senal, estado } = action.payload;
-    state[idSemaforo][senal] = estado;
+  [plainSetAspectoSenal]: (state, action) => {
+    const { idSemaforo, senal, aspecto } = action.payload;
+    state[idSemaforo][senal] = aspecto;
   },
-  [setSemaforoManual]: (state, action) => {
-    const { idSemaforo, manual } = action.payload;
-    state[idSemaforo].manual = manual;
+  [doSetModoSemaforo]: (state, action) => {
+    const { idSemaforo, modo } = action.payload;
+    state[idSemaforo].modo = modo;
   },
 });
