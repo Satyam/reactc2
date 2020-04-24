@@ -247,7 +247,7 @@ function validateSemaforos(name) {
       [IZQ]: aspecto,
       [CENTRO]: aspecto,
       [DER]: aspecto,
-      soloManual: j.boolean(),
+      soloManiobra: j.boolean(),
       nombre: j.string(),
     })
     .append(coords)
@@ -299,7 +299,7 @@ function validateAutomatizaciones(name) {
       alts: j.array().items(
         j.object({
           cuando: cambios,
-          estado: cambios,
+          posicion: cambios,
         })
       ),
     })
@@ -315,7 +315,7 @@ function validateAutomatizaciones(name) {
           j.object({
             cuando: aspecto.required(),
             senalAfectada: icd.required(),
-            estado: aspecto.required(),
+            aspecto: aspecto.required(),
           })
         )
         .required(),
@@ -345,7 +345,7 @@ function validateAutomatizaciones(name) {
   const depSemaforoFijo = j.object({
     tipo: j.valid(FIJO).required(),
     senalAfectada: icd.required(),
-    estado: aspecto.required(),
+    aspecto: aspecto.required(),
   });
 
   const depsCambio = depCambioCambio;

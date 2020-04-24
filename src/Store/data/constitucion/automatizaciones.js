@@ -34,8 +34,8 @@ export const automatizaciones = [
         y: 5,
         tipo: CAMBIO,
         alts: [
-          { cuando: NORMAL, estado: NORMAL },
-          { cuando: DESVIADO, estado: DESVIADO },
+          { cuando: NORMAL, posicion: NORMAL },
+          { cuando: DESVIADO, posicion: DESVIADO },
         ],
       },
       {
@@ -45,7 +45,7 @@ export const automatizaciones = [
         alts: [
           {
             cuando: DESVIADO,
-            estado: NORMAL,
+            posicion: NORMAL,
           },
         ],
       },
@@ -62,8 +62,8 @@ export const automatizaciones = [
         y: 4,
         tipo: CAMBIO,
         alts: [
-          { cuando: NORMAL, estado: NORMAL },
-          { cuando: DESVIADO, estado: DESVIADO },
+          { cuando: NORMAL, posicion: NORMAL },
+          { cuando: DESVIADO, posicion: DESVIADO },
         ],
       },
     ],
@@ -79,8 +79,8 @@ export const automatizaciones = [
         y: 5,
         tipo: CAMBIO,
         alts: [
-          { cuando: NORMAL, estado: NORMAL },
-          { cuando: DESVIADO, estado: DESVIADO },
+          { cuando: NORMAL, posicion: NORMAL },
+          { cuando: DESVIADO, posicion: DESVIADO },
         ],
       },
     ],
@@ -96,15 +96,15 @@ export const automatizaciones = [
         y: 4,
         tipo: CAMBIO,
         alts: [
-          { cuando: NORMAL, estado: NORMAL },
-          { cuando: DESVIADO, estado: DESVIADO },
+          { cuando: NORMAL, posicion: NORMAL },
+          { cuando: DESVIADO, posicion: DESVIADO },
         ],
       },
       {
         x: 4,
         y: 5,
         tipo: CAMBIO,
-        alts: [{ cuando: DESVIADO, estado: NORMAL }],
+        alts: [{ cuando: DESVIADO, posicion: NORMAL }],
       },
     ],
   },

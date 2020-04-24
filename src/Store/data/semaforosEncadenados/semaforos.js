@@ -29,6 +29,6 @@ export const semaforos = [
     centro: LIBRE,
     x: 3,
     y: 0,
-    soloManual: true,
+    soloManiobra: true,
   },
 ];

@@ -4,10 +4,14 @@ export const CAMBIO = 'cambio';
 export const CRUCE = 'cruce';
 export const PARAGOLPE = 'paragolpe';
 export const SEMAFORO = 'semaforo';
-// Señales:
+// Aspectos señales:
 export const LIBRE = 1;
 export const PRECAUCION = 2;
 export const ALTO = 3;
+// Modos Semaforos
+export const AUTOMATICO = 0;
+export const MANIOBRA = 1;
+export const BLOQUEADO = 2;
 // Cambio:
 export const NORMAL = 0;
 export const DESVIADO = 1;

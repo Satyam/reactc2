@@ -37,7 +37,7 @@ export const automatizaciones = [
           {
             cuando: ALTO,
             senalAfectada: CENTRO,
-            estado: PRECAUCION,
+            aspecto: PRECAUCION,
           },
         ],
       },
