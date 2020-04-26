@@ -20,6 +20,7 @@ import {
   IZQ,
   CENTRO,
   DER,
+  AUTOMATICO,
 } from 'Store/data';
 
 import {
@@ -49,7 +50,7 @@ function automate(dispatch, getState, idTarget, autom) {
 
   function automatizacionesSemaforo(idTarget, deps) {
     const semaforoTarget = selSemaforo(getState(), idTarget);
-    if (semaforoTarget.manual) return false;
+    if (semaforoTarget.modo !== AUTOMATICO) return false;
     const aspectoEsperado = {
       izq: LIBRE,
       centro: LIBRE,
