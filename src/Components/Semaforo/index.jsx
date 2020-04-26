@@ -58,7 +58,6 @@ export default function Semaforo({ idSemaforo, placement }) {
   const x2 = x1 + 2 - 2 * r;
   /* eslint-enable no-mixed-operators */
 
-  const bloqueado = modoSemaforo === BLOQUEADO && 'rojo';
   return (
     <g
       className={classNames(styles.semaforo, {
@@ -72,14 +71,14 @@ export default function Semaforo({ idSemaforo, placement }) {
       <line x1={xTope} y1={cy} x2={x2 + r} y2={cy} />
       <line x1={xTope} y1={cy - r} x2={xTope} y2={cy + r} />
       <circle
-        className={styles[bloqueado || estilosAspectos[centro]]}
+        className={styles[estilosAspectos[centro]]}
         cx={izq || der ? x2 : x1}
         cy={cy}
         r={r}
       />
       {izq && (
         <circle
-          className={styles[bloqueado || estilosAspectos[izq]]}
+          className={styles[estilosAspectos[izq]]}
           cx={x1}
           cy={cy + r}
           r={r}
@@ -87,7 +86,7 @@ export default function Semaforo({ idSemaforo, placement }) {
       )}
       {der && (
         <circle
-          className={styles[bloqueado || estilosAspectos[der]]}
+          className={styles[estilosAspectos[der]]}
           cx={x1}
           cy={cy - r}
           r={r}
