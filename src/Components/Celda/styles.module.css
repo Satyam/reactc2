@@ -35,3 +35,7 @@
   stroke: black;
   stroke-width: 3;
 }
+
+.close {
+  margin-left: 0.5em;
+}
