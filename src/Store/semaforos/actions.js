@@ -51,7 +51,7 @@ export function setModoSemaforo(idSemaforo, modo) {
   return (dispatch, getState) => {
     dispatch(doSetModoSemaforo(idSemaforo, modo));
     if (selModoSemaforo(getState(), idSemaforo) === AUTOMATICO) {
-      dispatch(runAutomatizaciones(idSemaforo));
+      dispatch(runAutomatizaciones());
     }
   };
 }
