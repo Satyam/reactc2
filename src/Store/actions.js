@@ -2,6 +2,7 @@ export * from './alertas/actions';
 export * from './bloques/actions';
 export * from './celdas/actions';
 export * from './automatizaciones/actions';
+export * from './enclavamientos/actions';
 export * from './options/actions';
 export * from './pendientes/actions';
 export * from './sectores/actions';

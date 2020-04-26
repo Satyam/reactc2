@@ -64,6 +64,7 @@ const salida = {
   automatizaciones: {},
   semaforos: {},
   bloques: {},
+  enclavamientos: {},
 };
 
 // Ids should be valid DOM id attributes.
@@ -417,6 +418,61 @@ function processAutomatizaciones(idSector, automatizaciones) {
   }, salida.automatizaciones);
 }
 
+function validateEnclavamientos(name) {
+  console.log('  Enclavamientos');
+
+  const depCambioBloque = j.object({
+    tipo: j.valid(BLOQUE).required(),
+    bloque: j.string(),
+  });
+
+  const depCambioSemaforo = j
+    .object({
+      tipo: j.valid(SEMAFORO).required(),
+      dir,
+      aspecto,
+    })
+    .append(coords);
+
+  const depsCambio = j.alternatives().try(depCambioBloque, depCambioSemaforo);
+
+  const baseEncl = j.object({}).append(coords);
+
+  const enclCambio = baseEncl.append({
+    tipo: j.valid(CAMBIO).required(),
+    deps: j.array().items(depsCambio).required(),
+  });
+
+  const enclavamientos = require(`./${name}/enclavamientos.js`).enclavamientos;
+  validate(
+    enclavamientos,
+    j
+      .array()
+      .items(j.alternatives().try(enclCambio))
+      .unique(
+        (a, b) =>
+          a.x === b.x && a.y === b.y && a.tipo === b.tipo && a.dir === b.dir
+      )
+  );
+
+  return enclavamientos;
+}
+function processEnclavamientos(idSector, enclavamientos) {
+  salida.enclavamientos = enclavamientos.reduce((es, e) => {
+    const idEncl = buildId(idSector, e);
+    if (es[idEncl])
+      throw new Error(`Clave duplicada en Enclavamientos: ${idEncl}`);
+    return {
+      ...es,
+      [idEncl]: {
+        ...e,
+        idEncl,
+        idSector,
+      },
+    };
+  }, salida.enclavamientos);
+}
+
 // This is where it starts validating and processing
 
 validateConstants();
@@ -437,6 +493,9 @@ dirs.forEach((d) => {
 
     const automatizaciones = validateAutomatizaciones(name);
     processAutomatizaciones(name, automatizaciones);
+
+    const enclavamientos = validateEnclavamientos(name);
+    processEnclavamientos(name, enclavamientos);
   }
 });
 
