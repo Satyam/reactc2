@@ -40,6 +40,9 @@ const {
   NW,
   BLOQUE,
   FIJO,
+  AUTOMATICO,
+  MANIOBRA,
+  BLOQUEADO,
 } = require('./constantes');
 
 const validate = (what, schema) => {
@@ -115,6 +118,9 @@ function validateConstants() {
   validateConst(NW, 'NW');
   validateConst(BLOQUE, 'bloque');
   validateConst(FIJO, 'fijo');
+  validateConst(AUTOMATICO, 0);
+  validateConst(MANIOBRA, 1);
+  validateConst(BLOQUEADO, 2);
 }
 
 function validateSector(name) {
@@ -280,6 +286,7 @@ function processSemaforos(idSector, semaforos) {
     return {
       ...ss,
       [idSemaforo]: {
+        modo: AUTOMATICO,
         ...s,
         idSemaforo,
         idSector,
