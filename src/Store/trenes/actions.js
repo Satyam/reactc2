@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { selCelda, selSemaforo, selCurrentSector } from 'Store/selectors';
+import { selCelda, selSemaforo } from 'Store/selectors';
 import {
   removeTrenFromCelda,
   addTrenToCelda,
@@ -7,6 +7,7 @@ import {
   runAutomatizaciones,
   setAviso,
 } from 'Store/actions';
+import { currentSector } from '../options';
 import { buildId, nombreEntity } from 'Utils';
 
 import {
@@ -306,7 +307,7 @@ export function moveTren(idTren) {
 
 export function moveTrenes() {
   return (dispatch, getState) => {
-    const idSector = selCurrentSector(getState());
+    const idSector = currentSector.selector(getState());
     return Promise.all(
       selTrenes(getState(), idSector).map((tren) =>
         dispatch(moveTren(tren.idTren))

@@ -5,10 +5,11 @@ import {
   selSemaforo,
   selAutomatizacion,
   selAutomatizaciones,
-  selAutomatizacionesActive,
   selBloqueOcupado,
   selBloque,
 } from 'Store/selectors';
+
+import { automatizacionesActive } from '../options';
 
 import {
   LIBRE,
@@ -184,7 +185,7 @@ export function runAutomatizacion(idTarget) {
 
 export function runAutomatizaciones(idOrigen) {
   return async (dispatch, getState) => {
-    if (!selAutomatizacionesActive(getState())) return;
+    if (!automatizacionesActive.selector(getState())) return;
 
     const browseAutomatizaciones = () => {
       const automatizaciones = selAutomatizaciones(getState());

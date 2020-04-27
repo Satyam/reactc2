@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { setPlayRate } from 'Store/actions';
+import { playRate } from '../options';
 import { DANGER } from 'Store/data';
 
 export const doSetAlarma = createAction('doSetAlarma');
@@ -8,7 +8,7 @@ export function setAlarma(idCelda, numero, msg) {
   return (dispatch) => {
     dispatch(setAviso(DANGER, idCelda, numero, msg));
     dispatch(doSetAlarma({ idCelda, numero, msg, fecha: Date.now() }));
-    dispatch(setPlayRate(0));
+    dispatch(playRate.action(0));
   };
 }
 

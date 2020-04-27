@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { selCurrentSector } from '../options/selectors';
+import { currentSector } from '../options';
 import { selBloqueOcupado } from '../bloques/selectors';
 import { selSemaforo } from '../semaforos/selectors';
 import { buildId, buildIdBloque } from 'Utils';
@@ -7,7 +7,7 @@ import { BLOQUE, SEMAFORO, IZQ, CENTRO, DER, ALTO } from 'Store/data';
 
 export const selEnclavamientos = createSelector(
   (state) => state.enclavamientos,
-  selCurrentSector,
+  currentSector.selector,
   (enclavamientos, idSector) =>
     Object.values(enclavamientos).filter((e) => e.idSector === idSector)
 );
@@ -17,7 +17,7 @@ export const selEnclavamiento = (state, idOrigen) =>
 
 export const selCondicionesFaltantes = createSelector(
   (state) => state,
-  selCurrentSector,
+  currentSector.selector,
   selEnclavamiento,
   (state, idSector, encl) =>
     encl

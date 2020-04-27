@@ -1,33 +1,28 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { showEstado, hideEstado } from './actions';
+
 import {
+  showConfig,
+  showCoords,
   automatizacionesActive,
   showTeletipo,
-  showCoords,
-  showEstado,
-  hideEstado,
-  showConfig,
-  setPlayRate,
-  setCurrentSector,
-} from './actions';
+  playRate,
+  currentSector,
+} from './';
 
 export default createReducer(
   {
-    automatizacionesActive: true,
-    showCoords: true,
+    [automatizacionesActive]: automatizacionesActive.default,
+    [showCoords]: showCoords.default,
     showEstado: { show: false },
-    playRate: 1,
-    showTeletipo: true,
+    [playRate]: playRate.default,
+    [showTeletipo]: showTeletipo.default,
+    [showConfig]: showConfig.default,
   },
   {
-    [automatizacionesActive]: (state, action) => {
-      state.automatizacionesActive = action.payload;
-    },
-    [showTeletipo]: (state, action) => {
-      state.showTeletipo = action.payload;
-    },
-    [showCoords]: (state, action) => {
-      state.showCoords = action.payload;
-    },
+    [automatizacionesActive]: automatizacionesActive.reducer,
+    [showTeletipo]: showTeletipo.reducer,
+    [showCoords]: showCoords.reducer,
     [showEstado]: (state, action) => {
       state.showEstado = {
         ...action.payload,
@@ -37,14 +32,8 @@ export default createReducer(
     [hideEstado]: (state) => {
       state.showEstado = { show: false };
     },
-    [showConfig]: (state, action) => {
-      state.showConfig = action.payload;
-    },
-    [setPlayRate]: (state, action) => {
-      state.playRate = action.payload;
-    },
-    [setCurrentSector]: (state, action) => {
-      state.currIdSector = action.payload;
-    },
+    [showConfig]: showConfig.reducer,
+    [playRate]: playRate.reducer,
+    [currentSector]: currentSector.reducer,
   }
 );
