@@ -23,11 +23,11 @@ export const useEstado = () => {
   return { estado, hideEstado, showEstado };
 };
 
-export const usePlayRate = playRate.useOption;
+export const usePlayRate = playRate.useState;
 
-export const useCurrentSector = currentSector.useOption;
+export const useCurrentSector = currentSector.useState;
 
-export const useShowConfig = showConfig.useOption;
-export const useShowCoords = showCoords.useOption;
-export const useAutomatizacionesActive = automatizacionesActive.useOption;
-export const useShowTeletipo = showTeletipo.useOption;
+export const useShowConfig = showConfig.useState;
+export const useShowCoords = showCoords.useState;
+export const useAutomatizacionesActive = automatizacionesActive.useState;
+export const useShowTeletipo = showTeletipo.useState;
