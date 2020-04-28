@@ -1,4 +1,5 @@
 const path = require('path');
+const UnusedWebpackPlugin = require('unused-webpack-plugin');
 
 module.exports = {
   webpack: {
@@ -11,6 +12,16 @@ module.exports = {
           ? 'react-redux/dist/react-redux.js'
           : 'react-redux/lib',
     },
+    plugins: [
+      new UnusedWebpackPlugin({
+        // Source directories
+        directories: [path.join(__dirname, 'src')],
+        // Exclude patterns
+        exclude: ['*.test.js', 'Store/data/*'],
+        // Root directory (optional)
+        root: __dirname,
+      }),
+    ],
   },
   jest: {
     configure: {
