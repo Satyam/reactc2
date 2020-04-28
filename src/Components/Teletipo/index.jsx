@@ -25,11 +25,11 @@ function Item({ nivel, fecha, idCelda, numero, msg, clearAviso }) {
 
 export default function Teletipo() {
   const [mensajes, clearAvisos, clearAviso] = useAvisos();
-  const [, toggleTeletipo] = useShowTeletipo();
+  const [showTeletipo, setShowTeletipo] = useShowTeletipo();
   const [info, setInfo] = useState(false);
 
   const clearAll = (ev) => isPlainClick(ev) && clearAvisos();
-  const close = (ev) => isPlainClick(ev) && toggleTeletipo();
+  const close = (ev) => isPlainClick(ev) && setShowTeletipo(!showTeletipo);
   const toggleInfo = (ev) => setInfo((i) => !i);
 
   return mensajes.length ? (

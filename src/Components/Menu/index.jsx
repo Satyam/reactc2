@@ -36,11 +36,11 @@ export default function Menu() {
   const sector = useSector(idSector);
   const [
     automatizacionesActive,
-    toggleAutomatizaciones,
+    setAutomatizaciones,
   ] = useAutomatizacionesActive();
-  const [showTeletipo, toggleTeletipo] = useShowTeletipo();
-  const [showCoords, toggleShowCoords] = useShowCoords();
-  const [showConfig, toggleShowConfig] = useShowConfig();
+  const [showTeletipo, setShowTeletipo] = useShowTeletipo();
+  const [showCoords, setShowCoords] = useShowCoords();
+  const [showConfig, setShowConfig] = useShowConfig();
   const { hideEstado } = useEstado();
   const [oldIdSector, setOldIdSector] = useState();
 
@@ -54,26 +54,26 @@ export default function Menu() {
 
   const onClickShowAutomatizaciones = (ev) => {
     if (isPlainClick(ev)) {
-      toggleAutomatizaciones();
+      setAutomatizaciones(!automatizacionesActive);
       setIsOpen(false);
     }
   };
 
   const onClickShowTeletipo = (ev) => {
     if (isPlainClick(ev)) {
-      toggleTeletipo();
+      setShowTeletipo(!showTeletipo);
       setIsOpen(false);
     }
   };
   const onClickShowCoords = (ev) => {
     if (isPlainClick(ev)) {
-      toggleShowCoords();
+      setShowCoords(!showCoords);
       setIsOpen(false);
     }
   };
   const onClickShowConfig = (ev) => {
     if (isPlainClick(ev)) {
-      toggleShowConfig();
+      setShowConfig(!showConfig);
       setIsOpen(false);
     }
   };
