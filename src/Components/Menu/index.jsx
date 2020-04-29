@@ -28,12 +28,13 @@ import {
 import Animador from 'Components/Animador';
 import { GitHub } from 'Components/Icons';
 
-export default function Menu() {
+import loadingIcon from 'Components/Icons/loading.gif';
+
+function ActualMenu({ sectores }) {
   const [isOpen, setIsOpen] = useState(false);
   const match = useRouteMatch('/sector/:idSector');
   const idSector = match && match.params.idSector;
-  const sectores = useSectores();
-  const sector = useSector(idSector);
+  const { sector } = useSector(idSector);
   const [
     automatizacionesActive,
     setAutomatizaciones,
@@ -78,6 +79,7 @@ export default function Menu() {
     }
   };
   const toggleOpen = () => setIsOpen(!isOpen);
+
   return (
     <Navbar color="light" light expand="md" fixed="top">
       <NavbarBrand
@@ -154,4 +156,13 @@ export default function Menu() {
       </Collapse>
     </Navbar>
   );
+}
+
+export default function Menu() {
+  const { sectores, loading, load } = useSectores();
+  if (loading !== 'loaded') {
+    load();
+    return <img alt="loading..." src={loadingIcon} />;
+  }
+  return <ActualMenu sectores={sectores} />;
 }

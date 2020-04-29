@@ -4,11 +4,12 @@ import { useResize } from 'Utils';
 import { useSector, useCeldas } from 'Store';
 
 import Celda from 'Components/Celda';
+import loadingIcon from 'Components/Icons/loading.gif';
+
 import styles from './styles.module.css';
 
-export default function Sector({ idSector }) {
-  const sector = useSector(idSector);
-  const celdas = useCeldas(idSector);
+function ActualSector({ sector }) {
+  const celdas = useCeldas(sector.idSector);
   const size = useResize();
   const { ancho, descrCorta, alto } = sector;
   const cellWidth = Math.min(
@@ -36,4 +37,13 @@ export default function Sector({ idSector }) {
       <div style={{ height: (alto + 2) * cellWidth }}></div>
     </>
   );
+}
+
+export default function Sector({ idSector }) {
+  const { sector, loading, load } = useSector(idSector);
+  if (loading !== 'loaded') {
+    load();
+    return <img alt="loading..." src={loadingIcon} />;
+  }
+  return <ActualSector sector={sector} />;
 }
