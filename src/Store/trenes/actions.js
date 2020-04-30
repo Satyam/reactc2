@@ -7,7 +7,7 @@ import {
   runAutomatizaciones,
   setAviso,
 } from 'Store/actions';
-import { currentSector } from '../options';
+import { currentSector } from 'Store/options';
 import { buildId, nombreEntity } from 'Utils';
 
 import {

@@ -9,7 +9,7 @@ import {
   selBloque,
 } from 'Store/selectors';
 
-import { automatizacionesActive } from '../options';
+import { automatizacionesActive } from 'Store/options';
 
 import {
   LIBRE,

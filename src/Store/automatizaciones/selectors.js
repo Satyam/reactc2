@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { CAMBIO, SEMAFORO } from 'Store/data';
-import { currentSector } from '../options';
+import { currentSector } from 'Store/options';
 
 export const selAutomatizaciones = createSelector(
   (state) => state.automatizaciones,

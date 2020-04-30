@@ -3,7 +3,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { clearPendientes, runAutomatizaciones } from 'Store/actions';
 import { selSemaforo } from 'Store/selectors';
 import { selModoSemaforo } from './selectors';
-import { AUTOMATICO } from '../data';
+import { AUTOMATICO } from 'Store/data';
 
 export const plainSetAspectoSenal = createAction(
   'setAspectoSenal',
