@@ -1,4 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { enclavamientos } from 'Store/data';
+import { loadSector } from 'Store/sectores/actions';
+import enclavamientosAdapter from './adapter';
 
-export default createReducer(enclavamientos, {});
+export default createReducer(enclavamientosAdapter.getInitialState(), {
+  [loadSector.fulfilled]: (state, action) => {
+    enclavamientosAdapter.setAll(state, action.payload.enclavamientos);
+  },
+});

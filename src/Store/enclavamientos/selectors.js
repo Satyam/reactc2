@@ -1,19 +1,17 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { currentSector } from '../options';
-import { selBloqueOcupado } from '../bloques/selectors';
-import { selSemaforo } from '../semaforos/selectors';
+import { currentSector } from 'Store/options';
+import { selBloqueOcupado } from 'Store/bloques/selectors';
+import { selSemaforo } from 'Store/semaforos/selectors';
 import { buildId, buildIdBloque } from 'Utils';
 import { BLOQUE, SEMAFORO, IZQ, CENTRO, DER, ALTO } from 'Store/data';
+import enclavamientosAdapter from './adapter';
 
-export const selEnclavamientos = createSelector(
-  (state) => state.enclavamientos,
-  currentSector.selector,
-  (enclavamientos, idSector) =>
-    Object.values(enclavamientos).filter((e) => e.idSector === idSector)
+const selectors = enclavamientosAdapter.getSelectors(
+  (state) => state.enclavamientos
 );
 
-export const selEnclavamiento = (state, idOrigen) =>
-  state.enclavamientos[idOrigen];
+export const selEnclavamientos = selectors.selectAll;
+export const selEnclavamiento = selectors.selectById;
 
 export const selCondicionesFaltantes = createSelector(
   (state) => state,
