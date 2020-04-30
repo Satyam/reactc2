@@ -67,8 +67,8 @@ const validate = (what, schema) => {
   }
 };
 
+const sectores = [];
 const salida = {
-  sectores: [],
   celdas: {},
   automatizaciones: {},
   semaforos: {},
@@ -152,7 +152,7 @@ function validateSector(name) {
 }
 
 function processSector(idSector, sector) {
-  salida.sectores.push({
+  sectores.push({
     ...sector,
     idSector,
   });
@@ -522,14 +522,13 @@ fs.writeFileSync(
   `
 export * from './constantes.js'
 ${Object.keys(salida)
-  .map((el) =>
-    el === 'sectores'
-      ? ''
-      : `export const ${el} =  ${util.inspect(salida[el], {
-          depth: null,
-          maxArrayLength: null,
-          // breakLength: Infinity,
-        })}
+  .map(
+    (el) =>
+      `export const ${el} =  ${util.inspect(salida[el], {
+        depth: null,
+        maxArrayLength: null,
+        // breakLength: Infinity,
+      })}
   `
   )
   .join('\n')}
@@ -539,10 +538,9 @@ ${Object.keys(salida)
 fs.writeFileSync(
   './_salida/sectores.js',
 
-  `export default ${util.inspect(salida.sectores, {
+  `export default ${util.inspect(sectores, {
     depth: null,
     maxArrayLength: null,
-    // breakLength: Infinity,
   })}
   `
 );
