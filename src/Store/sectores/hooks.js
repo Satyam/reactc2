@@ -1,18 +1,21 @@
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selSector,
+  selSectorLoading,
+  selErrorSector,
   selSectores,
   selSectoresLoading,
-  selErroresLoading,
+  selErrorSectores,
 } from './selectors';
-import { loadSectores } from './actions';
+import { loadSectores, loadSector } from './actions';
+
 export const useSector = (idSector) => {
   const dispatch = useDispatch();
   return {
-    loading: useSelector(selSectoresLoading),
+    loading: useSelector(selSectorLoading),
     sector: useSelector((state) => selSector(state, idSector)),
-    error: useSelector(selErroresLoading),
-    load: () => dispatch(loadSectores()),
+    error: useSelector(selErrorSector),
+    load: () => dispatch(loadSector(idSector)),
   };
 };
 
@@ -21,7 +24,7 @@ export const useSectores = () => {
   return {
     loading: useSelector(selSectoresLoading),
     sectores: useSelector(selSectores),
-    error: useSelector(selErroresLoading),
+    error: useSelector(selErrorSectores),
     load: () => dispatch(loadSectores()),
   };
 };
