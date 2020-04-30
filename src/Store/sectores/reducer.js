@@ -1,5 +1,6 @@
 import { createReducer, createEntityAdapter } from '@reduxjs/toolkit';
 import { loadSectores } from './actions';
+import { UNLOADED, LOADED, LOADING } from 'Store/data';
 
 export const sectorAdapter = createEntityAdapter({
   selectId: (sector) => sector.idSector,
@@ -13,20 +14,25 @@ export const sectorAdapter = createEntityAdapter({
 });
 export default createReducer(
   sectorAdapter.getInitialState({
-    loading: 'unloaded',
+    loading: UNLOADED,
   }),
   {
     [loadSectores.pending]: (state, action) => {
-      if (state.loading === 'unloaded') {
-        state.loading = 'pending';
+      if (state.loading === UNLOADED) {
+        state.loading = LOADING;
+        state.error = null;
       }
     },
     [loadSectores.fulfilled]: (state, action) => {
-      if (state.loading === 'pending') {
+      if (state.loading === LOADING) {
         // Or, call them as "mutating" helpers in a case reducer
         sectorAdapter.setAll(state, action.payload);
-        state.loading = 'loaded';
+        state.loading = LOADED;
       }
+    },
+    [loadSectores.rejected]: (state, action) => {
+      state.loading = UNLOADED;
+      state.error = action.error;
     },
   }
 );

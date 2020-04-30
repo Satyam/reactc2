@@ -25,6 +25,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
+import { LOADED } from 'Store/data';
 import Animador from 'Components/Animador';
 import { GitHub } from 'Components/Icons';
 
@@ -159,8 +160,13 @@ function ActualMenu({ sectores }) {
 }
 
 export default function Menu() {
-  const { sectores, loading, load } = useSectores();
-  if (loading !== 'loaded') {
+  const { sectores, loading, error, load } = useSectores();
+  if (error) {
+    return (
+      <pre>Error cargando 'sectores': {JSON.stringify(error, null, 2)}</pre>
+    );
+  }
+  if (loading !== LOADED) {
     load();
     return <img alt="loading..." src={loadingIcon} />;
   }

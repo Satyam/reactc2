@@ -5,6 +5,7 @@ import { useSector, useCeldas } from 'Store';
 
 import Celda from 'Components/Celda';
 import loadingIcon from 'Components/Icons/loading.gif';
+import { LOADED } from 'Store/data';
 
 import styles from './styles.module.css';
 
@@ -40,8 +41,11 @@ function ActualSector({ sector }) {
 }
 
 export default function Sector({ idSector }) {
-  const { sector, loading, load } = useSector(idSector);
-  if (loading !== 'loaded') {
+  const { sector, loading, error, load } = useSector(idSector);
+  if (error) {
+    return <pre>Error cargando 'sector': {JSON.stringify(error, null, 2)}</pre>;
+  }
+  if (loading !== LOADED) {
     load();
     return <img alt="loading..." src={loadingIcon} />;
   }

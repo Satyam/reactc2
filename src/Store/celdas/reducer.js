@@ -1,4 +1,5 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer, createEntityAdapter } from '@reduxjs/toolkit';
+import { buildId } from 'Utils';
 import { celdas } from 'Store/data';
 import {
   doSetPosicion,
@@ -7,6 +8,10 @@ import {
   doAddTrenToCelda,
   setRebota,
 } from 'Store/actions';
+
+export const celdaAdapter = createEntityAdapter({
+  selectId: buildId,
+});
 
 export default createReducer(celdas, {
   [doSetPosicion]: (state, action) => {
