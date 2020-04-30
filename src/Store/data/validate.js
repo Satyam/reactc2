@@ -43,6 +43,12 @@ const {
   AUTOMATICO,
   MANIOBRA,
   BLOQUEADO,
+  INFO,
+  WARNING,
+  DANGER,
+  UNLOADED,
+  LOADING,
+  LOADED,
 } = require('./constantes');
 
 const validate = (what, schema) => {
@@ -121,6 +127,12 @@ function validateConstants() {
   validateConst(AUTOMATICO, 0);
   validateConst(MANIOBRA, 1);
   validateConst(BLOQUEADO, 2);
+  validateConst(INFO, 'info');
+  validateConst(WARNING, 'warning');
+  validateConst(DANGER, 'danger');
+  validateConst(UNLOADED, 'unloaded');
+  validateConst(LOADING, 'loading');
+  validateConst(LOADED, 'loaded');
 }
 
 function validateSector(name) {

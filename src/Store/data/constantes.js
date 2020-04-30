@@ -30,10 +30,14 @@ export const SW = 'SW';
 export const W = 'W';
 export const NW = 'NW';
 // para tipo de automatización
-// se reutilizan CAMBIO y SEMAFORO de anges
+// se reutilizan CAMBIO y SEMAFORO de antes
 export const BLOQUE = 'bloque';
 export const FIJO = 'fijo';
-
+// Tipos de avisos
 export const INFO = 'info';
 export const WARNING = 'warning';
 export const DANGER = 'danger';
+// Estados de carga de datos
+export const UNLOADED = 'unloaded';
+export const LOADING = 'loading';
+export const LOADED = 'loaded';
