@@ -494,6 +494,14 @@ function processEnclavamientos(idSector, enclavamientos) {
 
 validateConstants();
 
+const total = {
+  celdas: {},
+  automatizaciones: {},
+  semaforos: {},
+  bloques: {},
+  enclavamientos: {},
+};
+
 const dirs = fs.readdirSync('./', { withFileTypes: true });
 dirs.forEach((d) => {
   if (d.isDirectory() && !d.name.startsWith('_')) {
@@ -513,6 +521,29 @@ dirs.forEach((d) => {
 
     const enclavamientos = validateEnclavamientos(name);
     processEnclavamientos(name, enclavamientos);
+
+    fs.writeFileSync(
+      `./_salida/${name}.js`,
+      Object.keys(salida).reduce((ss, el) => {
+        return `
+${ss}
+export const ${el} =  ${util.inspect(Object.values(salida[el]), {
+          depth: null,
+          maxArrayLength: null,
+        })};`;
+      }, '')
+    );
+
+    Object.assign(total.celdas, salida.celdas);
+    Object.assign(total.automatizaciones, salida.automatizaciones);
+    Object.assign(total.semaforos, salida.semaforos);
+    Object.assign(total.bloques, salida.bloques);
+    Object.assign(total.enclavamientos, salida.enclavamientos);
+    salida.celdas = {};
+    salida.automatizaciones = {};
+    salida.semaforos = {};
+    salida.bloques = {};
+    salida.enclavamientos = {};
   }
 });
 
@@ -524,7 +555,7 @@ export * from './constantes.js'
 ${Object.keys(salida)
   .map(
     (el) =>
-      `export const ${el} =  ${util.inspect(salida[el], {
+      `export const ${el} =  ${util.inspect(total[el], {
         depth: null,
         maxArrayLength: null,
         // breakLength: Infinity,
@@ -536,7 +567,7 @@ ${Object.keys(salida)
 );
 
 fs.writeFileSync(
-  './_salida/sectores.js',
+  './_salida/_sectores.js',
 
   `export default ${util.inspect(sectores, {
     depth: null,
