@@ -4,11 +4,9 @@ import { selBloqueOcupado } from 'Store/bloques/selectors';
 import { selSemaforo } from 'Store/semaforos/selectors';
 import { buildId, buildIdBloque } from 'Utils';
 import { BLOQUE, SEMAFORO, IZQ, CENTRO, DER, ALTO } from 'Store/data';
-import enclavamientosAdapter from './adapter';
+import adapter from './adapter';
 
-const selectors = enclavamientosAdapter.getSelectors(
-  (state) => state.enclavamientos
-);
+const selectors = adapter.getSelectors((state) => state.enclavamientos);
 
 export const selEnclavamientos = selectors.selectAll;
 export const selEnclavamiento = selectors.selectById;
