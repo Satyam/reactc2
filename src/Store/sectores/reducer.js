@@ -18,7 +18,6 @@ export default createReducer(
     },
     [loadSectores.fulfilled]: (state, action) => {
       if (state.loadStatusSectores === LOADING) {
-        // Or, call them as "mutating" helpers in a case reducer
         sectorAdapter.setAll(state, action.payload);
         state.loadStatusSectores = LOADED;
       }
@@ -28,20 +27,17 @@ export default createReducer(
       state.errorSectores = action.error;
     },
     [loadSector.pending]: (state, action) => {
-      console.log('loadSector.pending', action);
       if (state.loadStatusSector === UNLOADED) {
         state.loadStatusSector = LOADING;
         state.error = null;
       }
     },
     [loadSector.fulfilled]: (state, action) => {
-      console.log('loadSector.fulfilled', action);
       if (state.loadStatusSector === LOADING) {
         state.loadStatusSector = LOADED;
       }
     },
     [loadSector.rejected]: (state, action) => {
-      console.log('loadSector.rejected', action);
       state.loadStatusSectores = UNLOADED;
       state.errorSector = action.error;
     },
