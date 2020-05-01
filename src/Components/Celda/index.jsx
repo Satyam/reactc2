@@ -72,14 +72,14 @@ function CondicionesFaltantes({ idCelda, faltantes, setShowFaltantes }) {
   );
 }
 
-export default function Celda({
-  idCelda,
+export function ActualCelda({
+  celda,
   cellsAcross,
   cellWidth,
   padLeft,
   padTop,
 }) {
-  const celda = useCelda(idCelda);
+  const idCelda = celda.idCelda;
   const setPosicion = useSetPosicion(idCelda);
   const toggleRebota = useToggleRebota(idCelda);
   const bloque = useBloque(celda.idBloque);
@@ -196,6 +196,14 @@ export default function Celda({
       )}
     </>
   );
+}
+
+export default function Celda({ idCelda, ...rest }) {
+  const celda = useCelda(idCelda);
+  if (celda) {
+    return <ActualCelda celda={celda} {...rest} />;
+  }
+  return null;
 }
 
 Celda.whyDidYouRender = false;

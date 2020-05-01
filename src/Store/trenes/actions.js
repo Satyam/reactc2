@@ -76,9 +76,9 @@ export const doDelTren = createAction('doDelTren');
 
 export function delTren(tren) {
   return (dispatch, getState) => {
-    const { idTren, idCelda, numero } = tren;
+    const { idCelda, numero } = tren;
     const celda = selCelda(getState(), idCelda);
-    if (idCelda) dispatch(removeTrenFromCelda(idCelda, idTren));
+    if (idCelda) dispatch(removeTrenFromCelda(idCelda));
     dispatch(
       setAviso(
         INFO,
@@ -284,7 +284,7 @@ export function moveTren(idTren) {
           );
           return;
         }
-        dispatch(removeTrenFromCelda(oldCelda.idCelda, idTren));
+        dispatch(removeTrenFromCelda(oldCelda.idCelda));
         dispatch(addTrenToCelda(newIdCelda, idTren));
         dispatch(
           setTren({

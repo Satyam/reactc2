@@ -9,15 +9,15 @@ import {
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
 import { CAMBIO } from 'Store/data';
 
-export const doSetPosicion = createAction(
-  'setPosicion',
-  (idCelda, posicion) => ({
-    payload: {
-      idCelda,
-      posicion,
-    },
-  })
-);
+const UPDATE_CELDA = 'updateCelda';
+export const updateCelda = createAction(UPDATE_CELDA);
+
+const doSetPosicion = createAction(UPDATE_CELDA, (idCelda, posicion) => ({
+  payload: {
+    idCelda,
+    posicion,
+  },
+}));
 
 export function rawSetPosicion(idCelda, posicion) {
   return (dispatch, getState) => {
@@ -45,7 +45,7 @@ export function setPosicion(idCelda, posicion) {
 }
 
 export const doSetCambioManual = createAction(
-  'setCambioManual',
+  UPDATE_CELDA,
   (idCelda, manual) => ({
     payload: {
       idCelda,
@@ -63,19 +63,16 @@ export function setCambioManual(idCelda, manual) {
   };
 }
 
-export const doRemoveTrenFromCelda = createAction(
-  'removeTrenFromCelda',
-  (idCelda, idTren) => ({
-    payload: {
-      idCelda,
-      idTren,
-    },
-  })
-);
+export const doRemoveTrenFromCelda = createAction(UPDATE_CELDA, (idCelda) => ({
+  payload: {
+    idCelda,
+    idTren: null,
+  },
+}));
 
-export function removeTrenFromCelda(idCelda, idTren) {
+export function removeTrenFromCelda(idCelda) {
   return (dispatch, getState) => {
-    dispatch(doRemoveTrenFromCelda(idCelda, idTren));
+    dispatch(doRemoveTrenFromCelda(idCelda));
     const celda = selCelda(getState(), idCelda);
     if (celda.idBloque) {
       dispatch(setBloqueOcupado(celda.idBloque, false));
@@ -84,7 +81,7 @@ export function removeTrenFromCelda(idCelda, idTren) {
 }
 
 export const doAddTrenToCelda = createAction(
-  'addTrenToCelda',
+  UPDATE_CELDA,
   (idCelda, idTren) => ({
     payload: {
       idCelda,
@@ -103,7 +100,7 @@ export function addTrenToCelda(idCelda, idTren) {
   };
 }
 
-export const setRebota = createAction('setRebota', (idCelda, rebota) => ({
+export const setRebota = createAction(UPDATE_CELDA, (idCelda, rebota) => ({
   payload: {
     idCelda,
     rebota,
