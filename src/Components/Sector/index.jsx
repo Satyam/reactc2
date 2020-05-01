@@ -42,11 +42,15 @@ function ActualSector({ sector }) {
 
 export default function Sector({ idSector }) {
   const { sector, loading, error, load } = useSector(idSector);
+
+  useEffect(() => {
+    if (!error && loading !== LOADED) load();
+  }, [error, load, loading]);
+
   if (error) {
     return <pre>Error cargando 'sector': {JSON.stringify(error, null, 2)}</pre>;
   }
   if (loading !== LOADED) {
-    load();
     return <img alt="loading..." src={loadingIcon} />;
   }
   return <ActualSector sector={sector} />;

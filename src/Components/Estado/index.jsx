@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 
 import {
@@ -56,12 +56,14 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
 
   const activeElement = semaforo || celda.tipo === CAMBIO;
 
-  if (oldId !== idCelda) {
-    setActiveTab(
-      activeElement ? TAB_COMANDO : idSemaforo ? TAB_SEMAFORO : TAB_CELDA
-    );
-    setOldId(idCelda);
-  }
+  useEffect(() => {
+    if (oldId !== idCelda) {
+      setActiveTab(
+        activeElement ? TAB_COMANDO : idSemaforo ? TAB_SEMAFORO : TAB_CELDA
+      );
+      setOldId(idCelda);
+    }
+  }, [oldId, idCelda, activeElement, idSemaforo]);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
