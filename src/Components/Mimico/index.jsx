@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Sector from 'Components/Sector';
 import Estado from 'Components/Estado';
@@ -9,15 +9,17 @@ export default function Mimico() {
   const { idSector } = useParams();
   const [currentIdSector, setCurrentIdSector] = useCurrentSector();
 
-  if (idSector !== currentIdSector) {
-    setCurrentIdSector(idSector);
-    return null;
-  }
-  return (
+  useEffect(() => {
+    if (idSector !== currentIdSector) {
+      setCurrentIdSector(idSector);
+    }
+  }, [idSector, currentIdSector, setCurrentIdSector]);
+
+  return currentIdSector ? (
     <>
       <Estado />
-      <Sector idSector={idSector} />
+      <Sector idSector={currentIdSector} />
       <Alarma />
     </>
-  );
+  ) : null;
 }
