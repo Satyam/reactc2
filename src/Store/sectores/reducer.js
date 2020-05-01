@@ -7,13 +7,13 @@ import { loadSector, loadSectores } from './actions';
 export default createReducer(
   sectorAdapter.getInitialState({
     loadStatusSectores: UNLOADED,
-    loadStatusSector: UNLOADED,
+    loadStatusEachSector: {},
   }),
   {
     [loadSectores.pending]: (state) => {
       if (state.loadStatusSectores === UNLOADED) {
         state.loadStatusSectores = LOADING;
-        state.error = null;
+        state.errorSectores = null;
       }
     },
     [loadSectores.fulfilled]: (state, action) => {
@@ -27,18 +27,21 @@ export default createReducer(
       state.errorSectores = action.error;
     },
     [loadSector.pending]: (state, action) => {
-      if (state.loadStatusSector === UNLOADED) {
-        state.loadStatusSector = LOADING;
-        state.error = null;
+      const idSector = action.meta.arg;
+      const loadStatus = state.loadStatusEachSector[idSector];
+      if (!loadStatus || loadStatus === UNLOADED) {
+        state.loadStatusEachSector[idSector] = LOADING;
+        state.errorSector = null;
       }
     },
     [loadSector.fulfilled]: (state, action) => {
-      if (state.loadStatusSector === LOADING) {
-        state.loadStatusSector = LOADED;
+      const idSector = action.meta.arg;
+      if (state.loadStatusEachSector[idSector] === LOADING) {
+        state.loadStatusEachSector[idSector] = LOADED;
       }
     },
     [loadSector.rejected]: (state, action) => {
-      state.loadStatusSectores = UNLOADED;
+      state.loadStatusEachSector[action.meta.arg] = UNLOADED;
       state.errorSector = action.error;
     },
   }

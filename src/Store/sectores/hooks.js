@@ -12,7 +12,7 @@ import { loadSectores, loadSector } from './actions';
 export const useSector = (idSector) => {
   const dispatch = useDispatch();
   return {
-    loading: useSelector(selSectorLoading),
+    loading: useSelector((state) => selSectorLoading(state, idSector)),
     sector: useSelector((state) => selSector(state, idSector)),
     error: useSelector(selErrorSector),
     load: () => dispatch(loadSector(idSector)),
