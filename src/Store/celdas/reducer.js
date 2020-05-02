@@ -7,7 +7,7 @@ import { updateCelda } from 'Store/actions';
 
 export default createReducer(adapter.getInitialState(), {
   [loadSector.fulfilled]: (state, action) => {
-    adapter.setAll(state, action.payload.celdas);
+    adapter.addMany(state, action.payload.celdas);
   },
   [updateCelda]: adapter.upsertOne,
 });

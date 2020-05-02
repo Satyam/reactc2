@@ -4,6 +4,6 @@ import adapter from './adapter';
 
 export default createReducer(adapter.getInitialState(), {
   [loadSector.fulfilled]: (state, action) => {
-    adapter.setAll(state, action.payload.enclavamientos);
+    adapter.addMany(state, action.payload.enclavamientos);
   },
 });
