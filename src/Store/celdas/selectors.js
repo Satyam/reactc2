@@ -24,10 +24,3 @@ export const selCeldaIsManual = createSelector(
   selectors.selectById,
   (celda) => celda && celda.manual
 );
-
-// export const selCeldas = createSelector(
-//   (state) => state.celdas,
-//   (state, idSector) => idSector,
-//   (celdas, idSector) =>
-//     Object.values(celdas).filter((celda) => celda.idSector === idSector)
-// );
