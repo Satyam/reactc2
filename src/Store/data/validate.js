@@ -229,6 +229,7 @@ function processCeldas(idSector, celdas) {
         salida.bloques[idBloque] = {
           celdas: [],
           nombre: c.bloque,
+          idBloque,
         };
       }
       salida.bloques[idBloque].celdas.push(idCelda);
