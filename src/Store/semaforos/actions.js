@@ -1,20 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 
 import { clearPendientes, runAutomatizaciones } from 'Store/actions';
-import { selSemaforo } from 'Store/selectors';
-import { selModoSemaforo } from './selectors';
-import { AUTOMATICO } from 'Store/data';
+import { selModoSemaforo, selSemaforo } from './selectors';
+import { AUTOMATICO, BLOQUEADO, ALTO, IZQ, CENTRO, DER } from 'Store/data';
 
-export const plainSetAspectoSenal = createAction(
-  'setAspectoSenal',
-  (idSemaforo, senal, aspecto) => ({
-    payload: {
-      idSemaforo,
-      senal,
-      aspecto,
-    },
-  })
-);
+const UPDATE_SEMAFORO = 'updateSemaforo';
+export const updateSemaforo = createAction(UPDATE_SEMAFORO);
 
 export function doSetAspectoSenal(idSemaforo, senal, aspecto) {
   return (dispatch, getState) => {
@@ -23,7 +14,12 @@ export function doSetAspectoSenal(idSemaforo, senal, aspecto) {
       throw new Error(`Semaforo ${idSemaforo} no tiene senal ${senal}`);
     }
     if (semaforo[senal] === aspecto) return false;
-    return dispatch(plainSetAspectoSenal(idSemaforo, senal, aspecto));
+    return dispatch(
+      updateSemaforo({
+        ...semaforo,
+        [senal]: aspecto,
+      })
+    );
   };
 }
 
@@ -37,19 +33,21 @@ export function setAspectoSenal(idSemaforo, senal, aspecto) {
   };
 }
 
-export const doSetModoSemaforo = createAction(
-  'setModoSemaforo',
-  (idSemaforo, modo) => ({
-    payload: {
-      idSemaforo,
-      modo,
-    },
-  })
-);
-
 export function setModoSemaforo(idSemaforo, modo) {
   return (dispatch, getState) => {
-    dispatch(doSetModoSemaforo(idSemaforo, modo));
+    const semaforo = selSemaforo(getState(), idSemaforo);
+    if (modo === BLOQUEADO) {
+      dispatch(
+        updateSemaforo(
+          [IZQ, CENTRO, DER].reduce(
+            (s, dir) => (dir in semaforo ? { ...s, [dir]: ALTO } : s),
+            { idSemaforo, modo }
+          )
+        )
+      );
+    } else {
+      dispatch(updateSemaforo({ idSemaforo, modo }));
+    }
     if (selModoSemaforo(getState(), idSemaforo) === AUTOMATICO) {
       dispatch(runAutomatizaciones());
     }

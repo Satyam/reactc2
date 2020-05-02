@@ -1,17 +1,21 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { AUTOMATICO } from 'Store/data/constantes';
-export const selSemaforo = (state, idSemaforo) => state.semaforos[idSemaforo];
+import adapter from './adapter';
 
-export const selModoSemaforo = (state, idSemaforo) => {
-  const semaforo = selSemaforo(state, idSemaforo);
-  return (semaforo && semaforo.modo) || AUTOMATICO;
-};
+const selectors = adapter.getSelectors((state) => state.semaforos);
+
+export const selSemaforo = selectors.selectById;
+
+export const selModoSemaforo = createSelector(
+  selectors.selectById,
+  (semaforo) => (semaforo && semaforo.modo) || AUTOMATICO
+);
 
 export const selSemaforos = createSelector(
-  (state) => state.semaforos,
-  (state, celda) => celda,
+  selectors.selectAll,
+  (_, celda) => celda,
   (semaforos, celda) => {
-    const ss = Object.values(semaforos).filter(
+    const ss = semaforos.filter(
       (semaforo) =>
         semaforo.idSector === celda.idSector &&
         semaforo.x === celda.x &&
