@@ -21,7 +21,7 @@ import {
   useCondicionesFaltantes,
 } from 'Store';
 import Semaforo from 'Components/Semaforo';
-import { CAMBIO, PARAGOLPE, BLOQUE, SEMAFORO } from 'Store/data';
+import { CAMBIO, PARAGOLPE, BLOQUE, SEMAFORO } from 'Store/constantes';
 
 import { ANCHO_CELDA, DIR } from 'Components/common';
 import styles from './styles.module.css';

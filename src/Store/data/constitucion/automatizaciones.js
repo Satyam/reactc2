@@ -19,7 +19,7 @@ import {
   SW,
   W,
   NW,
-} from '../constantes';
+} from '../../constantes';
 /* eslint-enable no-unused-vars*/
 
 export const automatizaciones = [

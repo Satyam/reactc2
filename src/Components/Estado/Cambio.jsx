@@ -15,7 +15,7 @@ import {
 import { isPlainClick } from 'Utils';
 import { useCeldaManual, useSetPosicion } from 'Store';
 
-import { NORMAL, DESVIADO, ALTERNATIVA } from 'Store/data';
+import { NORMAL, DESVIADO, ALTERNATIVA } from 'Store/constantes';
 import styles from './styles.module.css';
 
 export default function EstadoCambio({ celda }) {

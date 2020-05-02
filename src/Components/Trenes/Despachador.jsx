@@ -2,7 +2,7 @@ import React from 'react';
 
 import { isPlainClick, holdPropagation } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
-import { CAMBIO } from 'Store/data';
+import { CAMBIO } from 'Store/constantes';
 import { useAddTren, useBloqueOcupado } from 'Store';
 
 import styles from './styles.module.css';

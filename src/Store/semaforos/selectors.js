@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { AUTOMATICO } from 'Store/data/constantes';
+import { AUTOMATICO } from 'Store/constantes';
 import adapter from './adapter';
 
 const selectors = adapter.getSelectors((state) => state.semaforos);

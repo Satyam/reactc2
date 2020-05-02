@@ -3,7 +3,7 @@ import { currentSector } from 'Store/options';
 import { selBloqueOcupado } from 'Store/bloques/selectors';
 import { selSemaforo } from 'Store/semaforos/selectors';
 import { buildId, buildIdBloque } from 'Utils';
-import { BLOQUE, SEMAFORO, IZQ, CENTRO, DER, ALTO } from 'Store/data';
+import { BLOQUE, SEMAFORO, IZQ, CENTRO, DER, ALTO } from 'Store/constantes';
 import adapter from './adapter';
 
 const selectors = adapter.getSelectors((state) => state.enclavamientos);

@@ -20,7 +20,7 @@ import {
   NW,
   BLOQUE,
   FIJO,
-} from '../constantes';
+} from '../../constantes';
 /* eslint-enable no-unused-vars*/
 
 export const enclavamientos = [];

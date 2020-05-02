@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector, useDispatch } from 'react-redux';
 import { playRate } from 'Store/options';
-import { DANGER } from 'Store/data';
+import { DANGER } from 'Store/constantes';
 
 const NAME = 'alertas';
 const slice = createSlice({

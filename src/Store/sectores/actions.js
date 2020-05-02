@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { selSectoresLoading, selSectorLoading } from './selectors';
-import { UNLOADED } from 'Store/data';
+import { UNLOADED } from 'Store/constantes';
 export const loadSectores = createAsyncThunk(
   'loadSectores',
   () =>

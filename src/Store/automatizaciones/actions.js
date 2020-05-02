@@ -22,7 +22,7 @@ import {
   CENTRO,
   DER,
   AUTOMATICO,
-} from 'Store/data';
+} from 'Store/constantes';
 
 import {
   rawSetPosicion,

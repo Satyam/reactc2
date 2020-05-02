@@ -31,7 +31,7 @@ import {
   NW,
   INFO,
   WARNING,
-} from 'Store/data';
+} from 'Store/constantes';
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
 
 let id = 100;

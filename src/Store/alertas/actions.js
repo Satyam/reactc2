@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { playRate } from 'Store/options';
-import { DANGER } from 'Store/data';
+import { DANGER } from 'Store/constantes';
 
 export const doSetAlarma = createAction('doSetAlarma');
 

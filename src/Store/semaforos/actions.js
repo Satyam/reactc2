@@ -2,7 +2,14 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { clearPendientes, runAutomatizaciones } from 'Store/actions';
 import { selModoSemaforo, selSemaforo } from './selectors';
-import { AUTOMATICO, BLOQUEADO, ALTO, IZQ, CENTRO, DER } from 'Store/data';
+import {
+  AUTOMATICO,
+  BLOQUEADO,
+  ALTO,
+  IZQ,
+  CENTRO,
+  DER,
+} from 'Store/constantes';
 
 const UPDATE_SEMAFORO = 'updateSemaforo';
 export const updateSemaforo = createAction(UPDATE_SEMAFORO);

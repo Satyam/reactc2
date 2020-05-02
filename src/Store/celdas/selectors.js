@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { NORMAL } from 'Store/data';
+import { NORMAL } from 'Store/constantes';
 
 import { currentSector } from 'Store/options';
 import adapter from './adapter';

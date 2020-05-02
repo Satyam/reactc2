@@ -5,7 +5,7 @@ import { useAvisos, useShowTeletipo, useCelda } from 'Store';
 import { isPlainClick, nombreEntity } from 'Utils';
 import { Trash } from 'Components/Icons';
 import styles from './styles.module.css';
-import { INFO } from 'Store/data';
+import { INFO } from 'Store/constantes';
 
 function Item({ nivel, fecha, idCelda, numero, msg, clearAviso }) {
   const celda = useCelda(idCelda);

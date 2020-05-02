@@ -1,5 +1,5 @@
 import sectorAdapter from './adapter';
-import { UNLOADED } from 'Store/data';
+import { UNLOADED } from 'Store/constantes';
 const selectors = sectorAdapter.getSelectors((state) => state.sectores);
 
 export const selSector = selectors.selectById;

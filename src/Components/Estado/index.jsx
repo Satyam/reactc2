@@ -21,7 +21,7 @@ import {
   useSelAutomatizacion,
 } from 'Store';
 
-import { CAMBIO } from 'Store/data';
+import { CAMBIO } from 'Store/constantes';
 
 import EstadoCambio from './Cambio';
 import EstadoSemaforo from './Semaforo';

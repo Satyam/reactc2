@@ -49,7 +49,7 @@ const {
   UNLOADED,
   LOADING,
   LOADED,
-} = require('./constantes');
+} = require('../constantes');
 
 const validate = (what, schema) => {
   const { error, warning } = schema.validate(what);
@@ -495,14 +495,6 @@ function processEnclavamientos(idSector, enclavamientos) {
 
 validateConstants();
 
-const total = {
-  celdas: {},
-  automatizaciones: {},
-  semaforos: {},
-  bloques: {},
-  enclavamientos: {},
-};
-
 const dirs = fs.readdirSync('./', { withFileTypes: true });
 dirs.forEach((d) => {
   if (d.isDirectory() && !d.name.startsWith('_')) {
@@ -523,6 +515,7 @@ dirs.forEach((d) => {
     const enclavamientos = validateEnclavamientos(name);
     processEnclavamientos(name, enclavamientos);
 
+    console.log('  Grabando sector');
     fs.writeFileSync(
       `./_salida/${name}.js`,
       Object.keys(salida).reduce((ss, el) => {
@@ -535,11 +528,6 @@ export const ${el} =  ${util.inspect(Object.values(salida[el]), {
       }, '')
     );
 
-    Object.assign(total.celdas, salida.celdas);
-    Object.assign(total.automatizaciones, salida.automatizaciones);
-    Object.assign(total.semaforos, salida.semaforos);
-    Object.assign(total.bloques, salida.bloques);
-    Object.assign(total.enclavamientos, salida.enclavamientos);
     salida.celdas = {};
     salida.automatizaciones = {};
     salida.semaforos = {};
@@ -548,24 +536,7 @@ export const ${el} =  ${util.inspect(Object.values(salida[el]), {
   }
 });
 
-console.log('Grabando Salida');
-fs.writeFileSync(
-  './index.js',
-  `
-export * from './constantes.js'
-${Object.keys(salida)
-  .map(
-    (el) =>
-      `export const ${el} =  ${util.inspect(total[el], {
-        depth: null,
-        maxArrayLength: null,
-        // breakLength: Infinity,
-      })}
-  `
-  )
-  .join('\n')}
-    `
-);
+console.log('Grabando Sectores');
 
 fs.writeFileSync(
   './_salida/_sectores.js',

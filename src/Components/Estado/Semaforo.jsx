@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Locked, Unlocked, Circle } from 'Components/Icons';
-import { LIBRE, PRECAUCION, ALTO, MANIOBRA } from 'Store/data';
+import { LIBRE, PRECAUCION, ALTO, MANIOBRA } from 'Store/constantes';
 import { isPlainClick } from 'Utils';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from 'reactstrap';
 
 import styles from './styles.module.css';
-import { AUTOMATICO } from '../../Store/data';
+import { AUTOMATICO } from '../../Store/constantes';
 
 export function EstadoSenal({ senal, aspecto, onSetAspecto }) {
   const onSetAlto = (ev) => isPlainClick(ev) && onSetAspecto(senal, ALTO);

@@ -5,7 +5,7 @@ import { useSector, useCeldas } from 'Store';
 
 import Celda from 'Components/Celda';
 import loadingIcon from 'Components/Icons/loading.gif';
-import { LOADED } from 'Store/data';
+import { LOADED } from 'Store/constantes';
 
 import styles from './styles.module.css';
 

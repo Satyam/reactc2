@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { UNLOADED, LOADED, LOADING } from 'Store/data';
+import { UNLOADED, LOADED, LOADING } from 'Store/constantes';
 
 import sectorAdapter from './adapter';
 import { loadSector, loadSectores } from './actions';

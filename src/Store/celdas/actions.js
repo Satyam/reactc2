@@ -7,7 +7,7 @@ import {
   setBloqueOcupado,
 } from 'Store/actions';
 import { selCelda, selPendiente, selCeldaIsManual } from 'Store/selectors';
-import { CAMBIO } from 'Store/data';
+import { CAMBIO } from 'Store/constantes';
 
 const UPDATE_CELDA = 'updateCelda';
 export const updateCelda = createAction(UPDATE_CELDA);

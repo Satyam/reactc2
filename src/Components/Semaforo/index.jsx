@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { buildId, nombreEntity, useLongPress } from 'Utils';
 import { CENTRO_CELDA, ANG } from 'Components/common';
-import { SEMAFORO, MANIOBRA, BLOQUEADO, AUTOMATICO } from 'Store/data';
+import { SEMAFORO, MANIOBRA, BLOQUEADO, AUTOMATICO } from 'Store/constantes';
 import { useEstado, useSemaforo, useModoSemaforo } from 'Store';
 import styles from './styles.module.css';
 

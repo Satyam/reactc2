@@ -1,5 +1,5 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
-import { CAMBIO, SEMAFORO } from 'Store/data';
+import { CAMBIO, SEMAFORO } from 'Store/constantes';
 
 export default createEntityAdapter({
   selectId: (automatizacion) => automatizacion.idAutom,

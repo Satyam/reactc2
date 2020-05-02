@@ -25,7 +25,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-import { LOADED } from 'Store/data';
+import { LOADED } from 'Store/constantes';
 import Animador from 'Components/Animador';
 import { GitHub } from 'Components/Icons';
 
