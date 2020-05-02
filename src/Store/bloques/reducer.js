@@ -1,14 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { bloques } from 'Store/data';
 
 import { setBloqueOcupado } from './actions';
+import { loadSector } from 'Store/sectores/actions';
 
-export default createReducer(bloques, {
-  [setBloqueOcupado]: (state, action) => {
-    const { idBloque, ...rest } = action.payload;
-    state[idBloque] = {
-      ...state[idBloque],
-      ...rest,
-    };
+import adapter from './adapter';
+
+export default createReducer(adapter.getInitialState(), {
+  [loadSector.fulfilled]: (state, action) => {
+    adapter.setAll(state, action.payload.bloques);
   },
+  [setBloqueOcupado]: adapter.upsertOne,
 });
