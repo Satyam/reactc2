@@ -67,15 +67,6 @@ const validate = (what, schema) => {
   }
 };
 
-const sectores = [];
-const salida = {
-  celdas: {},
-  automatizaciones: {},
-  semaforos: {},
-  bloques: {},
-  enclavamientos: {},
-};
-
 // Ids should be valid DOM id attributes.
 // Ids starting with a digit are prefixed with an underscore
 const buildId = (idSector, { x, y, dir }) =>
@@ -135,10 +126,7 @@ function validateConstants() {
   validateConst(LOADED, 'loaded');
 }
 
-function validateSector(name) {
-  console.log('  Sector');
-
-  const sector = require(`./${name}/sector.js`).sector;
+function validateSector(sector) {
   validate(
     sector,
     j.object({
@@ -148,20 +136,9 @@ function validateSector(name) {
       alto: j.number().positive().integer().required().min(1),
     })
   );
-  return sector;
 }
 
-function processSector(idSector, sector) {
-  sectores.push({
-    ...sector,
-    idSector,
-  });
-}
-
-function validateCeldas(name) {
-  console.log('  Celdas');
-
-  const celdas = require(`./${name}/celdas.js`).celdas;
+function validateCeldas(celdas) {
   const baseCelda = j
     .object({
       despachador: j.array().items(dir),
@@ -219,46 +196,45 @@ function validateCeldas(name) {
 }
 
 function processCeldas(idSector, celdas) {
-  salida.celdas = celdas.reduce((cs, c) => {
+  const bloques = {};
+  const idCeldas = [];
+  const cs = celdas.map((c) => {
     const idCelda = buildId(idSector, c);
-    if (cs[idCelda]) throw new Error(`Clave duplicada en Celdas: ${idCelda}`);
+    if (idCeldas.includes(idCelda))
+      throw new Error(`Clave duplicada en Celdas: ${idCelda}`);
+    idCeldas.push(idCelda);
+
     if (c.bloque) {
       const idBloque = buildIdBloque(idSector, c);
 
-      if (!salida.bloques[idBloque]) {
-        salida.bloques[idBloque] = {
+      if (!bloques[idBloque]) {
+        bloques[idBloque] = {
           celdas: [],
           nombre: c.bloque,
           idBloque,
         };
       }
-      salida.bloques[idBloque].celdas.push(idCelda);
+      bloques[idBloque].celdas.push(idCelda);
       return {
-        ...cs,
-        [idCelda]: {
-          ...c,
-          idCelda,
-          idSector,
-          idBloque,
-        },
-      };
-    }
-    return {
-      ...cs,
-      [idCelda]: {
         ...c,
         idCelda,
         idSector,
-      },
+        idBloque,
+      };
+    }
+    return {
+      ...c,
+      idCelda,
+      idSector,
     };
-  }, salida.celdas);
+  });
+  return {
+    celdas: cs,
+    bloques: Object.values(bloques),
+  };
 }
 
-function validateSemaforos(name) {
-  console.log('  Semaforos');
-
-  const semaforos = require(`./${name}/semaforos.js`).semaforos;
-
+function validateSemaforos(semaforos) {
   const baseSemaforos = j
     .object({
       dir,
@@ -289,29 +265,24 @@ function validateSemaforos(name) {
 }
 
 function processSemaforos(idSector, semaforos) {
-  salida.semaforos = semaforos.reduce((ss, s) => {
+  const ids = [];
+  return semaforos.map((s) => {
     const idSemaforo = buildId(idSector, s);
-    if (ss[idSemaforo])
+
+    if (ids.includes(idSemaforo))
       throw new Error(`Clave duplicada en Semaforos: ${idSemaforo}`);
+    ids.push(idSemaforo);
 
     return {
-      ...ss,
-      [idSemaforo]: {
-        modo: AUTOMATICO,
-        ...s,
-        idSemaforo,
-        idSector,
-      },
+      modo: AUTOMATICO,
+      ...s,
+      idSemaforo,
+      idSector,
     };
-  }, salida.semaforos);
+  });
 }
 
-function validateAutomatizaciones(name) {
-  console.log('  Automatizaciones');
-
-  const automatizaciones = require(`./${name}/automatizaciones.js`)
-    .automatizaciones;
-
+function validateAutomatizaciones(automatizaciones) {
   const depCambioCambio = j
     .object({
       tipo: j.valid(CAMBIO).required(),
@@ -420,25 +391,22 @@ function validateAutomatizaciones(name) {
 }
 
 function processAutomatizaciones(idSector, automatizaciones) {
-  salida.automatizaciones = automatizaciones.reduce((es, e) => {
+  const ids = [];
+  return automatizaciones.map((e) => {
     const idAutom =
       e.tipo === BLOQUE ? buildIdBloque(idSector, e) : buildId(idSector, e);
-    if (es[idAutom])
+    if (ids.includes(idAutom))
       throw new Error(`Clave duplicada en Automatizaciones: ${idAutom}`);
+    ids.push(idAutom);
     return {
-      ...es,
-      [idAutom]: {
-        ...e,
-        idAutom,
-        idSector,
-      },
+      ...e,
+      idAutom,
+      idSector,
     };
-  }, salida.automatizaciones);
+  });
 }
 
-function validateEnclavamientos(name) {
-  console.log('  Enclavamientos');
-
+function validateEnclavamientos(enclavamientos) {
   const depCambioBloque = j.object({
     tipo: j.valid(BLOQUE).required(),
     bloque: j.string(),
@@ -461,7 +429,6 @@ function validateEnclavamientos(name) {
     deps: j.array().items(depsCambio).required(),
   });
 
-  const enclavamientos = require(`./${name}/enclavamientos.js`).enclavamientos;
   validate(
     enclavamientos,
     j
@@ -476,19 +443,18 @@ function validateEnclavamientos(name) {
   return enclavamientos;
 }
 function processEnclavamientos(idSector, enclavamientos) {
-  salida.enclavamientos = enclavamientos.reduce((es, e) => {
+  const ids = [];
+  return enclavamientos.map((e) => {
     const idEncl = buildId(idSector, e);
-    if (es[idEncl])
+    if (ids.includes(idEncl))
       throw new Error(`Clave duplicada en Enclavamientos: ${idEncl}`);
+    ids.push(idEncl);
     return {
-      ...es,
-      [idEncl]: {
-        ...e,
-        idEncl,
-        idSector,
-      },
+      ...e,
+      idEncl,
+      idSector,
     };
-  }, salida.enclavamientos);
+  });
 }
 
 // This is where it starts validating and processing
@@ -496,43 +462,58 @@ function processEnclavamientos(idSector, enclavamientos) {
 validateConstants();
 
 const dirs = fs.readdirSync('./', { withFileTypes: true });
+
+const sectores = [];
+
 dirs.forEach((d) => {
   if (d.isDirectory() && !d.name.startsWith('_')) {
-    const name = d.name;
-    console.log(name);
-    const sector = validateSector(name);
-    processSector(name, sector);
+    const idSector = d.name;
+    const fd = fs.openSync(`./_salida/${idSector}.js`, 'w');
 
-    const celdas = validateCeldas(name);
-    processCeldas(name, celdas);
-
-    const semaforos = validateSemaforos(name);
-    processSemaforos(name, semaforos);
-
-    const automatizaciones = validateAutomatizaciones(name);
-    processAutomatizaciones(name, automatizaciones);
-
-    const enclavamientos = validateEnclavamientos(name);
-    processEnclavamientos(name, enclavamientos);
-
-    console.log('  Grabando sector');
-    fs.writeFileSync(
-      `./_salida/${name}.js`,
-      Object.keys(salida).reduce((ss, el) => {
-        return `
-${ss}
-export const ${el} =  ${util.inspect(Object.values(salida[el]), {
+    const grabar = (name, values) => {
+      console.log('  ', name);
+      fs.writeSync(
+        fd,
+        `export const ${name} =  ${util.inspect(values, {
           depth: null,
           maxArrayLength: null,
-        })};`;
-      }, '')
+        })};\n`
+      );
+    };
+    console.log(idSector);
+
+    console.log('   sector');
+    const sector = require(`./${idSector}/sector.js`).sector;
+    validateSector(sector);
+    sectores.push({
+      ...sector,
+      idSector,
+    });
+
+    const celdas = require(`./${idSector}/celdas.js`).celdas;
+    validateCeldas(celdas);
+    const salida = processCeldas(idSector, celdas);
+    grabar('celdas', salida.celdas);
+    grabar('bloques', salida.bloques);
+
+    const semaforos = require(`./${idSector}/semaforos.js`).semaforos;
+    validateSemaforos(semaforos);
+    grabar('semaforos', processSemaforos(idSector, semaforos));
+
+    const automatizaciones = require(`./${idSector}/automatizaciones.js`)
+      .automatizaciones;
+    validateAutomatizaciones(automatizaciones);
+    grabar(
+      'automatizaciones',
+      processAutomatizaciones(idSector, automatizaciones)
     );
 
-    salida.celdas = {};
-    salida.automatizaciones = {};
-    salida.semaforos = {};
-    salida.bloques = {};
-    salida.enclavamientos = {};
+    const enclavamientos = require(`./${idSector}/enclavamientos.js`)
+      .enclavamientos;
+    validateEnclavamientos(enclavamientos);
+    grabar('enclavamientos', processEnclavamientos(idSector, enclavamientos));
+
+    fs.closeSync(fd);
   }
 });
 
