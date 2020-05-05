@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import {
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-  ListGroup,
-  ListGroupItem,
-} from 'reactstrap';
 
-import { buildId, useLongPress, isPlainClick, nombreEntity } from 'Utils';
+import { buildId, useLongPress } from 'Utils';
 
 import {
   useCelda,
@@ -21,7 +13,7 @@ import {
   useCondicionesFaltantes,
 } from 'Store';
 import Semaforo from 'Components/Semaforo';
-import { CAMBIO, PARAGOLPE, BLOQUE, SEMAFORO } from 'Store/constantes';
+import { CAMBIO, PARAGOLPE } from 'Store/constantes';
 
 import { ANCHO_CELDA, DIR } from 'Components/common';
 import styles from './styles.module.css';
@@ -31,46 +23,7 @@ import Cambio from './Cambio';
 import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 import { Despachador, Tren } from 'Components/Trenes';
-
-function CondicionesFaltantes({ idCelda, faltantes, setShowFaltantes }) {
-  const onClose = (ev) => {
-    if (isPlainClick(ev)) {
-      setShowFaltantes(false);
-    }
-  };
-
-  return (
-    <Popover isOpen={!!idCelda} target={idCelda}>
-      <PopoverHeader className={styles.alarma}>
-        Condiciones Faltantes
-        <Button close className={styles.close} onClick={onClose} />
-      </PopoverHeader>
-      <PopoverBody>
-        <ListGroup>
-          {faltantes.map((falta, idx) => {
-            switch (falta.tipo) {
-              case BLOQUE:
-                return (
-                  <ListGroupItem
-                    key={idx}
-                  >{`Bloque ocupado ${falta.bloque}`}</ListGroupItem>
-                );
-              case SEMAFORO:
-                return (
-                  <ListGroupItem key={idx}>{`Semáforo libre: ${nombreEntity(
-                    falta
-                  )}`}</ListGroupItem>
-                );
-              default:
-                break;
-            }
-            return '????';
-          })}
-        </ListGroup>
-      </PopoverBody>
-    </Popover>
-  );
-}
+import CondicionesFaltantes from 'Components/Enclavamientos';
 
 export function ActualCelda({
   celda,
@@ -190,7 +143,6 @@ export function ActualCelda({
       {showFaltantes && (
         <CondicionesFaltantes
           idCelda={idCelda}
-          faltantes={condicionesFaltantes}
           setShowFaltantes={setShowFaltantes}
         />
       )}
