@@ -457,6 +457,37 @@ function processEnclavamientos(idSector, enclavamientos) {
   });
 }
 
+function validateEmpalmes(empalmes) {
+  const punta = j.object({ dir }).append(coords);
+  const empalme = j.array().items(punta).length(2);
+  validate(empalmes, j.array().items(empalme));
+}
+
+function processEmpalmes(idSector, empalmes) {
+  const ids = [];
+  return empalmes.reduce((emps, emp) => {
+    if (emp.length !== 2)
+      throw new Error(
+        `Empalmes: cada entrada debe contener dos celdas ${JSON.stringify(
+          emp,
+          null,
+          2
+        )}`
+      );
+    return emps.concat(
+      emp.map((punta, idx) => {
+        const idPunta = buildId(idSector, punta);
+        if (idPunta in ids)
+          throw new Error(`Referencia duplicada en Empalmes: ${idPunta}`);
+        ids.push(idPunta);
+        return {
+          idPunta,
+          ...emp[1 - idx],
+        };
+      })
+    );
+  }, []);
+}
 // This is where it starts validating and processing
 
 validateConstants();
@@ -506,8 +537,6 @@ dirs.forEach((d) => {
       const semaforos = require(path).semaforos;
       validateSemaforos(semaforos);
       grabar('semaforos', processSemaforos(idSector, semaforos));
-    } else {
-      grabar();
     }
 
     path = `./${idSector}/automatizaciones.js`;
@@ -526,6 +555,14 @@ dirs.forEach((d) => {
       validateEnclavamientos(enclavamientos);
       grabar('enclavamientos', processEnclavamientos(idSector, enclavamientos));
     }
+
+    path = `./${idSector}/empalmes.js`;
+    if (fs.existsSync(path)) {
+      const empalmes = require(path).empalmes;
+      validateEmpalmes(empalmes);
+      grabar('empalmes', processEmpalmes(idSector, empalmes));
+    }
+
     fs.closeSync(fd);
   }
 });

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { selCelda, selSemaforo } from 'Store/selectors';
+import { selCelda, selSemaforo, selEmpalme } from 'Store/selectors';
 import {
   removeTrenFromCelda,
   addTrenToCelda,
@@ -99,7 +99,19 @@ export function delTrenes() {
 
 export const setTren = createAction('setTren');
 
-function nextCoords(x, y, dir) {
+function nextCoords({ x, y, dir }, getState) {
+  const empalme = selEmpalme(
+    getState(),
+    buildId({
+      idSector: currentSector.selector(getState()),
+      x,
+      y,
+      dir,
+    })
+  );
+  if (empalme) {
+    return [empalme.x, empalme.y, empalme.dir];
+  }
   switch (dir) {
     case N:
       return [x, y - 1, S];
@@ -164,7 +176,7 @@ export function moveTren(idTren) {
       );
       return;
     }
-    const [newX, newY, newDir] = nextCoords(tren.x, tren.y, tren.dir);
+    const [newX, newY, newDir] = nextCoords(tren, getState);
     let nextSpeed = tren.speed;
 
     if (oldCelda.x !== newX || oldCelda.y !== newY) {
