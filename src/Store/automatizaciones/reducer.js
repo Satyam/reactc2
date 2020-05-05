@@ -5,6 +5,6 @@ import adapter from './adapter';
 
 export default createReducer(adapter.getInitialState(), {
   [loadSector.fulfilled]: (state, action) => {
-    adapter.addMany(state, action.payload.automatizaciones);
+    adapter.addMany(state, action.payload.automatizaciones || []);
   },
 });

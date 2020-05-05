@@ -490,29 +490,42 @@ dirs.forEach((d) => {
       idSector,
     });
 
-    const celdas = require(`./${idSector}/celdas.js`).celdas;
-    validateCeldas(celdas);
-    const salida = processCeldas(idSector, celdas);
-    grabar('celdas', salida.celdas);
-    grabar('bloques', salida.bloques);
+    let path = `./${idSector}/celdas.js`;
+    if (fs.existsSync(path)) {
+      const celdas = require(path).celdas;
+      validateCeldas(celdas);
+      const salida = processCeldas(idSector, celdas);
+      grabar('celdas', salida.celdas);
+      grabar('bloques', salida.bloques);
+    } else {
+      throw new Error(`La definición de celdas es obligatoria. Falta ${path}`);
+    }
 
-    const semaforos = require(`./${idSector}/semaforos.js`).semaforos;
-    validateSemaforos(semaforos);
-    grabar('semaforos', processSemaforos(idSector, semaforos));
+    path = `./${idSector}/semaforos.js`;
+    if (fs.existsSync(path)) {
+      const semaforos = require(path).semaforos;
+      validateSemaforos(semaforos);
+      grabar('semaforos', processSemaforos(idSector, semaforos));
+    } else {
+      grabar();
+    }
 
-    const automatizaciones = require(`./${idSector}/automatizaciones.js`)
-      .automatizaciones;
-    validateAutomatizaciones(automatizaciones);
-    grabar(
-      'automatizaciones',
-      processAutomatizaciones(idSector, automatizaciones)
-    );
+    path = `./${idSector}/automatizaciones.js`;
+    if (fs.existsSync(path)) {
+      const automatizaciones = require(path).automatizaciones;
+      validateAutomatizaciones(automatizaciones);
+      grabar(
+        'automatizaciones',
+        processAutomatizaciones(idSector, automatizaciones)
+      );
+    }
 
-    const enclavamientos = require(`./${idSector}/enclavamientos.js`)
-      .enclavamientos;
-    validateEnclavamientos(enclavamientos);
-    grabar('enclavamientos', processEnclavamientos(idSector, enclavamientos));
-
+    path = `./${idSector}/enclavamientos.js`;
+    if (fs.existsSync(path)) {
+      const enclavamientos = require(path).enclavamientos;
+      validateEnclavamientos(enclavamientos);
+      grabar('enclavamientos', processEnclavamientos(idSector, enclavamientos));
+    }
     fs.closeSync(fd);
   }
 });

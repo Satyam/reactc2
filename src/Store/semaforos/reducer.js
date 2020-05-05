@@ -6,7 +6,7 @@ import adapter from './adapter';
 
 export default createReducer(adapter.getInitialState(), {
   [loadSector.fulfilled]: (state, action) => {
-    adapter.addMany(state, action.payload.semaforos);
+    adapter.addMany(state, action.payload.semaforos || []);
   },
   [updateSemaforo]: adapter.upsertOne,
 });
