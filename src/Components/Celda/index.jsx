@@ -140,9 +140,9 @@ export function ActualCelda({
                 placement={placement}
               />
               <Empalme celda={celda} dir={dir} />
+              {!!celda.despachador && <Despachador celda={celda} dir={dir} />}
             </g>
           ))}
-          {Array.isArray(celda.despachador) && <Despachador celda={celda} />}
           {celda.idTren ? <Tren celda={celda} /> : null}
         </svg>
       </div>
