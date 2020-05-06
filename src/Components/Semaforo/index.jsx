@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { buildId, nombreEntity, useLongPress } from 'Utils';
-import { CENTRO_CELDA, ANG } from 'Components/common';
 import { SEMAFORO, MANIOBRA, BLOQUEADO, AUTOMATICO } from 'Store/constantes';
 import { useEstado, useSemaforo, useModoSemaforo } from 'Store';
 import styles from './styles.module.css';
@@ -12,7 +11,7 @@ const estilosAspectos = ['', 'verde', 'amarillo', 'rojo'];
 export default function Semaforo({ idSemaforo, placement }) {
   const semaforo = useSemaforo(idSemaforo);
   const [modoSemaforo, setModoSemaforo] = useModoSemaforo(idSemaforo);
-  const { idSector, x, y, dir, centro, izq, der } = semaforo || {};
+  const { idSector, x, y, centro, izq, der } = semaforo || {};
   const { showEstado } = useEstado();
   const longPressProps = useLongPress({
     onClick: () => {
@@ -64,7 +63,6 @@ export default function Semaforo({ idSemaforo, placement }) {
         [styles.maniobra]: !semaforo.soloManiobra && modoSemaforo === MANIOBRA,
         [styles.blink]: !semaforo.soloManiobra && modoSemaforo === BLOQUEADO,
       })}
-      transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
       {...longPressProps}
     >
       <title>{nombreEntity(semaforo)}</title>

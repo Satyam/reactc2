@@ -15,7 +15,7 @@ import {
 import Semaforo from 'Components/Semaforo';
 import { CAMBIO, PARAGOLPE } from 'Store/constantes';
 
-import { ANCHO_CELDA, DIR } from 'Components/common';
+import { ANCHO_CELDA, DIR, CENTRO_CELDA, ANG } from 'Components/common';
 import styles from './styles.module.css';
 
 import Linea from './Linea';
@@ -128,7 +128,10 @@ export function ActualCelda({
           )}
           <Renderer idCelda={idCelda} />
           {DIR.map((dir) => (
-            <g key={dir}>
+            <g
+              key={dir}
+              transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
+            >
               <Semaforo
                 idSemaforo={buildId({
                   ...celda,
