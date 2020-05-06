@@ -24,6 +24,7 @@ import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
 import { Despachador, Tren } from 'Components/Trenes';
 import CondicionesFaltantes from 'Components/Enclavamientos';
+import Empalme from 'Components/Empalme';
 
 export function ActualCelda({
   celda,
@@ -127,14 +128,16 @@ export function ActualCelda({
           )}
           <Renderer idCelda={idCelda} />
           {DIR.map((dir) => (
-            <Semaforo
-              key={dir}
-              idSemaforo={buildId({
-                ...celda,
-                dir,
-              })}
-              placement={placement}
-            />
+            <g key={dir}>
+              <Semaforo
+                idSemaforo={buildId({
+                  ...celda,
+                  dir,
+                })}
+                placement={placement}
+              />
+              <Empalme celda={celda} dir={dir} />
+            </g>
           ))}
           {Array.isArray(celda.despachador) && <Despachador celda={celda} />}
           {celda.idTren ? <Tren celda={celda} /> : null}

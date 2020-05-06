@@ -31,6 +31,7 @@ export default configureStore({
 export * from './alertas/hooks';
 export * from './bloques/hooks';
 export * from './celdas/hooks';
+export * from './empalmes/hooks';
 export * from './enclavamientos/hooks';
 export * from './automatizaciones/hooks';
 export * from './options/hooks';
