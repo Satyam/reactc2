@@ -20,6 +20,12 @@ import {
 export const celdas = [
   {
     tipo: LINEA,
+    x: -1,
+    y: -1,
+    puntas: [NW, SE],
+  },
+  {
+    tipo: LINEA,
     x: 1,
     y: 0,
     puntas: [SW, E],

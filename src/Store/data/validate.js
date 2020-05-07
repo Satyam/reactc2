@@ -83,8 +83,8 @@ const aspecto = j.valid(LIBRE, PRECAUCION, ALTO);
 const icd = j.valid(IZQ, CENTRO, DER);
 const cambios = j.valid(NORMAL, DESVIADO, ALTERNATIVA);
 const coords = {
-  x: j.number().integer().min(0).required(),
-  y: j.number().integer().min(0).required(),
+  x: j.number().integer().required(),
+  y: j.number().integer().required(),
 };
 
 function validateConstants() {
@@ -132,8 +132,6 @@ function validateSector(sector) {
     j.object({
       descr: j.string().required(),
       descrCorta: j.string().max(30).required(),
-      ancho: j.number().positive().integer().required().min(1),
-      alto: j.number().positive().integer().required().min(1),
     })
   );
 }
@@ -195,14 +193,18 @@ function validateCeldas(celdas) {
   return celdas;
 }
 
-function processCeldas(idSector, celdas) {
-  const bloques = {};
-  const idCeldas = [];
-  const cs = celdas.map((c) => {
+function processCeldas(idSector, celdas, bloques, limites) {
+  const ids = [];
+  return celdas.map((c) => {
     const idCelda = buildId(idSector, c);
-    if (idCeldas.includes(idCelda))
+    if (ids.includes(idCelda))
       throw new Error(`Clave duplicada en Celdas: ${idCelda}`);
-    idCeldas.push(idCelda);
+    ids.push(idCelda);
+
+    limites.minX = Math.min(limites.minX, c.x);
+    limites.maxX = Math.max(limites.maxX, c.x);
+    limites.minY = Math.min(limites.minY, c.y);
+    limites.maxY = Math.max(limites.maxY, c.y);
 
     if (c.bloque) {
       const idBloque = buildIdBloque(idSector, c);
@@ -228,10 +230,6 @@ function processCeldas(idSector, celdas) {
       idSector,
     };
   });
-  return {
-    celdas: cs,
-    bloques: Object.values(bloques),
-  };
 }
 
 function validateSemaforos(semaforos) {
@@ -516,18 +514,20 @@ dirs.forEach((d) => {
     console.log('   sector');
     const sector = require(`./${idSector}/sector.js`).sector;
     validateSector(sector);
-    sectores.push({
-      ...sector,
-      idSector,
-    });
+    const limites = {
+      minX: Number.POSITIVE_INFINITY,
+      maxX: Number.NEGATIVE_INFINITY,
+      minY: Number.POSITIVE_INFINITY,
+      maxY: Number.NEGATIVE_INFINITY,
+    };
 
     let path = `./${idSector}/celdas.js`;
     if (fs.existsSync(path)) {
       const celdas = require(path).celdas;
       validateCeldas(celdas);
-      const salida = processCeldas(idSector, celdas);
-      grabar('celdas', salida.celdas);
-      grabar('bloques', salida.bloques);
+      const bloques = {};
+      grabar('celdas', processCeldas(idSector, celdas, bloques, limites));
+      grabar('bloques', Object.values(bloques));
     } else {
       throw new Error(`La definición de celdas es obligatoria. Falta ${path}`);
     }
@@ -564,6 +564,12 @@ dirs.forEach((d) => {
     }
 
     fs.closeSync(fd);
+
+    sectores.push({
+      ...sector,
+      idSector,
+      ...limites,
+    });
   }
 });
 

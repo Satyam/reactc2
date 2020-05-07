@@ -28,7 +28,10 @@ import Empalme from 'Components/Empalme';
 
 export function ActualCelda({
   celda,
-  cellsAcross,
+  minX,
+  maxX,
+  minY,
+  maxY,
   cellWidth,
   padLeft,
   padTop,
@@ -74,7 +77,7 @@ export function ActualCelda({
   }, [showFaltantes, condicionesFaltantes.length]);
 
   if (!cellWidth || !celda) return null;
-  const placement = celda.x > cellsAcross / 2 ? 'left' : 'right';
+  const placement = celda.x > (maxX - minX) / 2 ? 'left' : 'right';
 
   const coords = showCoords ? `[${celda.x},${celda.y}]` : '';
   const title = [];
