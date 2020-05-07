@@ -23,7 +23,14 @@ export const celdas = [
     x: 1,
     y: 0,
     puntas: [E, W],
-    despachador: [E, W],
+    despachador: [W],
+  },
+  {
+    tipo: LINEA,
+    x: 2,
+    y: 0,
+    puntas: [E, W],
+    despachador: [E],
   },
   {
     tipo: PARAGOLPE,
@@ -34,7 +41,7 @@ export const celdas = [
   },
   {
     tipo: PARAGOLPE,
-    x: 2,
+    x: 3,
     y: 2,
     punta: W,
     rebota: true,

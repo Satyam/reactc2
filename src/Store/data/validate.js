@@ -20,6 +20,7 @@ const {
   CAMBIO,
   PARAGOLPE,
   CRUCE,
+  EMPALME,
   SEMAFORO,
   NORMAL,
   DESVIADO,
@@ -95,6 +96,7 @@ function validateConstants() {
   validateConst(CAMBIO, 'cambio');
   validateConst(PARAGOLPE, 'paragolpe');
   validateConst(CRUCE, 'cruce');
+  validateConst(EMPALME, 'empalme');
   validateConst(SEMAFORO, 'semaforo');
   validateConst(NORMAL, 0);
   validateConst(DESVIADO, 1);
@@ -463,6 +465,43 @@ function validateEmpalmes(empalmes) {
 
 function processEmpalmes(idSector, empalmes) {
   const ids = [];
+  function newCelda(emp, otro) {
+    let c;
+    switch (emp.dir) {
+      case N:
+        c = { x: emp.x, y: emp.y - 1, punta: S };
+        break;
+      case NE:
+        c = { x: emp.x + 1, y: emp.y - 1, punta: SW };
+        break;
+      case E:
+        c = { x: emp.x + 1, y: emp.y, punta: W };
+        break;
+      case SE:
+        c = { x: emp.x + 1, y: emp.y + 1, punta: NW };
+        break;
+      case S:
+        c = { x: emp.x, y: emp.y + 1, punta: N };
+        break;
+      case SW:
+        c = { x: emp.x - 1, y: emp.y + 1, punta: NE };
+        break;
+      case W:
+        c = { x: emp.x - 1, y: emp.y, punta: E };
+        break;
+      case NW:
+        c = { x: emp.x - 1, y: emp.y - 1, punta: SE };
+        break;
+      default:
+    }
+    const idCelda = buildId(idSector, c);
+    return {
+      tipo: EMPALME,
+      idCelda,
+      otro,
+      ...c,
+    };
+  }
   return empalmes.reduce((emps, emp) => {
     if (emp.length !== 2)
       throw new Error(
@@ -478,10 +517,7 @@ function processEmpalmes(idSector, empalmes) {
         if (idPunta in ids)
           throw new Error(`Referencia duplicada en Empalmes: ${idPunta}`);
         ids.push(idPunta);
-        return {
-          idPunta,
-          ...emp[1 - idx],
-        };
+        return newCelda(punta, emp[1 - idx]);
       })
     );
   }, []);
@@ -521,12 +557,24 @@ dirs.forEach((d) => {
       maxY: Number.NEGATIVE_INFINITY,
     };
 
-    let path = `./${idSector}/celdas.js`;
+    let path = `./${idSector}/empalmes.js`;
+    let celdasEmpalmes = [];
+
+    if (fs.existsSync(path)) {
+      const empalmes = require(path).empalmes;
+      validateEmpalmes(empalmes);
+      celdasEmpalmes = processEmpalmes(idSector, empalmes);
+    }
+
+    path = `./${idSector}/celdas.js`;
     if (fs.existsSync(path)) {
       const celdas = require(path).celdas;
       validateCeldas(celdas);
       const bloques = {};
-      grabar('celdas', processCeldas(idSector, celdas, bloques, limites));
+      grabar(
+        'celdas',
+        processCeldas(idSector, celdas.concat(celdasEmpalmes), bloques, limites)
+      );
       grabar('bloques', Object.values(bloques));
     } else {
       throw new Error(`La definición de celdas es obligatoria. Falta ${path}`);
@@ -554,13 +602,6 @@ dirs.forEach((d) => {
       const enclavamientos = require(path).enclavamientos;
       validateEnclavamientos(enclavamientos);
       grabar('enclavamientos', processEnclavamientos(idSector, enclavamientos));
-    }
-
-    path = `./${idSector}/empalmes.js`;
-    if (fs.existsSync(path)) {
-      const empalmes = require(path).empalmes;
-      validateEmpalmes(empalmes);
-      grabar('empalmes', processEmpalmes(idSector, empalmes));
     }
 
     fs.closeSync(fd);

@@ -3,6 +3,7 @@ export const LINEA = 'linea';
 export const CAMBIO = 'cambio';
 export const CRUCE = 'cruce';
 export const PARAGOLPE = 'paragolpe';
+export const EMPALME = 'empalme';
 export const SEMAFORO = 'semaforo';
 // Aspectos señales:
 export const LIBRE = 1;

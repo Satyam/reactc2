@@ -5,12 +5,12 @@ import { N, NE, E, SE, S, SW, W, NW } from '../../constantes';
 export const empalmes = [
   [
     {
-      x: 1,
+      x: 2,
       y: 0,
       dir: E,
     },
     {
-      x: 2,
+      x: 3,
       y: 2,
       dir: W,
     },

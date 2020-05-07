@@ -4,7 +4,6 @@ import alertas from './alertas/reducer';
 import bloques from './bloques/reducer';
 import celdas from './celdas/reducer';
 import automatizaciones from './automatizaciones/reducer';
-import empalmes from './empalmes/reducer';
 import enclavamientos from './enclavamientos/reducer';
 import options from './options/reducer';
 import pendientes from './pendientes/reducer';
@@ -18,7 +17,6 @@ export default configureStore({
     bloques,
     celdas,
     automatizaciones,
-    empalmes,
     enclavamientos,
     options,
     pendientes,
@@ -31,7 +29,6 @@ export default configureStore({
 export * from './alertas/hooks';
 export * from './bloques/hooks';
 export * from './celdas/hooks';
-export * from './empalmes/hooks';
 export * from './enclavamientos/hooks';
 export * from './automatizaciones/hooks';
 export * from './options/hooks';

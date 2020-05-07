@@ -30,7 +30,11 @@
   stroke: yellow;
   stroke-width: 4;
 }
-
+.tramo-empalme {
+  stroke: gray;
+  stroke-dasharray: 4;
+  stroke-width: 3;
+}
 .rebota {
   stroke: black;
   stroke-width: 3;
@@ -38,4 +42,7 @@
 
 .close {
   margin-left: 0.5em;
+}
+.empalme {
+  font-size: small;
 }

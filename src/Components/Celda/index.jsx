@@ -13,7 +13,7 @@ import {
   useCondicionesFaltantes,
 } from 'Store';
 import Semaforo from 'Components/Semaforo';
-import { CAMBIO, PARAGOLPE } from 'Store/constantes';
+import { LINEA, CAMBIO, PARAGOLPE, CRUCE, EMPALME } from 'Store/constantes';
 
 import { ANCHO_CELDA, DIR, CENTRO_CELDA, ANG } from 'Components/common';
 import styles from './styles.module.css';
@@ -22,9 +22,9 @@ import Linea from './Linea';
 import Cambio from './Cambio';
 import Paragolpe from './Paragolpe';
 import Cruce from './Cruce';
+import Empalme from './Empalme';
 import { Despachador, Tren } from 'Components/Trenes';
 import CondicionesFaltantes from 'Components/Enclavamientos';
-import Empalme from 'Components/Empalme';
 
 export function ActualCelda({
   celda,
@@ -94,10 +94,11 @@ export function ActualCelda({
   }
 
   const Renderer = {
-    linea: Linea,
-    cambio: Cambio,
-    paragolpe: Paragolpe,
-    cruce: Cruce,
+    [LINEA]: Linea,
+    [CAMBIO]: Cambio,
+    [PARAGOLPE]: Paragolpe,
+    [CRUCE]: Cruce,
+    [EMPALME]: Empalme,
   }[celda.tipo];
   return (
     <>
@@ -142,7 +143,6 @@ export function ActualCelda({
                 })}
                 placement={placement}
               />
-              <Empalme celda={celda} dir={dir} />
               {!!celda.despachador && <Despachador celda={celda} dir={dir} />}
             </g>
           ))}

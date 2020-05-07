@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { selCelda, selSemaforo, selEmpalme } from 'Store/selectors';
+import { selCelda, selSemaforo } from 'Store/selectors';
 import {
   removeTrenFromCelda,
   addTrenToCelda,
@@ -33,6 +33,7 @@ import {
   WARNING,
 } from 'Store/constantes';
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
+import { EMPALME } from '../constantes';
 
 let id = 100;
 export const doAddTren = createAction(
@@ -100,18 +101,6 @@ export function delTrenes() {
 export const setTren = createAction('setTren');
 
 function nextCoords({ x, y, dir }, getState) {
-  const empalme = selEmpalme(
-    getState(),
-    buildId({
-      idSector: currentSector.selector(getState()),
-      x,
-      y,
-      dir,
-    })
-  );
-  if (empalme) {
-    return [empalme.x, empalme.y, empalme.dir];
-  }
   switch (dir) {
     case N:
       return [x, y - 1, S];
@@ -180,19 +169,31 @@ export function moveTren(idTren) {
     let nextSpeed = tren.speed;
 
     if (oldCelda.x !== newX || oldCelda.y !== newY) {
-      const newIdCelda = buildId({
+      let newIdCelda = buildId({
         idSector: oldCelda.idSector,
         x: newX,
         y: newY,
       });
-      const newIdSemaforo = buildId({
+      let newIdSemaforo = buildId({
         idSector: oldCelda.idSector,
         x: newX,
         y: newY,
         dir: newDir,
       });
-      const newCelda = selCelda(getState(), newIdCelda);
+      let newCelda = selCelda(getState(), newIdCelda);
 
+      if (newCelda.tipo === EMPALME) {
+        newIdCelda = buildId({
+          idSector: oldCelda.idSector,
+          x: newCelda.otro.x,
+          y: newCelda.otro.y,
+        });
+        newIdSemaforo = buildId({
+          ...newCelda,
+          dir: newCelda.otro.dir,
+        });
+        newCelda = selCelda(getState(), newIdCelda);
+      }
       if (newCelda) {
         const newSemaforo = selSemaforo(getState(), newIdSemaforo);
         if (newSemaforo) {
