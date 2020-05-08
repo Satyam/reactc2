@@ -15,7 +15,7 @@ import {
 import Semaforo from 'Components/Semaforo';
 import { LINEA, CAMBIO, PARAGOLPE, CRUCE, EMPALME } from 'Store/constantes';
 
-import { ANCHO_CELDA, DIR, CENTRO_CELDA, ANG } from 'Components/common';
+import { ANCHO_CELDA, CENTRO_CELDA, ANG } from 'Components/common';
 import styles from './styles.module.css';
 
 import Linea from './Linea';
@@ -93,13 +93,34 @@ export function ActualCelda({
     title.push(`Con tren ${celda.idTren}`);
   }
 
-  const Renderer = {
-    [LINEA]: Linea,
-    [CAMBIO]: Cambio,
-    [PARAGOLPE]: Paragolpe,
-    [CRUCE]: Cruce,
-    [EMPALME]: Empalme,
-  }[celda.tipo];
+  let Renderer;
+  let dirs;
+
+  switch (celda.tipo) {
+    case LINEA:
+      dirs = celda.puntas;
+      Renderer = Linea;
+      break;
+    case CAMBIO:
+      dirs = celda.ramas.concat(celda.punta);
+      Renderer = Cambio;
+      break;
+    case PARAGOLPE:
+      dirs = [celda.punta];
+      Renderer = Paragolpe;
+      break;
+    case CRUCE:
+      dirs = celda.linea1.puntas.concat(celda.linea2.puntas);
+      Renderer = Cruce;
+      break;
+    case EMPALME:
+      Renderer = Empalme;
+      dirs = [];
+      break;
+    default:
+  }
+
+  console.log(celda.tipo, dirs);
   return (
     <>
       <div
@@ -131,7 +152,7 @@ export function ActualCelda({
             </text>
           )}
           <Renderer idCelda={idCelda} />
-          {DIR.map((dir) => (
+          {dirs.map((dir) => (
             <g
               key={dir}
               transform={`rotate(${ANG[dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
