@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { NORMAL } from 'Store/constantes';
+import { NORMAL, CAMBIO } from 'Store/constantes';
 
 import { currentSector } from 'Store/options';
 import adapter from './adapter';
@@ -14,10 +14,12 @@ export const selCeldas = createSelector(
 
 export const selCelda = createSelector(selectors.selectById, (celda) => {
   if (celda)
-    return {
-      posicion: NORMAL,
-      ...celda,
-    };
+    return celda.tipo === CAMBIO
+      ? {
+          posicion: NORMAL,
+          ...celda,
+        }
+      : celda;
 });
 
 export const selCeldaIsManual = createSelector(
