@@ -120,7 +120,6 @@ export function ActualCelda({
     default:
   }
 
-  console.log(celda.tipo, dirs);
   return (
     <>
       <div
