@@ -31,3 +31,5 @@ export const ANG = {
   NW: 225,
 };
 export const DIR = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+export const CICLOS_POR_SEGUNDO = 10;

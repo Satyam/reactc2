@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useMoveTrenes, usePlayRate } from 'Store';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import { CICLOS_POR_SEGUNDO } from 'Components/common';
+
 import styles from './styles.module.css';
 
 export default function Animador() {
@@ -11,7 +14,7 @@ export default function Animador() {
 
   useEffect(() => {
     if (playRate && !timer) {
-      setTimer(setInterval(moveTrenes, 1000 / playRate));
+      setTimer(setInterval(moveTrenes, 1000 / playRate / CICLOS_POR_SEGUNDO));
     }
 
     return () => {

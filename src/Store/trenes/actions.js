@@ -15,6 +15,7 @@ import {
   CAMBIO,
   CRUCE,
   PARAGOLPE,
+  EMPALME,
   IZQ,
   CENTRO,
   DER,
@@ -33,7 +34,7 @@ import {
   WARNING,
 } from 'Store/constantes';
 import { selTren, selTrenes, selBloqueOcupado } from 'Store/selectors';
-import { EMPALME } from '../constantes';
+import { CICLOS_POR_SEGUNDO } from 'Components/common';
 
 let id = 100;
 export const doAddTren = createAction(
@@ -45,6 +46,7 @@ export const doAddTren = createAction(
       y: celda.y,
       dir,
       speed: maxSpeed,
+      falta: CICLOS_POR_SEGUNDO / maxSpeed,
       maxSpeed,
       idTren,
       idSector: celda.idSector,
@@ -155,7 +157,6 @@ export function moveTren(idTren) {
       return dispatch(delTren(tren));
     }
 
-    const oldCelda = selCelda(getState(), tren.idCelda);
     if (tren.falta) {
       dispatch(
         setTren({
@@ -167,6 +168,8 @@ export function moveTren(idTren) {
     }
     const [newX, newY, newDir] = nextCoords(tren, getState);
     let nextSpeed = tren.speed;
+
+    const oldCelda = selCelda(getState(), tren.idCelda);
 
     if (oldCelda.x !== newX || oldCelda.y !== newY) {
       let newIdCelda = buildId({
@@ -307,7 +310,7 @@ export function moveTren(idTren) {
             y: newY,
             speed: nextSpeed,
             idCelda: newIdCelda,
-            falta: newCelda.longitud || 1,
+            falta: (newCelda.longitud || 1) * (CICLOS_POR_SEGUNDO / nextSpeed),
           })
         );
       } else {
