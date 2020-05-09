@@ -19,3 +19,7 @@
   fill: yellow;
   stroke: black;
 }
+
+.close {
+  margin-left: 0.5em;
+}
