@@ -182,7 +182,7 @@ export function moveTren(idTren) {
       });
       let newCelda = selCelda(getState(), newIdCelda);
 
-      if (newCelda.tipo === EMPALME) {
+      if (newCelda && newCelda.tipo === EMPALME) {
         newIdCelda = buildId({
           idSector: oldCelda.idSector,
           x: newCelda.otro.x,
