@@ -21,7 +21,7 @@ import { NORMAL, DESVIADO, ALTERNATIVA } from 'Store/constantes';
 import styles from './styles.module.css';
 
 export default function EstadoCambio({ celda }) {
-  const { posicion, idCelda } = celda;
+  const { posicion, idCelda, bloque } = celda;
   const setPosicion = useSetPosicion(idCelda);
   const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
   const faltantes = useCondicionesFaltantes(idCelda);
@@ -35,12 +35,13 @@ export default function EstadoCambio({ celda }) {
   const disableCambio = !celdaIsManual && faltantes.length > 0;
   return (
     <PopoverBody>
-      {faltantes.length ? (
+      {bloque && <p>Bloque: {bloque}</p>}
+      {faltantes.length && (
         <div className={styles.faltantes}>
           <h3>Condiciones Faltantes</h3>
           <ListaFaltantes faltantes={faltantes} />
         </div>
-      ) : null}
+      )}
       <ButtonGroup className={styles.cambio}>
         {celda.ramas.length === 2 ? (
           <>
