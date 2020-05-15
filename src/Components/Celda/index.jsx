@@ -48,7 +48,7 @@ export function ActualCelda({
     onClick: (ev) => {
       switch (celda.tipo) {
         case CAMBIO:
-          if (condicionesFaltantes.length) {
+          if (condicionesFaltantes.length && !celda.manual) {
             setShowFaltantes(true);
           } else {
             setPosicion((celda.posicion + 1) % celda.ramas.length);

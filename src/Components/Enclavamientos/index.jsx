@@ -14,6 +14,32 @@ import { BLOQUE, SEMAFORO } from 'Store/constantes';
 import { useCondicionesFaltantes } from 'Store';
 import styles from './styles.module.css';
 
+export function ListaFaltantes({ faltantes }) {
+  return (
+    <ListGroup>
+      {faltantes.map((falta, idx) => {
+        switch (falta.tipo) {
+          case BLOQUE:
+            return (
+              <ListGroupItem key={idx}>{`Bloque ocupado ${
+                falta.bloque || nombreEntity(falta)
+              }`}</ListGroupItem>
+            );
+          case SEMAFORO:
+            return (
+              <ListGroupItem key={idx}>{`Semáforo libre: ${nombreEntity(
+                falta
+              )}`}</ListGroupItem>
+            );
+          default:
+            break;
+        }
+        return '????';
+      })}
+    </ListGroup>
+  );
+}
+
 export default function CondicionesFaltantes({ idCelda, setShowFaltantes }) {
   const faltantes = useCondicionesFaltantes(idCelda);
 
@@ -30,27 +56,7 @@ export default function CondicionesFaltantes({ idCelda, setShowFaltantes }) {
         <Button close className={styles.close} onClick={onClose} />
       </PopoverHeader>
       <PopoverBody>
-        <ListGroup>
-          {faltantes.map((falta, idx) => {
-            switch (falta.tipo) {
-              case BLOQUE:
-                return (
-                  <ListGroupItem key={idx}>{`Bloque ocupado ${
-                    falta.bloque || nombreEntity(falta)
-                  }`}</ListGroupItem>
-                );
-              case SEMAFORO:
-                return (
-                  <ListGroupItem key={idx}>{`Semáforo libre: ${nombreEntity(
-                    falta
-                  )}`}</ListGroupItem>
-                );
-              default:
-                break;
-            }
-            return '????';
-          })}
-        </ListGroup>
+        <ListaFaltantes faltantes={faltantes} />
       </PopoverBody>
     </Popover>
   ) : null;

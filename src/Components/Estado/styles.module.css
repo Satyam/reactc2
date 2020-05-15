@@ -26,6 +26,17 @@
   margin-left: 0.5em;
 }
 
+.faltantes {
+  border: thin solid silver;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.faltantes h3 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
 .disabled {
   opacity: 0.5;
 }

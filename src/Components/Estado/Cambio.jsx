@@ -12,8 +12,10 @@ import {
   Unlocked,
 } from 'Components/Icons';
 
+import { ListaFaltantes } from 'Components/Enclavamientos';
+
 import { isPlainClick } from 'Utils';
-import { useCeldaManual, useSetPosicion } from 'Store';
+import { useCeldaManual, useSetPosicion, useCondicionesFaltantes } from 'Store';
 
 import { NORMAL, DESVIADO, ALTERNATIVA } from 'Store/constantes';
 import styles from './styles.module.css';
@@ -22,6 +24,7 @@ export default function EstadoCambio({ celda }) {
   const { posicion, idCelda } = celda;
   const setPosicion = useSetPosicion(idCelda);
   const [celdaIsManual, toggleCeldaManual] = useCeldaManual(idCelda);
+  const faltantes = useCondicionesFaltantes(idCelda);
 
   const onSetCambioNormal = (ev) => isPlainClick(ev) && setPosicion(NORMAL);
   const onSetCambioDesviado = (ev) => isPlainClick(ev) && setPosicion(DESVIADO);
@@ -29,13 +32,21 @@ export default function EstadoCambio({ celda }) {
     isPlainClick(ev) && setPosicion(ALTERNATIVA);
   const onSetManual = (ev) => isPlainClick(ev) && toggleCeldaManual();
 
+  const disableCambio = !celdaIsManual && faltantes.length > 0;
   return (
     <PopoverBody>
+      {faltantes.length ? (
+        <div className={styles.faltantes}>
+          <h3>Condiciones Faltantes</h3>
+          <ListaFaltantes faltantes={faltantes} />
+        </div>
+      ) : null}
       <ButtonGroup className={styles.cambio}>
         {celda.ramas.length === 2 ? (
           <>
             <Button
               size="sm"
+              disabled={disableCambio}
               onClick={onSetCambioNormal}
               color={posicion === NORMAL ? 'primary' : 'outline-secondary'}
             >
@@ -43,6 +54,7 @@ export default function EstadoCambio({ celda }) {
             </Button>
             <Button
               size="sm"
+              disabled={disableCambio}
               onClick={onSetCambioDesviado}
               color={posicion === DESVIADO ? 'primary' : 'outline-secondary'}
             >
@@ -54,6 +66,7 @@ export default function EstadoCambio({ celda }) {
             {' '}
             <Button
               size="sm"
+              disabled={disableCambio}
               onClick={onSetCambioDesviado}
               color={posicion === DESVIADO ? 'primary' : 'outline-secondary'}
             >
@@ -61,6 +74,7 @@ export default function EstadoCambio({ celda }) {
             </Button>
             <Button
               size="sm"
+              disabled={disableCambio}
               onClick={onSetCambioNormal}
               color={posicion === NORMAL ? 'primary' : 'outline-secondary'}
             >
@@ -68,6 +82,7 @@ export default function EstadoCambio({ celda }) {
             </Button>
             <Button
               size="sm"
+              disabled={disableCambio}
               onClick={onSetCambioAlternativa}
               color={posicion === ALTERNATIVA ? 'primary' : 'outline-secondary'}
             >
