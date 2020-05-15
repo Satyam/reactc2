@@ -409,14 +409,15 @@ function processAutomatizaciones(idSector, automatizaciones) {
 function validateEnclavamientos(enclavamientos) {
   const depCambioBloque = j.object({
     tipo: j.valid(BLOQUE).required(),
-    bloque: j.string(),
+    bloque: j.string().required(),
   });
 
   const depCambioSemaforo = j
     .object({
       tipo: j.valid(SEMAFORO).required(),
       dir,
-      aspecto,
+      aspecto: aspecto.required(),
+      senal: icd.optional(),
     })
     .append(coords);
 

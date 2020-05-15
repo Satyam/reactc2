@@ -33,11 +33,14 @@ export const selCondicionesFaltantes = createSelector(
             case SEMAFORO:
               const idSemaforo = buildId({ ...dep, idSector });
               const semaforo = selSemaforo(state, idSemaforo);
-              const aspecto = [IZQ, CENTRO, DER].reduce((permiso, senal) => {
-                return senal in semaforo
-                  ? Math.min(permiso, semaforo[senal])
-                  : permiso;
-              }, ALTO);
+
+              const aspecto = dep.senal
+                ? semaforo[dep.senal]
+                : [IZQ, CENTRO, DER].reduce((permiso, senal) => {
+                    return senal in semaforo
+                      ? Math.min(permiso, semaforo[senal])
+                      : permiso;
+                  }, ALTO);
               if (aspecto !== dep.aspecto) {
                 return salida.concat({
                   ...dep,
