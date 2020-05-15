@@ -35,9 +35,9 @@ export default function CondicionesFaltantes({ idCelda, setShowFaltantes }) {
             switch (falta.tipo) {
               case BLOQUE:
                 return (
-                  <ListGroupItem
-                    key={idx}
-                  >{`Bloque ocupado ${falta.bloque}`}</ListGroupItem>
+                  <ListGroupItem key={idx}>{`Bloque ocupado ${
+                    falta.bloque || nombreEntity(falta)
+                  }`}</ListGroupItem>
                 );
               case SEMAFORO:
                 return (

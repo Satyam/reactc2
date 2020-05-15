@@ -695,6 +695,26 @@ Un cambio podrá estar enclavado a un bloque tal que sólo pueda ser manipulado 
 
 En este caso, se indica que el `CAMBIO` en la celda en `[1,0]` estará bloqueado si el bloque llamado `'centro'` está ocupado.
 
+Dado que no todas las celdas tienen por qué formar parte de un bloque, una opción de este mismo enclavamiento permite especificar una celda en lugar de un bloque, indicando las coordenadas de la misma.
+
+```js
+  {
+    tipo: CAMBIO,
+    x: 1,
+    y: 0,
+    deps: [
+      {
+        tipo: BLOQUE,
+        x: 2,
+        y: 0,
+      },
+      // ...
+    ],
+  }
+```
+
+La lógica es la misma, si la celda en `[2,0]`estuviera ocupada, el cambio en `[1,0]` no podrá accionarse.
+
 #### Cambio enclavado a semáforo
 
 No sólo se debe bloquear un cambio cuando haya un tren circulando en el mismo bloque sino que se debe impedir que entre un tren a ese bloque. Para ello se deben indicar los semáforos que le darían acceso, y que deben ser puestas en `ALTO` para restringir el acceso mientras se hace el cambio.

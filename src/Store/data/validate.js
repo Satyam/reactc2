@@ -407,10 +407,15 @@ function processAutomatizaciones(idSector, automatizaciones) {
 }
 
 function validateEnclavamientos(enclavamientos) {
-  const depCambioBloque = j.object({
-    tipo: j.valid(BLOQUE).required(),
-    bloque: j.string().required(),
-  });
+  const depCambioBloque = j
+    .object({
+      tipo: j.valid(BLOQUE).required(),
+      bloque: j.string(),
+      x: j.number().integer(),
+      y: j.number().integer(),
+    })
+    .or('bloque', 'x')
+    .and('x', 'y');
 
   const depCambioSemaforo = j
     .object({
