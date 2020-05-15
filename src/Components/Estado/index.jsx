@@ -19,6 +19,7 @@ import {
   useShowConfig,
   useEstado,
   useSelAutomatizacion,
+  useSelEnclavamiento,
 } from 'Store';
 
 import { CAMBIO } from 'Store/constantes';
@@ -33,6 +34,7 @@ const TAB_SEMAFORO = 'Semaforo';
 const TAB_CELDA = 'Celda';
 const TAB_AUTOM = 'Autom.';
 const TAB_COMANDO = 'Cmd.';
+const TAB_ENCL = 'Enclav.';
 
 export default function Estado() {
   const {
@@ -51,6 +53,7 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
   const [showConfig] = useShowConfig();
   const { hideEstado } = useEstado();
   const automatizacion = useSelAutomatizacion(idSemaforo || idCelda);
+  const enclavamiento = useSelEnclavamiento(idCelda);
 
   const [activeTab, setActiveTab] = useState();
 
@@ -148,7 +151,21 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
                     {TAB_AUTOM}
                   </NavLink>
                 </NavItem>
-              )}{' '}
+              )}
+              {enclavamiento && (
+                <NavItem title="Mostrar Configuración Enclavamiento">
+                  <NavLink
+                    className={classnames(styles.solapa, {
+                      active: activeTab === TAB_ENCL,
+                    })}
+                    onClick={() => {
+                      toggle(TAB_ENCL);
+                    }}
+                  >
+                    {TAB_ENCL}
+                  </NavLink>
+                </NavItem>
+              )}
             </Nav>
             <TabContent activeTab={activeTab}>
               {activeElement && (
@@ -167,6 +184,11 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
               {automatizacion && (
                 <TabPane tabId={TAB_AUTOM}>
                   <pre>{JSON.stringify(automatizacion, null, 2)}</pre>
+                </TabPane>
+              )}
+              {enclavamiento && (
+                <TabPane tabId={TAB_ENCL}>
+                  <pre>{JSON.stringify(enclavamiento, null, 2)}</pre>
                 </TabPane>
               )}
             </TabContent>
