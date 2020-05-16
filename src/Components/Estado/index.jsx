@@ -22,10 +22,11 @@ import {
   useSelEnclavamiento,
 } from 'Store';
 
-import { CAMBIO } from 'Store/constantes';
+import { CAMBIO, PARAGOLPE } from 'Store/constantes';
 
 import EstadoCambio from './Cambio';
 import EstadoSemaforo from './Semaforo';
+import EstadoParagolpe from './Paragolpe';
 
 import styles from './styles.module.css';
 import { isPlainClick, nombreEntity } from 'Utils';
@@ -36,17 +37,7 @@ const TAB_AUTOM = 'Autom.';
 const TAB_COMANDO = 'Cmd.';
 const TAB_ENCL = 'Enclav.';
 
-export default function Estado() {
-  const {
-    estado: { show, ...more },
-  } = useEstado();
-  // Had to break it in two because selectors don't work with invalid ids
-  // so, if no show, no Popover.
-  // I can't call useSelector conditionally so I render the component conditionally
-  return show && <EstadoPopover {...more} />;
-}
-
-function EstadoPopover({ idCelda, idSemaforo, placement }) {
+function ActualEstado({ idCelda, idSemaforo, placement }) {
   const [oldId, setOldId] = useState();
   const celda = useCelda(idCelda);
   const semaforo = useSemaforo(idSemaforo);
@@ -57,7 +48,8 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
 
   const [activeTab, setActiveTab] = useState();
 
-  const activeElement = semaforo || celda.tipo === CAMBIO;
+  const activeElement =
+    semaforo || celda.tipo === CAMBIO || celda.tipo === PARAGOLPE;
 
   useEffect(() => {
     if (oldId !== idCelda) {
@@ -74,129 +66,144 @@ function EstadoPopover({ idCelda, idSemaforo, placement }) {
 
   const onClose = (ev) => isPlainClick(ev) && hideEstado();
 
-  const Command = () => (
-    <>
-      {semaforo && <EstadoSemaforo semaforo={semaforo} />}
-      {!semaforo && celda.tipo === CAMBIO && <EstadoCambio celda={celda} />}
-    </>
-  );
+  let Command = null;
+
+  if (semaforo) Command = EstadoSemaforo;
+  else
+    switch (celda.tipo) {
+      case CAMBIO:
+        Command = EstadoCambio;
+        break;
+      case PARAGOLPE:
+        Command = EstadoParagolpe;
+        break;
+      default:
+        break;
+    }
+
   // See: https://github.com/reactstrap/reactstrap/issues/1404#issuecomment-602011689
   // I am using a patched Popover.
+
   return (
-    <Popover
-      isOpen={!!(showConfig || activeElement)}
-      target={idCelda}
-      placement={placement}
-    >
-      <PopoverHeader>
-        {semaforo
-          ? `Semáforo ${nombreEntity(semaforo)}`
-          : `Celda ${nombreEntity(celda)}`}
-        <Button close className={styles.close} onClick={onClose} />
-      </PopoverHeader>
-      <PopoverBody>
-        {showConfig ? (
-          <>
-            <Nav pills className={styles.solapas}>
-              {activeElement && (
-                <NavItem title="Mostrar Comandos">
+    (showConfig || activeElement) && (
+      <Popover isOpen target={idCelda} placement={placement}>
+        <PopoverHeader>
+          {semaforo
+            ? `Semáforo ${nombreEntity(semaforo)}`
+            : `Celda ${nombreEntity(celda)}`}
+          <Button close className={styles.close} onClick={onClose} />
+        </PopoverHeader>
+        <PopoverBody>
+          {showConfig ? (
+            <>
+              <Nav pills className={styles.solapas}>
+                {activeElement && (
+                  <NavItem title="Mostrar Comandos">
+                    <NavLink
+                      className={classnames(styles.solapa, {
+                        active: activeTab === TAB_COMANDO,
+                      })}
+                      onClick={() => {
+                        toggle(TAB_COMANDO);
+                      }}
+                    >
+                      {TAB_COMANDO}
+                    </NavLink>
+                  </NavItem>
+                )}
+                {semaforo && (
+                  <NavItem title="Mostrar Configuración Semaforo">
+                    <NavLink
+                      className={classnames(styles.solapa, {
+                        active: activeTab === TAB_SEMAFORO,
+                      })}
+                      onClick={() => {
+                        toggle(TAB_SEMAFORO);
+                      }}
+                    >
+                      {TAB_SEMAFORO}
+                    </NavLink>
+                  </NavItem>
+                )}
+                <NavItem title="Mostrar Configuración Celda">
                   <NavLink
                     className={classnames(styles.solapa, {
-                      active: activeTab === TAB_COMANDO,
+                      active: activeTab === TAB_CELDA,
                     })}
                     onClick={() => {
-                      toggle(TAB_COMANDO);
+                      toggle(TAB_CELDA);
                     }}
                   >
-                    {TAB_COMANDO}
+                    {TAB_CELDA}
                   </NavLink>
                 </NavItem>
-              )}
-              {semaforo && (
-                <NavItem title="Mostrar COnfiguración Semaforo">
-                  <NavLink
-                    className={classnames(styles.solapa, {
-                      active: activeTab === TAB_SEMAFORO,
-                    })}
-                    onClick={() => {
-                      toggle(TAB_SEMAFORO);
-                    }}
-                  >
-                    {TAB_SEMAFORO}
-                  </NavLink>
-                </NavItem>
-              )}
-              <NavItem title="Mostrar Configuración Celda">
-                <NavLink
-                  className={classnames(styles.solapa, {
-                    active: activeTab === TAB_CELDA,
-                  })}
-                  onClick={() => {
-                    toggle(TAB_CELDA);
-                  }}
-                >
-                  {TAB_CELDA}
-                </NavLink>
-              </NavItem>
-              {automatizacion && (
-                <NavItem title="Mostrar Configuración Automatización">
-                  <NavLink
-                    className={classnames(styles.solapa, {
-                      active: activeTab === TAB_AUTOM,
-                    })}
-                    onClick={() => {
-                      toggle(TAB_AUTOM);
-                    }}
-                  >
-                    {TAB_AUTOM}
-                  </NavLink>
-                </NavItem>
-              )}
-              {enclavamiento && (
-                <NavItem title="Mostrar Configuración Enclavamiento">
-                  <NavLink
-                    className={classnames(styles.solapa, {
-                      active: activeTab === TAB_ENCL,
-                    })}
-                    onClick={() => {
-                      toggle(TAB_ENCL);
-                    }}
-                  >
-                    {TAB_ENCL}
-                  </NavLink>
-                </NavItem>
-              )}
-            </Nav>
-            <TabContent activeTab={activeTab}>
-              {activeElement && (
-                <TabPane tabId={TAB_COMANDO}>
-                  <Command />
+                {automatizacion && (
+                  <NavItem title="Mostrar Configuración Automatización">
+                    <NavLink
+                      className={classnames(styles.solapa, {
+                        active: activeTab === TAB_AUTOM,
+                      })}
+                      onClick={() => {
+                        toggle(TAB_AUTOM);
+                      }}
+                    >
+                      {TAB_AUTOM}
+                    </NavLink>
+                  </NavItem>
+                )}
+                {enclavamiento && (
+                  <NavItem title="Mostrar Configuración Enclavamiento">
+                    <NavLink
+                      className={classnames(styles.solapa, {
+                        active: activeTab === TAB_ENCL,
+                      })}
+                      onClick={() => {
+                        toggle(TAB_ENCL);
+                      }}
+                    >
+                      {TAB_ENCL}
+                    </NavLink>
+                  </NavItem>
+                )}
+              </Nav>
+              <TabContent activeTab={activeTab}>
+                {activeElement && (
+                  <TabPane tabId={TAB_COMANDO}>
+                    <Command celda={celda} semaforo={semaforo} />
+                  </TabPane>
+                )}
+                {semaforo && (
+                  <TabPane tabId={TAB_SEMAFORO}>
+                    <pre>{JSON.stringify(semaforo, null, 2)}</pre>
+                  </TabPane>
+                )}
+                <TabPane tabId={TAB_CELDA}>
+                  <pre>{JSON.stringify(celda, null, 2)}</pre>
                 </TabPane>
-              )}
-              {semaforo && (
-                <TabPane tabId={TAB_SEMAFORO}>
-                  <pre>{JSON.stringify(semaforo, null, 2)}</pre>
-                </TabPane>
-              )}
-              <TabPane tabId={TAB_CELDA}>
-                <pre>{JSON.stringify(celda, null, 2)}</pre>
-              </TabPane>
-              {automatizacion && (
-                <TabPane tabId={TAB_AUTOM}>
-                  <pre>{JSON.stringify(automatizacion, null, 2)}</pre>
-                </TabPane>
-              )}
-              {enclavamiento && (
-                <TabPane tabId={TAB_ENCL}>
-                  <pre>{JSON.stringify(enclavamiento, null, 2)}</pre>
-                </TabPane>
-              )}
-            </TabContent>
-          </>
-        ) : (
-          <Command />
-        )}
-      </PopoverBody>
-    </Popover>
+                {automatizacion && (
+                  <TabPane tabId={TAB_AUTOM}>
+                    <pre>{JSON.stringify(automatizacion, null, 2)}</pre>
+                  </TabPane>
+                )}
+                {enclavamiento && (
+                  <TabPane tabId={TAB_ENCL}>
+                    <pre>{JSON.stringify(enclavamiento, null, 2)}</pre>
+                  </TabPane>
+                )}
+              </TabContent>
+            </>
+          ) : (
+            <Command celda={celda} semaforo={semaforo} />
+          )}
+        </PopoverBody>
+      </Popover>
+    )
   );
+}
+
+export default function Estado() {
+  const {
+    estado: { show, ...more },
+  } = useEstado();
+  return show && <ActualEstado {...more} />;
 }
