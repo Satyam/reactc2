@@ -1,7 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Locked, Unlocked, Circle } from 'Components/Icons';
-import { LIBRE, PRECAUCION, ALTO, MANIOBRA } from 'Store/constantes';
+import { Locked, Circle, Automatic, Hand } from 'Components/Icons';
+import {
+  LIBRE,
+  PRECAUCION,
+  ALTO,
+  MANIOBRA,
+  AUTOMATICO,
+  BLOQUEADO,
+} from 'Store/constantes';
 import { isPlainClick } from 'Utils';
 
 import {
@@ -20,7 +27,6 @@ import {
 } from 'reactstrap';
 
 import styles from './styles.module.css';
-import { AUTOMATICO } from '../../Store/constantes';
 
 export function EstadoSenal({ senal, aspecto, onSetAspecto }) {
   const onSetAlto = (ev) => isPlainClick(ev) && onSetAspecto(senal, ALTO);
@@ -72,8 +78,10 @@ export default function EstadoSemaforo({ semaforo }) {
     }
   };
 
-  const onSetManual = () => {
-    setModoSemaforo(modoSemaforo === AUTOMATICO ? MANIOBRA : AUTOMATICO);
+  const onSetModo = (ev) => {
+    if (isPlainClick(ev)) {
+      setModoSemaforo(parseInt(ev.currentTarget.dataset.modo, 10));
+    }
   };
 
   return (
@@ -128,14 +136,39 @@ export default function EstadoSemaforo({ semaforo }) {
         </div>
         {!soloManiobra && (
           <Row>
-            <Button
-              className={styles.manual}
-              size="sm"
-              color={modoSemaforo ? 'danger' : 'outline-info'}
-              onClick={onSetManual}
-            >
-              {modoSemaforo ? <Unlocked /> : <Locked />}
-            </Button>
+            <ButtonGroup vertical className={styles.manual}>
+              <Button
+                size="sm"
+                color={modoSemaforo === AUTOMATICO ? 'info' : 'outline-info'}
+                onClick={onSetModo}
+                data-modo={AUTOMATICO}
+              >
+                <Automatic />
+                &nbsp;Automático
+              </Button>
+              <Button
+                size="sm"
+                color={
+                  modoSemaforo === BLOQUEADO ? 'danger' : 'outline-secondary'
+                }
+                onClick={onSetModo}
+                data-modo={BLOQUEADO}
+              >
+                <Locked />
+                &nbsp;Bloqueado
+              </Button>
+              <Button
+                size="sm"
+                color={
+                  modoSemaforo === MANIOBRA ? 'danger' : 'outline-secondary'
+                }
+                onClick={onSetModo}
+                data-modo={MANIOBRA}
+              >
+                <Hand />
+                &nbsp;Maniobra
+              </Button>
+            </ButtonGroup>
           </Row>
         )}
       </Container>
