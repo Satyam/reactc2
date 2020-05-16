@@ -8,6 +8,8 @@ import { isPlainClick } from 'Utils';
 
 import { useToggleRebota } from 'Store';
 
+import styles from './styles.module.css';
+
 export default function EstadoParagolpe({ celda }) {
   const { idCelda, rebota } = celda;
   const toggleRebota = useToggleRebota(idCelda);
@@ -20,9 +22,10 @@ export default function EstadoParagolpe({ celda }) {
         onClick={onClick}
         size="sm"
         color={rebota ? 'primary' : 'outline-secondary'}
-        title={rebota ? 'Rebota' : 'No rebota'}
+        className={styles.manual}
       >
         <Rebota />
+        {rebota ? ' Rebota' : ' No rebota'}
       </Button>
     </PopoverBody>
   );

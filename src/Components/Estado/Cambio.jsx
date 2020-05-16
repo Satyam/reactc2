@@ -8,8 +8,8 @@ import {
   TripleIzq,
   TripleNormal,
   TripleDer,
-  Locked,
-  Unlocked,
+  Hand,
+  Automatic,
 } from 'Components/Icons';
 
 import { ListaFaltantes } from 'Components/Enclavamientos';
@@ -98,7 +98,8 @@ export default function EstadoCambio({ celda }) {
         color={celdaIsManual ? 'danger' : 'outline-info'}
         onClick={onSetManual}
       >
-        {celdaIsManual ? <Unlocked /> : <Locked />}
+        {celdaIsManual ? <Hand /> : <Automatic />}
+        {celdaIsManual ? ' Manual' : ' Automático'}
       </Button>
     </PopoverBody>
   );
